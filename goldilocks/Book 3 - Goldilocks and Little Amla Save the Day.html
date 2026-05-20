@@ -196,17 +196,35 @@
 
   .page { display: none; }
   .page.active { display: flex; }
+
+  .lang-btn {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,224,130,0.5);
+    color: #ffe082;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s;
+  }
+  .lang-btn:hover { background: rgba(255,224,130,0.18); }
 </style>
 </head>
 <body>
 
+<button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 Français</button>
 <div class="bg-stars" id="stars"></div>
 
 <!-- PAGE 0: COVER -->
 <div class="page active" id="page-0" style="background:linear-gradient(160deg,#1a1a2e,#0f3460);min-height:100vh;justify-content:center;align-items:center;">
   <div class="cover-moon"></div>
-  <p class="cover-subtitle" style="margin-top:80px;">&#10024; Book 3 &mdash; A Story for Brave Little Ones &#10024;</p>
-  <h1 class="cover-title">Goldilocks &amp;<br>Little Amla<br>Save the Day!</h1>
+  <p class="cover-subtitle" style="margin-top:80px;" data-fr="✨ Livre 3 — Une histoire pour les petits courageux ✨">&#10024; Book 3 &mdash; A Story for Brave Little Ones &#10024;</p>
+  <h1 class="cover-title" data-fr="Boucle d'Or et&lt;br&gt;la petite Amla&lt;br&gt;sauvent la mise !">Goldilocks &amp;<br>Little Amla<br>Save the Day!</h1>
 
   <svg class="scene" viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg">
     <!-- Night sky -->
@@ -289,12 +307,12 @@
     <circle cx="350" cy="207" r="3" fill="#b45309"/>
     <text x="210" y="270" font-family="Fredoka One" font-size="12" fill="#ffe082" text-anchor="middle">Goldilocks &amp; Little Amla!</text>
   </svg>
-  <p class="page-num" style="color:#b3e5fc;margin-top:16px;">Tap the dots below to turn the page!</p>
+  <p class="page-num" style="color:#b3e5fc;margin-top:16px;" data-fr="Appuie sur les points pour tourner la page !">Tap the dots below to turn the page!</p>
 </div>
 
 <!-- PAGE 1: A New Friend! -->
 <div class="page page-welcome" id="page-1">
-  <div class="chapter-label">A New Friend!</div>
+  <div class="chapter-label" data-fr="Un nouvel ami !">A New Friend!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#86efac"/>
     <!-- Sun -->
@@ -388,15 +406,15 @@
     <text x="222" y="174" font-family="Fredoka One" font-size="12" fill="#166534" text-anchor="middle">little Amla!</text>
   </svg>
   <div class="text-bubble">
-    <p class="story-text">Deep in the cosy woods, Goldilocks had a wonderful surprise! Little <em>Amla</em> had come to visit — she was just three years old, with beautiful blond hair just like Goldilocks!</p>
-    <p class="story-text" style="margin-top:10px;"><em>Simba</em> wagged his tail. <em>Baby Bear</em> jumped up and down. <em>"YAY! A new friend!"</em> everyone cheered.</p>
+    <p class="story-text" data-fr="Au cœur des bois douilllets, Boucle d'Or eut une magnifique surprise ! La petite <em>Amla</em> était venue en visite — elle n'avait que trois ans, avec de beaux cheveux blonds tout comme Boucle d'Or !">Deep in the cosy woods, Goldilocks had a wonderful surprise! Little <em>Amla</em> had come to visit — she was just three years old, with beautiful blond hair just like Goldilocks!</p>
+    <p class="story-text" style="margin-top:10px;" data-fr="<em>Simba</em> remua la queue. <em>Bébé Ours</em> sauta de joie. <em>« YOUPI ! Un nouvel ami ! »</em> crièrent-ils tous."><em>Simba</em> wagged his tail. <em>Baby Bear</em> jumped up and down. <em>"YAY! A new friend!"</em> everyone cheered.</p>
   </div>
   <p class="page-num">Page 1</p>
 </div>
 
 <!-- PAGE 2: Oh No! Baby Bear is Missing! -->
 <div class="page page-missing" id="page-2">
-  <div class="chapter-label">Oh No! Baby Bear is Missing!</div>
+  <div class="chapter-label" data-fr="Oh non ! Bébé Ours a disparu !">Oh No! Baby Bear is Missing!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#fed7aa"/>
     <circle cx="370" cy="60" r="42" fill="#fbbf24" opacity="0.7"/>
@@ -475,16 +493,16 @@
     <ellipse cx="316" cy="170" rx="5" ry="7" fill="#93c5fd" opacity="0.7"/>
   </svg>
   <div class="text-bubble">
-    <p class="story-text">After lunch, everyone went outside to play. Then Mama Bear stopped and counted heads. Papa Bear. Mama Bear. Goldilocks. Amla. Simba.</p>
-    <p class="story-text" style="margin-top:10px;"><em>"Wait!"</em> gasped Mama Bear. <em>"Where is Baby Bear?!"</em></p>
-    <span class="sound-word">Oh no! Oh no! Oh no!</span>
+    <p class="story-text" data-fr="Après le déjeuner, tout le monde sortit jouer. Puis Maman Ours s'arrêta et compta les têtes. Papa Ours. Maman Ours. Boucle d'Or. Amla. Simba.">After lunch, everyone went outside to play. Then Mama Bear stopped and counted heads. Papa Bear. Mama Bear. Goldilocks. Amla. Simba.</p>
+    <p class="story-text" style="margin-top:10px;" data-fr="<em>« Attendez ! »</em> haleta Maman Ours. <em>« Où est Bébé Ours ?! »</em>"><em>"Wait!"</em> gasped Mama Bear. <em>"Where is Baby Bear?!"</em></p>
+    <span class="sound-word" data-fr="Oh non ! Oh non ! Oh non !">Oh no! Oh no! Oh no!</span>
   </div>
   <p class="page-num">Page 2</p>
 </div>
 
 <!-- PAGE 3: Searching the Woods! -->
 <div class="page page-search" id="page-3">
-  <div class="chapter-label">Searching the Woods!</div>
+  <div class="chapter-label" data-fr="À la recherche dans les bois !">Searching the Woods!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#2e1065"/>
     <circle cx="50" cy="20" r="1.5" fill="white" opacity="0.7"/>
@@ -564,17 +582,17 @@
     <text x="294" y="196" font-family="Fredoka One" font-size="10" fill="#dc2626" text-anchor="middle">Paw prints!</text>
   </svg>
   <div class="text-bubble">
-    <p class="story-text">They searched behind every tree. They looked under every bush. They called and called!</p>
-    <span class="sound-word">"BABY BEAR! BABY BEAR!"</span>
-    <p class="story-text" style="margin-top:10px;">Then tiny <em>Amla</em> stopped very still. She looked down with her sharp little eyes, and pointed her small finger at the ground.</p>
-    <p class="story-text" style="margin-top:8px;"><em>"Look! Paw prints!"</em></p>
+    <p class="story-text" data-fr="Ils cherchèrent derrière chaque arbre. Ils regardèrent sous chaque buisson. Ils appelèrent et appelèrent !">They searched behind every tree. They looked under every bush. They called and called!</p>
+    <span class="sound-word" data-fr="« BÉBÉ OURS ! BÉBÉ OURS ! »">"BABY BEAR! BABY BEAR!"</span>
+    <p class="story-text" style="margin-top:10px;" data-fr="Puis la toute petite <em>Amla</em> s'immobilisa. Elle regarda vers le bas avec ses petits yeux vifs, et pointa son petit doigt vers le sol.">Then tiny <em>Amla</em> stopped very still. She looked down with her sharp little eyes, and pointed her small finger at the ground.</p>
+    <p class="story-text" style="margin-top:8px;" data-fr="<em>« Regarde ! Des empreintes de pattes ! »</em>"><em>"Look! Paw prints!"</em></p>
   </div>
   <p class="page-num">Page 3</p>
 </div>
 
 <!-- PAGE 4: Amla is Brave! -->
 <div class="page page-brave2" id="page-4">
-  <div class="chapter-label">Amla is SO Brave!</div>
+  <div class="chapter-label" data-fr="Amla est SI courageuse !">Amla is SO Brave!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#064e3b"/>
     <rect x="0" y="258" width="420" height="42" fill="#1e1b0a"/>
@@ -642,16 +660,16 @@
     <text x="162" y="206" font-family="Fredoka One" font-size="11" fill="#dc2626" text-anchor="middle">do it!</text>
   </svg>
   <div class="text-bubble">
-    <p class="story-text">The paw prints led to a BIG tangled bramble bush! Goldilocks pushed and pushed at the branches. <em>"I'm too big!"</em> she said sadly.</p>
-    <p class="story-text" style="margin-top:10px;">But tiny <em>Amla</em> spotted a small gap at the bottom. She took a big brave breath and smiled her biggest smile.</p>
-    <span class="sound-word">"I can do it!"</span>
+    <p class="story-text" data-fr="Les empreintes menèrent à un GRAND buisson de ronces emmêlées ! Boucle d'Or poussa et repoussa les branches. <em>« Je suis trop grande ! »</em> dit-elle tristement.">The paw prints led to a BIG tangled bramble bush! Goldilocks pushed and pushed at the branches. <em>"I'm too big!"</em> she said sadly.</p>
+    <p class="story-text" style="margin-top:10px;" data-fr="Mais la toute petite <em>Amla</em> repéra un petit espace en bas. Elle prit une grande inspiration courageuse et sourit de son plus grand sourire.">But tiny <em>Amla</em> spotted a small gap at the bottom. She took a big brave breath and smiled her biggest smile.</p>
+    <span class="sound-word" data-fr="« Je peux le faire ! »">"I can do it!"</span>
   </div>
   <p class="page-num">Page 4</p>
 </div>
 
 <!-- PAGE 5: Found! -->
 <div class="page page-found" id="page-5">
-  <div class="chapter-label">Found!</div>
+  <div class="chapter-label" data-fr="Trouvé !">Found!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#92400e"/>
     <!-- Warm golden glow -->
@@ -711,16 +729,16 @@
     <text x="118" y="200" font-family="Fredoka One" font-size="9" fill="#92400e" text-anchor="middle">We found you!</text>
   </svg>
   <div class="text-bubble">
-    <p class="story-text">Amla crept through the brambles and there — tucked inside a cosy hollow log — was <em>Baby Bear</em>! Fast asleep, snoring softly!</p>
-    <span class="sound-word">Snoooore... Snoooore...</span>
-    <p class="story-text" style="margin-top:10px;">Amla gently placed her tiny hand on his soft paw. <em>"Wake up, Baby Bear,"</em> she whispered sweetly. <em>"Everyone is looking for you!"</em></p>
+    <p class="story-text" data-fr="Amla se glissa à travers les ronces et là — niché à l'intérieur d'un beau tronc creux — était <em>Bébé Ours</em> ! Profondément endormi, ronflant doucement !">Amla crept through the brambles and there — tucked inside a cosy hollow log — was <em>Baby Bear</em>! Fast asleep, snoring softly!</p>
+    <span class="sound-word" data-fr="Rrrron... Rrrron...">Snoooore... Snoooore...</span>
+    <p class="story-text" style="margin-top:10px;" data-fr="Amla posa doucement sa toute petite main sur sa douce patte. <em>« Réveille-toi, Bébé Ours, »</em> murmura-t-elle doucement. <em>« Tout le monde te cherche ! »</em>">Amla gently placed her tiny hand on his soft paw. <em>"Wake up, Baby Bear,"</em> she whispered sweetly. <em>"Everyone is looking for you!"</em></p>
   </div>
   <p class="page-num">Page 5</p>
 </div>
 
 <!-- PAGE 6: Heroes Big and Small! -->
 <div class="page page-celebrate" id="page-6">
-  <div class="chapter-label">Heroes Big and Small!</div>
+  <div class="chapter-label" data-fr="Des héros grands et petits !">Heroes Big and Small!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#bae6fd"/>
     <!-- Rainbow -->
@@ -812,12 +830,12 @@
     <text x="78" y="163" font-family="Arial" font-size="18" text-anchor="middle">&#10024;</text>
   </svg>
   <div class="text-bubble">
-    <p class="story-text">Baby Bear and little Amla came back through the brambles together. <em>EVERYONE</em> cheered!</p>
-    <span class="sound-word">HOORAY for AMLA!</span>
-    <p class="story-text" style="margin-top:10px;">Mama Bear scooped tiny Amla up and held her HIGH in the air! <em>"You are our HERO!"</em></p>
-    <p class="story-text" style="margin-top:8px;">Goldilocks smiled her biggest smile. <em>"Even the littlest helpers can be the biggest heroes!"</em></p>
+    <p class="story-text" data-fr="Bébé Ours et la petite Amla revinrent ensemble à travers les ronces. <em>TOUT LE MONDE</em> cria de joie !">Baby Bear and little Amla came back through the brambles together. <em>EVERYONE</em> cheered!</p>
+    <span class="sound-word" data-fr="HOURRA pour AMLA !">HOORAY for AMLA!</span>
+    <p class="story-text" style="margin-top:10px;" data-fr="Maman Ours souleva la petite Amla et la tint HAUT dans les airs ! <em>« Tu es notre HÉROS ! »</em>">Mama Bear scooped tiny Amla up and held her HIGH in the air! <em>"You are our HERO!"</em></p>
+    <p class="story-text" style="margin-top:8px;" data-fr="Boucle d'Or sourit de son plus grand sourire. <em>« Même les plus petits peuvent être les plus grands héros ! »</em>">Goldilocks smiled her biggest smile. <em>"Even the littlest helpers can be the biggest heroes!"</em></p>
   </div>
-  <div class="the-end">The End!</div>
+  <div class="the-end" data-fr="Fin !">The End!</div>
   <div class="hearts">&#10084;&#65039; &#128059; &#128062; &#129409; &#127775; &#128516;</div>
   <p class="page-num">Page 6</p>
 </div>
@@ -834,6 +852,23 @@
 </div>
 
 <script>
+  // Language toggle
+  let lang = localStorage.getItem('almahextall_lang') || 'en';
+  function applyLang() {
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+    });
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 English' : '🇫🇷 Français';
+  }
+  function toggleLang() {
+    lang = lang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('almahextall_lang', lang);
+    applyLang();
+  }
+  applyLang();
+
   const starsEl = document.getElementById('stars');
   for (let i = 0; i < 30; i++) {
     const s = document.createElement('div');

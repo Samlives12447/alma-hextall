@@ -105,15 +105,34 @@
   .dot.on { background: #fbbf24; }
 
   .spacer { height: 60px; }
+
+  .lang-btn {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(251,191,36,0.5);
+    color: #fbbf24;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s;
+    font-weight: 700;
+  }
+  .lang-btn:hover { background: rgba(251,191,36,0.18); }
 </style>
 </head>
 <body>
 
+<button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 Français</button>
 <!-- PAGE 0: COVER -->
 <div class="page active" id="p0">
   <div style="margin-top:60px"></div>
-  <p class="cover-sub">✨ A Grand Adventure ✨</p>
-  <h1 class="cover-title">The Great<br>Food Rescue!</h1>
+  <p class="cover-sub" data-fr="✨ Une grande aventure ✨">✨ A Grand Adventure ✨</p>
+  <h1 class="cover-title" data-fr="Le Grand&lt;br&gt;Sauvetage !">The Great<br>Food Rescue!</h1>
 
   <svg class="illo" viewBox="0 0 420 310" xmlns="http://www.w3.org/2000/svg">
     <!-- Stars -->
@@ -200,13 +219,13 @@
     <text x="210" y="195" font-family="Baloo 2" font-size="42" fill="#fbbf24" text-anchor="middle" font-weight="800" opacity=".9">VS</text>
   </svg>
 
-  <p style="color:#bae6fd;font-family:'Quicksand',sans-serif;font-weight:700;text-align:center;margin:10px 0;font-size:.95rem;">Tap the dots to turn the page! 👇</p>
+  <p style="color:#bae6fd;font-family:'Quicksand',sans-serif;font-weight:700;text-align:center;margin:10px 0;font-size:.95rem;" data-fr="Appuie sur les points ! 👇">Tap the dots to turn the page! 👇</p>
   <div class="spacer"></div>
 </div>
 
 <!-- PAGE 1: Fairyland & The Woods -->
 <div class="page" id="p1">
-  <div class="chapter-label">🌳 Chapter 1: The Happy Woods of Fairyland 🌳</div>
+  <div class="chapter-label" data-fr="🌳 Chapitre 1 : Les bois joyeux du Pays des Fées 🌳">🌳 Chapter 1: The Happy Woods of Fairyland 🌳</div>
   <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
@@ -409,15 +428,15 @@
     <circle cx="388" cy="232" r="2" fill="#db2777"/>
   </svg>
   <div class="bubble">
-    <p>In the magical <em>Woods of Fairyland</em>, everyone was happy! The fairy folk had a wonderful market full of <em>bread, fruit, pies,</em> and big pots of porridge. 🍞🍎🥧</p>
-    <p>Goldilocks, Simba, and Abu the cheeky monkey loved living here with all their friends.</p>
+    <p data-fr="Dans les magiques <em>Bois du Pays des Fées</em>, tout le monde était heureux ! Les fées avaient un merveilleux marché plein de <em>pain, fruits et tartes,</em> et de grandes marmites de bouillie. 🍞🍎🥧">In the magical <em>Woods of Fairyland</em>, everyone was happy! The fairy folk had a wonderful market full of <em>bread, fruit, pies,</em> and big pots of porridge. 🍞🍎🥧</p>
+    <p data-fr="Boucle d'Or, Simba et Abu le petit singe espiègle adoraient vivre ici avec tous leurs amis.">Goldilocks, Simba, and Abu the cheeky monkey loved living here with all their friends.</p>
   </div>
   <div class="spacer"></div>
 </div>
 
 <!-- PAGE 2: The Villains Plot -->
 <div class="page" id="p2">
-  <div class="chapter-label">😈 Chapter 2: Three Sneaky Villains 😈</div>
+  <div class="chapter-label" data-fr="😈 Chapitre 2 : Trois méchants sournois 😈">😈 Chapter 2: Three Sneaky Villains 😈</div>
   <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <radialGradient id="torchGlow2" cx="50%" cy="50%" r="50%">
@@ -591,16 +610,16 @@
     <text x="222" y="114" font-family="Baloo 2" font-size="11" fill="#7c2d12" text-anchor="middle">the food! Mwahaha!</text>
   </svg>
   <div class="bubble">
-    <p>In a dark cave in the desert lived three sneaky villains: <em>Scar</em> the wicked lion 🦁, the <em>Big Bad Wolf</em> 🐺, and a <em>grumpy Bear</em> 🐻.</p>
-    <p>Scar smiled his nastiest smile. <em>"We'll sneak into the woods and steal every crumb of their food!"</em></p>
-    <span class="sfx">Mwahaha! 😈</span>
+    <p data-fr="Dans une sombre grotte du désert vivaient trois méchants sournois : <em>Scar</em> le lion maléfique 🦁, le <em>Grand Méchant Loup</em> 🐺, et un <em>Ours</em> grognon 🐻.">In a dark cave in the desert lived three sneaky villains: <em>Scar</em> the wicked lion 🦁, the <em>Big Bad Wolf</em> 🐺, and a <em>grumpy Bear</em> 🐻.</p>
+    <p data-fr="Scar fit son sourire le plus méchant. <em>« Nous allons nous faufiler dans les bois et voler chaque miette de leur nourriture ! »</em>">Scar smiled his nastiest smile. <em>"We'll sneak into the woods and steal every crumb of their food!"</em></p>
+    <span class="sfx" data-fr="Mwahaha ! 😈">Mwahaha! 😈</span>
   </div>
   <div class="spacer"></div>
 </div>
 
 <!-- PAGE 3: The Heist! Food Stolen -->
 <div class="page" id="p3">
-  <div class="chapter-label">😱 Chapter 3: The Food is GONE! 😱</div>
+  <div class="chapter-label" data-fr="😱 Chapitre 3 : La nourriture a DISPARU ! 😱">😱 Chapter 3: The Food is GONE! 😱</div>
   <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#1e1b4b"/>
     <!-- Night -->
@@ -684,16 +703,16 @@
     <text x="210" y="68" font-family="Baloo 2" font-size="20" fill="#fde68a" text-anchor="middle" opacity=".9">ALL THE FOOD IS GONE! 😭</text>
   </svg>
   <div class="bubble">
-    <p>In the middle of the night, <em>Scar, the Wolf, and the Bear</em> crept into Fairyland… and stole <em>every single bit of food!</em> The bread, the fruit, the pies — ALL gone! 😭</p>
-    <p>The fairy folk woke up to empty stalls and cried big, sad tears.</p>
-    <span class="sfx">Oh no! 😱</span>
+    <p data-fr="Au milieu de la nuit, <em>Scar, le Loup et l'Ours</em> se glissèrent dans le Pays des Fées… et volèrent <em>toute la nourriture !</em> Le pain, les fruits, les tartes — TOUT disparu ! 😭">In the middle of the night, <em>Scar, the Wolf, and the Bear</em> crept into Fairyland… and stole <em>every single bit of food!</em> The bread, the fruit, the pies — ALL gone! 😭</p>
+    <p data-fr="Les fées se réveillèrent avec des étals vides et versèrent de grosses larmes tristes.">The fairy folk woke up to empty stalls and cried big, sad tears.</p>
+    <span class="sfx" data-fr="Oh non ! 😱">Oh no! 😱</span>
   </div>
   <div class="spacer"></div>
 </div>
 
 <!-- PAGE 4: Heroes Set Out -->
 <div class="page" id="p4">
-  <div class="chapter-label">💪 Chapter 4: The Brave Heroes Set Out! 💪</div>
+  <div class="chapter-label" data-fr="💪 Chapitre 4 : Les courageux héros partent ! 💪">💪 Chapter 4: The Brave Heroes Set Out! 💪</div>
   <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#fed7aa"/>
     <circle cx="370" cy="55" r="38" fill="#fbbf24"/>
@@ -787,16 +806,16 @@
     <text x="350" y="180" font-family="Baloo 2" font-size="11" fill="#92400e" text-anchor="middle">will help! 🐒</text>
   </svg>
   <div class="bubble">
-    <p><em>Goldilocks</em> stamped her foot. <em>Simba</em> shook his mane. <em>Abu</em> the monkey chattered and bounced up and down!</p>
-    <p><em>"We know where they've gone,"</em> said Simba. <em>"The desert! Let's go get that food back and bring it home!"</em> 🏜️</p>
-    <span class="sfx">To the desert! 🌵</span>
+    <p data-fr="<em>Boucle d'Or</em> tapa du pied. <em>Simba</em> secoua sa crinière. <em>Abu</em> le singe jacassa et sautilla de joie !"><em>Goldilocks</em> stamped her foot. <em>Simba</em> shook his mane. <em>Abu</em> the monkey chattered and bounced up and down!</p>
+    <p data-fr="<em>« Nous savons où ils sont allés, »</em> dit Simba. <em>« Au désert ! Allons récupérer cette nourriture et la ramener ! »</em> 🏜️"><em>"We know where they've gone,"</em> said Simba. <em>"The desert! Let's go get that food back and bring it home!"</em> 🏜️</p>
+    <span class="sfx" data-fr="Au désert ! 🌵">To the desert! 🌵</span>
   </div>
   <div class="spacer"></div>
 </div>
 
 <!-- PAGE 5: The Desert Mission -->
 <div class="page" id="p5">
-  <div class="chapter-label">🌵 Chapter 5: Into the Desert! 🌵</div>
+  <div class="chapter-label" data-fr="🌵 Chapitre 5 : Dans le désert ! 🌵">🌵 Chapter 5: Into the Desert! 🌵</div>
   <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#fed7aa"/>
     <circle cx="210" cy="48" r="42" fill="#fbbf24"/>
@@ -879,16 +898,16 @@
     <text x="140" y="178" font-family="Baloo 2" font-size="11" fill="#1d4ed8" text-anchor="middle">RIGHT NOW! 😤</text>
   </svg>
   <div class="bubble">
-    <p><em>Abu</em> was small and quick — he scurried up the cave and spotted all the stolen sacks! 🐒</p>
-    <p><em>Simba</em> let out a mighty ROAR that shook the desert. <em>Goldilocks</em> spread her arms wide and shouted, <em>"Hand it ALL back!"</em></p>
-    <p>Scar's eyes went WIDE. The Wolf's tail went between his legs. The Bear whimpered! 😨</p>
+    <p data-fr="<em>Abu</em> était petit et vif — il grimpa dans la grotte et repéra tous les sacs volés ! 🐒"><em>Abu</em> was small and quick — he scurried up the cave and spotted all the stolen sacks! 🐒</p>
+    <p data-fr="<em>Simba</em> poussa un RUGISSEMENT puissant qui fit trembler le désert. <em>Boucle d'Or</em> écarta les bras et cria : <em>« Rendez TOUT ! »</em>"><em>Simba</em> let out a mighty ROAR that shook the desert. <em>Goldilocks</em> spread her arms wide and shouted, <em>"Hand it ALL back!"</em></p>
+    <p data-fr="Les yeux de Scar s'écarquillèrent. La queue du Loup passa entre ses jambes. L'Ours gémit ! 😨">Scar's eyes went WIDE. The Wolf's tail went between his legs. The Bear whimpered! 😨</p>
   </div>
   <div class="spacer"></div>
 </div>
 
 <!-- PAGE 6: Food Returned! -->
 <div class="page" id="p6">
-  <div class="chapter-label">🎒 Chapter 6: The Big Carry Home! 🎒</div>
+  <div class="chapter-label" data-fr="🎒 Chapitre 6 : Le grand retour ! 🎒">🎒 Chapter 6: The Big Carry Home! 🎒</div>
   <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="300" fill="#dcfce7"/>
     <circle cx="60" cy="52" r="36" fill="#fde68a"/>
@@ -977,16 +996,16 @@
     <text x="210" y="115" font-family="Arial" font-size="28" text-anchor="middle">🎉</text>
   </svg>
   <div class="bubble">
-    <p>Scar, the Wolf, and the Bear ran away screaming into the distance — so fast their paws left dust clouds! 💨</p>
-    <p><em>Simba</em> carried the biggest sack. <em>Goldilocks</em> filled her basket to the brim. <em>Abu</em> bounced along on top of the pile, chattering with joy!</p>
-    <span class="sfx">We got it ALL! 🎉</span>
+    <p data-fr="Scar, le Loup et l'Ours s'enfuirent en criant — si vite que leurs pattes soulevèrent des nuages de poussière ! 💨">Scar, the Wolf, and the Bear ran away screaming into the distance — so fast their paws left dust clouds! 💨</p>
+    <p data-fr="<em>Simba</em> porta le plus grand sac. <em>Boucle d'Or</em> remplit son panier à ras bord. <em>Abu</em> bondit joyeusement sur le dessus de la pile !"><em>Simba</em> carried the biggest sack. <em>Goldilocks</em> filled her basket to the brim. <em>Abu</em> bounced along on top of the pile, chattering with joy!</p>
+    <span class="sfx" data-fr="On a tout récupéré ! 🎉">We got it ALL! 🎉</span>
   </div>
   <div class="spacer"></div>
 </div>
 
 <!-- PAGE 7: HAPPY ENDING -->
 <div class="page" id="p7">
-  <div class="chapter-label">🎊 The End: Fairyland is Fed! 🎊</div>
+  <div class="chapter-label" data-fr="🎊 Fin : Le Pays des Fées est nourri ! 🎊">🎊 The End: Fairyland is Fed! 🎊</div>
   <svg class="illo" viewBox="0 0 420 310" xmlns="http://www.w3.org/2000/svg">
     <rect width="420" height="310" fill="#e0f2fe"/>
     <!-- Sunshine -->
@@ -1091,11 +1110,11 @@
   </svg>
 
   <div class="bubble">
-    <p>The fairy folk cheered and danced! Every stall was full again with bread, fruit, pies, and porridge. 🥳🍞🍎🥧</p>
-    <p><em>Simba, Goldilocks,</em> and cheeky little <em>Abu</em> were the heroes of Fairyland FOREVER. And as for Scar, the Wolf, and the Bear…</p>
-    <p>…they were <em>too scared</em> to ever come back! 😄</p>
+    <p data-fr="Les fées acclamèrent et dansèrent ! Chaque étal était de nouveau plein de pain, fruits, tartes et bouillie. 🥳🍞🍎🥧">The fairy folk cheered and danced! Every stall was full again with bread, fruit, pies, and porridge. 🥳🍞🍎🥧</p>
+    <p data-fr="<em>Simba, Boucle d'Or</em> et le petit espiègle <em>Abu</em> furent les héros du Pays des Fées POUR TOUJOURS. Quant à Scar, le Loup et l'Ours…"><em>Simba, Goldilocks,</em> and cheeky little <em>Abu</em> were the heroes of Fairyland FOREVER. And as for Scar, the Wolf, and the Bear…</p>
+    <p data-fr="…ils avaient <em>trop peur</em> pour jamais revenir ! 😄">…they were <em>too scared</em> to ever come back! 😄</p>
   </div>
-  <div class="the-end">The End! 🌈</div>
+  <div class="the-end" data-fr="Fin ! 🌈">The End! 🌈</div>
   <div class="hearts">🦁💛🐒❤️👱‍♀️💙🧚‍♀️🎉</div>
   <div class="spacer"></div>
 </div>
@@ -1113,6 +1132,23 @@
 </div>
 
 <script>
+  // Language toggle
+  let lang = localStorage.getItem('almahextall_lang') || 'en';
+  function applyLang() {
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+    });
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 English' : '🇫🇷 Français';
+  }
+  function toggleLang() {
+    lang = lang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('almahextall_lang', lang);
+    applyLang();
+  }
+  applyLang();
+
   let cur = 0;
   const pages = document.querySelectorAll('.page');
   const dots = document.querySelectorAll('.dot');

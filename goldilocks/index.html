@@ -190,6 +190,25 @@
     transform: scale(1.05);
   }
 
+  /* Language button */
+  .lang-btn {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,224,130,0.4);
+    color: #ffe082;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .lang-btn:hover { background: rgba(255,224,130,0.15); border-color: #ffe082; }
+
   /* Footer */
   .footer {
     text-align: center;
@@ -202,15 +221,16 @@
 </head>
 <body>
 
+<button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 Français</button>
 <div class="stars" id="stars"></div>
 <div class="moon"></div>
 
 <div class="container">
 
   <header class="header">
-    <p class="series-label">A Children's Book Series</p>
-    <h1 class="series-title">The Goldilocks<br>Series</h1>
-    <p class="series-sub">Adventures with Goldilocks, Simba, Amla &amp; the Three Bears</p>
+    <p class="series-label" data-fr="Une série pour enfants">A Children's Book Series</p>
+    <h1 class="series-title" data-fr="La Série&lt;br&gt;Boucle d'Or">The Goldilocks<br>Series</h1>
+    <p class="series-sub" data-fr="Aventures avec Boucle d'Or, Simba, Amla et les Trois Ours">Adventures with Goldilocks, Simba, Amla &amp; the Three Bears</p>
   </header>
 
   <!-- Hero illustration -->
@@ -350,9 +370,9 @@
         <span class="book-num">Book 1</span>
       </div>
       <div class="book-info">
-        <div class="book-title">Goldilocks &amp; Simba Save the Day!</div>
-        <p class="book-desc">A Big Bad Wolf and a grumpy bear are heading for the cosy cottage in the woods. Can Goldilocks and Simba protect their friends?</p>
-        <span class="book-cta">Read Now &rarr;</span>
+        <div class="book-title" data-fr="Boucle d'Or et Simba sauvent la mise !">Goldilocks &amp; Simba Save the Day!</div>
+        <p class="book-desc" data-fr="Un Grand Méchant Loup et un ours grognon se dirigent vers le chalet douillet dans les bois. Boucle d'Or et Simba peuvent-ils protéger leurs amis ?">A Big Bad Wolf and a grumpy bear are heading for the cosy cottage in the woods. Can Goldilocks and Simba protect their friends?</p>
+        <span class="book-cta" data-fr="Lire maintenant →">Read Now &rarr;</span>
       </div>
     </a>
 
@@ -409,9 +429,9 @@
         <span class="book-num">Book 3</span>
       </div>
       <div class="book-info">
-        <div class="book-title">Goldilocks &amp; Little Amla Save the Day!</div>
-        <p class="book-desc">Three-year-old Amla visits the woods and proves that even the littlest helpers can be the biggest heroes when Baby Bear goes missing!</p>
-        <span class="book-cta">Read Now &rarr;</span>
+        <div class="book-title" data-fr="Boucle d'Or et la petite Amla sauvent la mise !">Goldilocks &amp; Little Amla Save the Day!</div>
+        <p class="book-desc" data-fr="Amla, trois ans, visite les bois et prouve que même les plus petits peuvent être les plus grands héros quand Bébé Ours disparaît !">Three-year-old Amla visits the woods and proves that even the littlest helpers can be the biggest heroes when Baby Bear goes missing!</p>
+        <span class="book-cta" data-fr="Lire maintenant →">Read Now &rarr;</span>
       </div>
     </a>
 
@@ -467,21 +487,38 @@
         <span class="book-num">Book 2</span>
       </div>
       <div class="book-info">
-        <div class="book-title">The Great Food Rescue!</div>
-        <p class="book-desc">When trouble hits the market and food goes missing, Goldilocks, Simba, and the Three Bears spring into action for another exciting adventure!</p>
-        <span class="book-cta">Read Now &rarr;</span>
+        <div class="book-title" data-fr="Le Grand Sauvetage de la Nourriture !">The Great Food Rescue!</div>
+        <p class="book-desc" data-fr="Quand le marché est en danger et que la nourriture disparaît, Boucle d'Or, Simba et les Trois Ours passent à l'action pour une nouvelle aventure palpitante !">When trouble hits the market and food goes missing, Goldilocks, Simba, and the Three Bears spring into action for another exciting adventure!</p>
+        <span class="book-cta" data-fr="Lire maintenant →">Read Now &rarr;</span>
       </div>
     </a>
 
   </section>
 
   <footer class="footer">
-    <p>The Goldilocks Book Series &mdash; Stories for Brave Little Ones</p>
+    <p data-fr="La Série Boucle d'Or &mdash; Histoires pour les petits courageux">The Goldilocks Book Series &mdash; Stories for Brave Little Ones</p>
   </footer>
 
 </div>
 
 <script>
+  // Language toggle
+  let lang = localStorage.getItem('almahextall_lang') || 'en';
+  function applyLang() {
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+    });
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 English' : '🇫🇷 Français';
+  }
+  function toggleLang() {
+    lang = lang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('almahextall_lang', lang);
+    applyLang();
+  }
+  applyLang();
+
   const starsEl = document.getElementById('stars');
   for (let i = 0; i < 60; i++) {
     const s = document.createElement('div');

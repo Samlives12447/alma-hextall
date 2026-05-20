@@ -211,18 +211,36 @@
 
   .page { display: none; }
   .page.active { display: flex; }
+
+  .lang-btn {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,224,130,0.5);
+    color: #ffe082;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s;
+  }
+  .lang-btn:hover { background: rgba(255,224,130,0.18); }
 </style>
 </head>
 <body>
 
+<button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 Français</button>
 <!-- Background stars (cover) -->
 <div class="bg-stars" id="stars"></div>
 
 <!-- PAGE 0: COVER -->
 <div class="page active" id="page-0" style="background:linear-gradient(160deg,#1a1a2e,#0f3460);min-height:100vh;justify-content:center;">
   <div class="cover-moon"></div>
-  <p class="cover-subtitle" style="margin-top:80px;">✨ A Story for Brave Little Ones ✨</p>
-  <h1 class="cover-title">Goldilocks &<br>Simba Save<br>the Day!</h1>
+  <p class="cover-subtitle" style="margin-top:80px;" data-fr="✨ Une histoire pour les petits courageux ✨">✨ A Story for Brave Little Ones ✨</p>
+  <h1 class="cover-title" data-fr="Boucle d'Or et&lt;br&gt;Simba sauvent&lt;br&gt;la mise !">Goldilocks &<br>Simba Save<br>the Day!</h1>
 
   <!-- Cover scene -->
   <svg class="scene" viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg">
@@ -317,12 +335,12 @@
     <text x="300" y="254" font-family="Fredoka One" font-size="11" fill="white" text-anchor="middle">&amp; the 3 Bears</text>
   </svg>
 
-  <p class="page-num" style="color:#b3e5fc;margin-top:16px;">Tap the dots below to turn the page!</p>
+  <p class="page-num" style="color:#b3e5fc;margin-top:16px;" data-fr="Appuie sur les points pour tourner la page !">Tap the dots below to turn the page!</p>
 </div>
 
 <!-- PAGE 1: The Woods Home -->
 <div class="page" id="page-1">
-  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">The Cosy Woods</div>
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;" data-fr="La Forêt Douillette">The Cosy Woods</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <!-- Sky -->
     <rect width="420" height="300" fill="#a8edbd"/>
@@ -421,14 +439,14 @@
   </svg>
 
   <div class="text-bubble">
-    <p class="story-text">Deep in the green, leafy woods lived <em>Goldilocks</em>, brave <em>Simba the Lion</em>, and the kind <em>Three Bears</em> — Papa Bear, Mama Bear, and little Baby Bear.</p>
-    <p class="story-text" style="margin-top:10px;">They all lived together in a cosy cottage and were the best of friends!</p>
+    <p class="story-text" data-fr="Au cœur des bois verts et feuillis vivaient <em>Boucle d'Or</em>, le courageux <em>Simba le Lion</em>, et les gentils <em>Trois Ours</em> — Papa Ours, Maman Ours et le petit Bébé Ours.">Deep in the green, leafy woods lived <em>Goldilocks</em>, brave <em>Simba the Lion</em>, and the kind <em>Three Bears</em> — Papa Bear, Mama Bear, and little Baby Bear.</p>
+    <p class="story-text" style="margin-top:10px;" data-fr="Ils vivaient tous ensemble dans un chalet douillet et étaient les meilleurs amis du monde !">They all lived together in a cosy cottage and were the best of friends!</p>
   </div>
 </div>
 
 <!-- PAGE 2: Desert Villains -->
 <div class="page" id="page-2">
-  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">The Hot Hot Desert</div>
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;" data-fr="Le Désert Brûlant">The Hot Hot Desert</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <!-- Hot sky -->
     <rect width="420" height="300" fill="#fed7aa"/>
@@ -515,15 +533,15 @@
   </svg>
 
   <div class="text-bubble">
-    <p class="story-text">Far away in the <em>hot, hot desert</em> lived the Big Bad <em>Wolf</em> and a grumpy <em>Bear</em>.</p>
-    <p class="story-text" style="margin-top:10px;">They were always hungry and always grumpy. One day they sniffed the air...</p>
-    <span class="sound-word">"Hmm... porridge!"</span>
+    <p class="story-text" data-fr="Très loin dans le <em>désert brûlant</em> vivaient le Grand Méchant <em>Loup</em> et un <em>Ours</em> grognon.">Far away in the <em>hot, hot desert</em> lived the Big Bad <em>Wolf</em> and a grumpy <em>Bear</em>.</p>
+    <p class="story-text" style="margin-top:10px;" data-fr="Ils avaient toujours faim et étaient toujours grognons. Un jour, ils reniflèrent l'air...">They were always hungry and always grumpy. One day they sniffed the air...</p>
+    <span class="sound-word" data-fr="« Hmm... de la bouillie ! »">"Hmm... porridge!"</span>
   </div>
 </div>
 
 <!-- PAGE 3: Trouble Coming -->
 <div class="page" id="page-3">
-  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">Oh No! Here They Come!</div>
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;" data-fr="Oh non ! Les voilà !">Oh No! Here They Come!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <!-- Twilight sky -->
     <rect width="420" height="300" fill="#4c1d95"/>
@@ -596,15 +614,15 @@
   </svg>
 
   <div class="text-bubble">
-    <p class="story-text">The Wolf and the desert Bear started <em>running through the night</em> towards the cosy cottage in the woods!</p>
-    <span class="sound-word">THUD THUD THUD!</span>
-    <p class="story-text" style="margin-top:10px;">Inside, Baby Bear peeked out the window. <em>"Someone's coming!"</em></p>
+    <p class="story-text" data-fr="Le Loup et l'Ours du désert se mirent à <em>courir dans la nuit</em> vers le chalet douillet dans les bois !">The Wolf and the desert Bear started <em>running through the night</em> towards the cosy cottage in the woods!</p>
+    <span class="sound-word" data-fr="BOUM BOUM BOUM !">THUD THUD THUD!</span>
+    <p class="story-text" style="margin-top:10px;" data-fr="À l'intérieur, Bébé Ours jeta un œil par la fenêtre. <em>« Quelqu'un arrive ! »</em>">Inside, Baby Bear peeked out the window. <em>"Someone's coming!"</em></p>
   </div>
 </div>
 
 <!-- PAGE 4: Brave Friends -->
 <div class="page" id="page-4">
-  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">Simba &amp; Goldilocks Are Brave!</div>
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;" data-fr="Simba et Boucle d'Or sont courageux !">Simba &amp; Goldilocks Are Brave!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <!-- Dark forest night -->
     <rect width="420" height="300" fill="#1a1a2e"/>
@@ -707,15 +725,15 @@
   </svg>
 
   <div class="text-bubble">
-    <p class="story-text"><em>Simba</em> stood tall in front of the cottage door and let out the biggest, loudest ROAR!</p>
-    <span class="sound-word">ROOOOAAAAR!!</span>
-    <p class="story-text" style="margin-top:10px;"><em>Goldilocks</em> spread her arms wide and said, <em>"You are NOT coming in! This is our HOME!"</em></p>
+    <p class="story-text" data-fr="<em>Simba</em> se dressa fièrement devant la porte du chalet et poussa le plus grand et le plus fort des RUGISSEMENTS !"><em>Simba</em> stood tall in front of the cottage door and let out the biggest, loudest ROAR!</p>
+    <span class="sound-word" data-fr="ROUUUAAAR !!">ROOOOAAAAR!!</span>
+    <p class="story-text" style="margin-top:10px;" data-fr="<em>Boucle d'Or</em> écarta les bras et dit : <em>« Vous n'entrerez PAS ! C'est notre MAISON ! »</em>"><em>Goldilocks</em> spread her arms wide and said, <em>"You are NOT coming in! This is our HOME!"</em></p>
   </div>
 </div>
 
 <!-- PAGE 5: Villains Run Away -->
 <div class="page" id="page-5">
-  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">Oh No! They're Scared!</div>
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;" data-fr="Oh non ! Ils ont peur !">Oh No! They're Scared!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <!-- Morning sky -->
     <rect width="420" height="300" fill="#fed7aa"/>
@@ -798,15 +816,15 @@
   </svg>
 
   <div class="text-bubble">
-    <p class="story-text">The Big Bad Wolf's ears went flat. The grumpy Bear's eyes went <em>WIDE</em>!</p>
-    <p class="story-text" style="margin-top:8px;">They turned around and ran ALL the way back to the desert as <em>fast as their legs could carry them!</em></p>
-    <span class="sound-word">ZOOM! Gone!</span>
+    <p class="story-text" data-fr="Les oreilles du Grand Méchant Loup s'aplatirent. Les yeux de l'Ours grognon s'écarquillèrent <em>GRANDS</em> !">The Big Bad Wolf's ears went flat. The grumpy Bear's eyes went <em>WIDE</em>!</p>
+    <p class="story-text" style="margin-top:8px;" data-fr="Ils firent demi-tour et coururent TOUT le long du chemin jusqu'au désert aussi <em>vite que leurs jambes pouvaient les porter !</em>">They turned around and ran ALL the way back to the desert as <em>fast as their legs could carry them!</em></p>
+    <span class="sound-word" data-fr="ZOOM ! Partis !">ZOOM! Gone!</span>
   </div>
 </div>
 
 <!-- PAGE 6: Happy Ending -->
 <div class="page" id="page-6">
-  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">Hooray! Everyone is Safe!</div>
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;" data-fr="Hourra ! Tout le monde est en sécurité !">Hooray! Everyone is Safe!</div>
   <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
     <!-- Beautiful day sky -->
     <rect width="420" height="300" fill="#bae6fd"/>
@@ -908,10 +926,10 @@
   </svg>
 
   <div class="text-bubble">
-    <p class="story-text">Everyone cheered! <em>Papa Bear, Mama Bear,</em> and little <em>Baby Bear</em> hugged Goldilocks and Simba tight.</p>
-    <p class="story-text" style="margin-top:10px;"><em>"You were SO brave!"</em> said Mama Bear. And they all had a big bowl of porridge together.</p>
+    <p class="story-text" data-fr="Tout le monde cria de joie ! <em>Papa Ours, Maman Ours</em> et le petit <em>Bébé Ours</em> serrèrent Boucle d'Or et Simba très fort.">Everyone cheered! <em>Papa Bear, Mama Bear,</em> and little <em>Baby Bear</em> hugged Goldilocks and Simba tight.</p>
+    <p class="story-text" style="margin-top:10px;" data-fr="<em>« Vous étiez SI courageux ! »</em> dit Maman Ours. Et ils mangèrent tous ensemble un grand bol de bouillie."><em>"You were SO brave!"</em> said Mama Bear. And they all had a big bowl of porridge together.</p>
   </div>
-  <div class="the-end">The End!</div>
+  <div class="the-end" data-fr="Fin !">The End!</div>
   <div class="hearts">&#10084;&#65039; &#129409; &#128059; &#128155; &#128062;&#10145;&#127939; &#128516;</div>
 </div>
 
@@ -927,6 +945,23 @@
 </div>
 
 <script>
+  // Language toggle
+  let lang = localStorage.getItem('almahextall_lang') || 'en';
+  function applyLang() {
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+    });
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 English' : '🇫🇷 Français';
+  }
+  function toggleLang() {
+    lang = lang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('almahextall_lang', lang);
+    applyLang();
+  }
+  applyLang();
+
   // Stars
   const starsEl = document.getElementById('stars');
   for (let i = 0; i < 30; i++) {

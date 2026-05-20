@@ -219,6 +219,25 @@
     line-height: 1.6;
   }
 
+  /* Language button */
+  .lang-btn {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,224,130,0.4);
+    color: #ffe082;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .lang-btn:hover { background: rgba(255,224,130,0.15); border-color: #ffe082; }
+
   /* Footer */
   .footer {
     text-align: center;
@@ -231,6 +250,7 @@
 </head>
 <body>
 
+<button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 Français</button>
 <div class="stars" id="stars"></div>
 <div class="moon"></div>
 
@@ -238,15 +258,15 @@
 
   <!-- Header -->
   <header class="header">
-    <p class="header-label">The World of</p>
+    <p class="header-label" data-fr="Le monde de">The World of</p>
     <h1 class="header-name">Alma Hextall</h1>
-    <p class="header-sub">Stories, adventures &amp; creative worlds</p>
+    <p class="header-sub" data-fr="Histoires, aventures et mondes créatifs">Stories, adventures &amp; creative worlds</p>
   </header>
 
   <!-- Tab Navigation -->
   <nav class="tabs-nav">
-    <button class="tab-btn active" onclick="showTab('goldilocks', this)">The Goldilocks Series</button>
-    <button class="tab-btn" onclick="showTab('coming1', this)">More Coming Soon</button>
+    <button class="tab-btn active" onclick="showTab('goldilocks', this)" data-fr="La Série Boucle d'Or">The Goldilocks Series</button>
+    <button class="tab-btn" onclick="showTab('coming1', this)" data-fr="Plus à venir">More Coming Soon</button>
   </nav>
 
   <!-- Tab: Goldilocks Book Series -->
@@ -348,13 +368,13 @@
         </svg>
       </div>
       <div class="project-hero-body">
-        <span class="project-tag">Children's Book Series</span>
-        <h2 class="project-title">The Goldilocks Series</h2>
-        <p class="project-desc">
+        <span class="project-tag" data-fr="Série pour enfants">Children's Book Series</span>
+        <h2 class="project-title" data-fr="La Série Boucle d'Or">The Goldilocks Series</h2>
+        <p class="project-desc" data-fr="Suivez la courageuse et brillante Boucle d'Or dans des aventures magiques avec Simba le lionceau, la petite Amla et les Trois Ours. Trois histoires écrites et illustrées pour les petits lecteurs qui adorent les grandes aventures !">
           Follow the brave and brilliant Goldilocks on magical adventures alongside Simba the lion cub, little Amla and the Three Bears.
           Three stories written and illustrated for little readers who love big adventures!
         </p>
-        <a class="project-cta" href="goldilocks/index.html">
+        <a class="project-cta" href="goldilocks/index.html" data-fr="Ouvrir la série →">
           Open the Book Series &rarr;
         </a>
       </div>
@@ -365,13 +385,13 @@
   <div class="tab-panel" id="tab-coming1">
     <div class="coming-soon">
       <div class="coming-soon-icon">&#10024;</div>
-      <h2>Something Amazing is Coming!</h2>
-      <p>Alma's next big project is in the works. Check back soon for another incredible adventure.</p>
+      <h2 data-fr="Quelque chose d'incroyable arrive !">Something Amazing is Coming!</h2>
+      <p data-fr="Le prochain grand projet d'Alma est en cours. Revenez bientôt pour une nouvelle aventure incroyable.">Alma's next big project is in the works. Check back soon for another incredible adventure.</p>
     </div>
   </div>
 
   <footer class="footer">
-    <p>The World of Alma Hextall &mdash; Made with love</p>
+    <p data-fr="Le monde d'Alma Hextall &mdash; Fait avec amour">The World of Alma Hextall &mdash; Made with love</p>
   </footer>
 
 </div>
@@ -393,6 +413,23 @@
     `;
     starsEl.appendChild(s);
   }
+
+  // Language toggle
+  let lang = localStorage.getItem('almahextall_lang') || 'en';
+  function applyLang() {
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+    });
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 English' : '🇫🇷 Français';
+  }
+  function toggleLang() {
+    lang = lang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('almahextall_lang', lang);
+    applyLang();
+  }
+  applyLang();
 
   // Tab switching
   function showTab(name, btn) {
