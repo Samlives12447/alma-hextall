@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alma Hextall</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: white;
+  }
+
+  /* Stars */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: twinkle var(--dur, 2s) infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: 0.1; } to { opacity: 0.9; } }
+
+  /* Moon */
+  .moon {
+    position: fixed;
+    top: 30px; right: 60px;
+    width: 90px; height: 90px;
+    background: radial-gradient(circle at 35% 35%, #fff9c4, #ffe082);
+    border-radius: 50%;
+    box-shadow: 0 0 50px #ffe08299;
+    animation: moonGlow 3s ease-in-out infinite alternate;
+    z-index: 0;
+  }
+  @keyframes moonGlow {
+    from { box-shadow: 0 0 30px #ffe08266; }
+    to   { box-shadow: 0 0 70px #ffe082cc; }
+  }
+
+  /* Layout */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+  }
+  .header-label {
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #b3e5fc;
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .header-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(3rem, 9vw, 6rem);
+    color: #ffe082;
+    text-shadow: 4px 4px 0 #e65100, 8px 8px 0 #bf360c33;
+    line-height: 1.1;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+  .header-sub {
+    font-size: 1.15rem;
+    color: #93c5fd;
+    margin-top: 16px;
+    font-weight: 700;
+  }
+
+  /* Tabs */
+  .tabs-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .tab-btn {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.05rem;
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: 2px solid rgba(255,224,130,0.3);
+    background: rgba(255,255,255,0.06);
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.5px;
+  }
+  .tab-btn:hover {
+    border-color: #ffe082;
+    color: #ffe082;
+    background: rgba(255,224,130,0.1);
+  }
+  .tab-btn.active {
+    background: #ffe082;
+    color: #1a1a2e;
+    border-color: #ffe082;
+  }
+
+  /* Tab panels */
+  .tab-panel { display: none; width: 100%; }
+  .tab-panel.active { display: block; }
+
+  /* Project hero card */
+  .project-hero {
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(255,224,130,0.2);
+    border-radius: 32px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .project-hero-art {
+    width: 100%;
+    aspect-ratio: 16/7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #1a1a2e, #0f3460);
+  }
+  .project-hero-art svg { width: 100%; height: 100%; }
+
+  .project-hero-body {
+    padding: 32px 36px 36px;
+  }
+  .project-tag {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #ffe082;
+    background: rgba(255,224,130,0.12);
+    border: 1px solid rgba(255,224,130,0.3);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .project-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #ffe082;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .project-desc {
+    font-size: 1.05rem;
+    color: #cbd5e1;
+    line-height: 1.7;
+    font-weight: 700;
+    max-width: 640px;
+    margin-bottom: 28px;
+  }
+  .project-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffe082;
+    color: #1a1a2e;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    padding: 14px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .project-cta:hover {
+    background: #fbbf24;
+    transform: scale(1.04);
+  }
+
+  /* Coming Soon panel */
+  .coming-soon {
+    text-align: center;
+    padding: 80px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .coming-soon-icon {
+    font-size: 4rem;
+    animation: float 2.5s ease-in-out infinite;
+  }
+  .coming-soon h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.2rem;
+    color: #ffe082;
+  }
+  .coming-soon p {
+    color: #93c5fd;
+    font-size: 1.05rem;
+    font-weight: 700;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="moon"></div>
+
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="header-label">The World of</p>
+    <h1 class="header-name">Alma Hextall</h1>
+    <p class="header-sub">Stories, adventures &amp; creative worlds</p>
+  </header>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs-nav">
+    <button class="tab-btn active" onclick="showTab('goldilocks', this)">The Goldilocks Series</button>
+    <button class="tab-btn" onclick="showTab('coming1', this)">More Coming Soon</button>
+  </nav>
+
+  <!-- Tab: Goldilocks Book Series -->
+  <div class="tab-panel active" id="tab-goldilocks">
+    <div class="project-hero">
+      <div class="project-hero-art">
+        <svg viewBox="0 0 960 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <!-- Sky -->
+          <rect width="960" height="280" fill="#0d1b40"/>
+          <!-- Stars -->
+          <circle cx="80" cy="30" r="1.8" fill="white" opacity="0.9"/>
+          <circle cx="200" cy="18" r="1.4" fill="white"/>
+          <circle cx="340" cy="25" r="2" fill="white" opacity="0.8"/>
+          <circle cx="500" cy="12" r="1.5" fill="white" opacity="0.7"/>
+          <circle cx="620" cy="22" r="1.8" fill="white"/>
+          <circle cx="750" cy="10" r="1.4" fill="white" opacity="0.9"/>
+          <circle cx="880" cy="32" r="2" fill="white" opacity="0.6"/>
+          <circle cx="140" cy="48" r="1.2" fill="white" opacity="0.7"/>
+          <circle cx="420" cy="40" r="1" fill="white" opacity="0.8"/>
+          <circle cx="810" cy="50" r="1.5" fill="white" opacity="0.7"/>
+          <!-- Moon -->
+          <circle cx="900" cy="65" r="40" fill="#ffe082"/>
+          <circle cx="885" cy="55" r="35" fill="#0d1b40"/>
+          <!-- Ground -->
+          <rect x="0" y="218" width="960" height="62" fill="#1e3a1e"/>
+          <rect x="0" y="210" width="960" height="12" fill="#2d5a2d"/>
+          <!-- Left trees -->
+          <rect x="50" y="110" width="16" height="115" fill="#5c3d11"/>
+          <polygon points="58,60 28,155 88,155" fill="#1b4332"/>
+          <polygon points="58,88 32,158 84,158" fill="#2d6a4f"/>
+          <rect x="120" y="125" width="14" height="100" fill="#5c3d11"/>
+          <polygon points="127,78 100,165 154,165" fill="#1b4332"/>
+          <!-- Right trees -->
+          <rect x="830" y="108" width="16" height="117" fill="#5c3d11"/>
+          <polygon points="838,58 808,153 868,153" fill="#1b4332"/>
+          <polygon points="838,86 812,156 864,156" fill="#2d6a4f"/>
+          <rect x="900" y="122" width="14" height="103" fill="#5c3d11"/>
+          <polygon points="907,76 880,162 934,162" fill="#1b4332"/>
+          <!-- Cottage -->
+          <rect x="390" y="148" width="180" height="80" fill="#fef3c7" rx="4"/>
+          <polygon points="372,148 480,95 588,148" fill="#dc2626"/>
+          <rect x="433" y="175" width="34" height="53" fill="#92400e" rx="3"/>
+          <circle cx="452" cy="203" r="4" fill="#fde68a"/>
+          <rect x="398" y="160" width="32" height="24" fill="#bae6fd" rx="3"/>
+          <rect x="540" y="160" width="32" height="24" fill="#bae6fd" rx="3"/>
+          <ellipse cx="414" cy="172" rx="14" ry="10" fill="#fde68a" opacity="0.4"/>
+          <ellipse cx="556" cy="172" rx="14" ry="10" fill="#fde68a" opacity="0.4"/>
+          <!-- Papa Bear -->
+          <ellipse cx="185" cy="232" rx="28" ry="22" fill="#92400e"/>
+          <circle cx="185" cy="207" r="22" fill="#92400e"/>
+          <ellipse cx="185" cy="220" rx="14" ry="10" fill="#b45309"/>
+          <circle cx="175" cy="202" r="7" fill="#78350f"/>
+          <circle cx="195" cy="202" r="7" fill="#78350f"/>
+          <circle cx="175" cy="202" r="3" fill="black"/>
+          <circle cx="195" cy="202" r="3" fill="black"/>
+          <path d="M175,215 Q185,221 195,215" stroke="#1c1917" stroke-width="2" fill="none"/>
+          <!-- Mama Bear -->
+          <ellipse cx="775" cy="234" rx="26" ry="20" fill="#b45309"/>
+          <circle cx="775" cy="210" r="20" fill="#b45309"/>
+          <ellipse cx="775" cy="222" rx="12" ry="9" fill="#d97706"/>
+          <circle cx="765" cy="205" r="6" fill="#92400e"/>
+          <circle cx="785" cy="205" r="6" fill="#92400e"/>
+          <circle cx="765" cy="205" r="2.5" fill="black"/>
+          <circle cx="785" cy="205" r="2.5" fill="black"/>
+          <circle cx="775" cy="202" r="3.5" fill="#ec4899"/>
+          <!-- Baby Bear -->
+          <ellipse cx="345" cy="242" rx="18" ry="14" fill="#d97706"/>
+          <circle cx="345" cy="224" r="14" fill="#d97706"/>
+          <ellipse cx="345" cy="234" rx="9" ry="6" fill="#f59e0b"/>
+          <circle cx="337" cy="220" r="4" fill="#b45309"/>
+          <circle cx="353" cy="220" r="4" fill="#b45309"/>
+          <circle cx="337" cy="220" r="1.8" fill="black"/>
+          <circle cx="353" cy="220" r="1.8" fill="black"/>
+          <!-- Goldilocks -->
+          <ellipse cx="610" cy="240" rx="20" ry="22" fill="#3b82f6"/>
+          <circle cx="610" cy="220" r="20" fill="#fde68a"/>
+          <ellipse cx="596" cy="213" rx="14" ry="13" fill="#fbbf24"/>
+          <ellipse cx="624" cy="213" rx="14" ry="13" fill="#fbbf24"/>
+          <ellipse cx="610" cy="207" rx="13" ry="9" fill="#fbbf24"/>
+          <circle cx="603" cy="219" r="3" fill="#1c1917"/>
+          <circle cx="617" cy="219" r="3" fill="#1c1917"/>
+          <path d="M601,228 Q610,234 619,228" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Simba -->
+          <ellipse cx="490" cy="245" rx="32" ry="24" fill="#f59e0b"/>
+          <circle cx="505" cy="228" r="28" fill="#b45309" opacity="0.55"/>
+          <circle cx="505" cy="228" r="22" fill="#f59e0b"/>
+          <ellipse cx="514" cy="234" rx="10" ry="8" fill="#fde68a"/>
+          <circle cx="512" cy="231" r="3" fill="black"/>
+          <circle cx="500" cy="224" r="3.5" fill="black"/>
+          <circle cx="512" cy="231" r="1.2" fill="white"/>
+          <circle cx="500" cy="224" r="1.2" fill="white"/>
+          <path d="M500,240 Q507,246 514,240" stroke="#b45309" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Simba tail -->
+          <path d="M470,245 Q448,222 458,200" stroke="#f59e0b" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <circle cx="458" cy="200" r="9" fill="#b45309"/>
+          <!-- Title text in banner -->
+          <rect x="260" y="260" width="440" height="0" fill="none"/>
+          <text x="480" y="272" font-family="Fredoka One" font-size="16" fill="#ffe082" text-anchor="middle" opacity="0.9">Goldilocks, Simba &amp; the Three Bears</text>
+        </svg>
+      </div>
+      <div class="project-hero-body">
+        <span class="project-tag">Children's Book Series</span>
+        <h2 class="project-title">The Goldilocks Series</h2>
+        <p class="project-desc">
+          Follow the brave and brilliant Goldilocks on magical adventures alongside Simba the lion cub and the Three Bears.
+          Two stories written and illustrated for little readers who love big adventures!
+        </p>
+        <a class="project-cta" href="../Goldilocks Book Series/index.html">
+          Open the Book Series &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Coming Soon -->
+  <div class="tab-panel" id="tab-coming1">
+    <div class="coming-soon">
+      <div class="coming-soon-icon">&#10024;</div>
+      <h2>Something Amazing is Coming!</h2>
+      <p>Alma's next big project is in the works. Check back soon for another incredible adventure.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>The World of Alma Hextall &mdash; Made with love</p>
+  </footer>
+
+</div>
+
+<script>
+  // Generate stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = 1 + Math.random() * 2.5;
+    s.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 80}%;
+      --dur: ${1.2 + Math.random() * 2.5}s;
+      animation-delay: ${Math.random() * 2}s;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // Tab switching
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
