@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldilocks and Friends vs The Desert Villains!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #fef9f0;
+    overflow-x: hidden;
+  }
+
+  /* Stars twinkling in background */
+  .bg-stars {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: #ffe082;
+    border-radius: 50%;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: 0.2; } to { opacity: 0.9; } }
+
+  .cover {
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .cover-moon {
+    position: absolute;
+    top: 40px; right: 60px;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at 35% 35%, #fff9c4, #ffe082);
+    border-radius: 50%;
+    box-shadow: 0 0 40px #ffe08288;
+    animation: moonGlow 3s ease-in-out infinite alternate;
+  }
+  @keyframes moonGlow { from { box-shadow: 0 0 30px #ffe08266; } to { box-shadow: 0 0 60px #ffe082cc; } }
+
+  .cover-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: #ffe082;
+    text-align: center;
+    text-shadow: 3px 3px 0 #e65100, 6px 6px 0 #bf360c44;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  .cover-subtitle {
+    font-size: 1.2rem;
+    color: #b3e5fc;
+    margin-bottom: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* Scene illustration SVG containers */
+  .scene {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  /* Page layout */
+  .page {
+    position: relative;
+    min-height: 100vh;
+    padding: 0 0 60px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .page-woods { background: linear-gradient(180deg, #1b5e20 0%, #2e7d32 30%, #81c784 60%, #a5d6a7 100%); }
+  .page-desert { background: linear-gradient(180deg, #ff8f00 0%, #ffca28 30%, #fff176 60%, #f9a825 100%); }
+  .page-trouble { background: linear-gradient(180deg, #311b92 0%, #4527a0 30%, #7b1fa2 60%, #ce93d8 100%); }
+  .page-brave { background: linear-gradient(180deg, #b71c1c 0%, #c62828 30%, #ef9a9a 60%, #ffcdd2 100%); }
+  .page-end { background: linear-gradient(180deg, #0d47a1 0%, #1565c0 30%, #42a5f5 60%, #e3f2fd 100%); }
+
+  .illustration {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .text-bubble {
+    background: white;
+    border-radius: 20px;
+    padding: 20px 24px;
+    margin: 20px 16px;
+    max-width: 420px;
+    width: calc(100% - 32px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  .text-bubble::before {
+    content: '';
+    position: absolute;
+    top: -14px; left: 30px;
+    border: 8px solid transparent;
+    border-bottom-color: white;
+  }
+
+  .page-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    color: white;
+    opacity: 0.7;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .story-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+    font-weight: 700;
+  }
+
+  .story-text em {
+    color: #e65100;
+    font-style: normal;
+    font-size: 1.2em;
+  }
+
+  .chapter-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: white;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    text-align: center;
+    padding: 24px 20px 8px;
+    width: 100%;
+  }
+
+  .sound-word {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    color: #ffe082;
+    display: block;
+    text-align: center;
+    margin: 4px 0;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+    animation: wobble 1s ease-in-out infinite;
+  }
+  @keyframes wobble { 0%,100% {transform:rotate(-3deg);} 50% {transform:rotate(3deg);} }
+
+  .the-end {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3rem;
+    color: #ffe082;
+    text-shadow: 3px 3px 0 #1565c0, 6px 6px 0 #0d47a133;
+    text-align: center;
+    padding: 20px;
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+
+  .hearts {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 10px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+  /* Nav dots */
+  .nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    background: rgba(0,0,0,0.4);
+    padding: 8px 14px;
+    border-radius: 20px;
+  }
+  .nav-dot {
+    width: 10px; height: 10px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+  }
+  .nav-dot.active { background: #ffe082; }
+
+  .page { display: none; }
+  .page.active { display: flex; }
+</style>
+</head>
+<body>
+
+<!-- Background stars (cover) -->
+<div class="bg-stars" id="stars"></div>
+
+<!-- PAGE 0: COVER -->
+<div class="page active" id="page-0" style="background:linear-gradient(160deg,#1a1a2e,#0f3460);min-height:100vh;justify-content:center;">
+  <div class="cover-moon"></div>
+  <p class="cover-subtitle" style="margin-top:80px;">✨ A Story for Brave Little Ones ✨</p>
+  <h1 class="cover-title">Goldilocks &<br>Simba Save<br>the Day!</h1>
+
+  <!-- Cover scene -->
+  <svg class="scene" viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- Night sky -->
+    <rect width="420" height="280" fill="#0d1b40"/>
+    <!-- Stars -->
+    <circle cx="40" cy="30" r="2" fill="white" opacity="0.9"/>
+    <circle cx="100" cy="15" r="1.5" fill="white" opacity="0.7"/>
+    <circle cx="200" cy="25" r="2" fill="white"/>
+    <circle cx="320" cy="10" r="1.5" fill="white" opacity="0.8"/>
+    <circle cx="380" cy="35" r="2" fill="white" opacity="0.6"/>
+    <circle cx="150" cy="45" r="1" fill="white"/>
+    <circle cx="280" cy="55" r="1.5" fill="white"/>
+    <!-- Moon -->
+    <circle cx="370" cy="55" r="30" fill="#ffe082"/>
+    <circle cx="358" cy="48" r="26" fill="#0d1b40"/>
+    <!-- Ground: half desert, half woods -->
+    <rect x="0" y="200" width="210" height="80" fill="#d4a373"/>
+    <rect x="210" y="200" width="210" height="80" fill="#2d6a4f"/>
+    <!-- Dividing line -->
+    <line x1="210" y1="150" x2="210" y2="280" stroke="white" stroke-width="3" stroke-dasharray="8,6" opacity="0.6"/>
+    <!-- DESERT side: cactus -->
+    <rect x="60" y="130" width="12" height="70" fill="#3d9970" rx="6"/>
+    <rect x="40" y="150" width="30" height="10" fill="#3d9970" rx="5"/>
+    <!-- Desert sand dunes -->
+    <ellipse cx="100" cy="205" rx="60" ry="12" fill="#c89b64" opacity="0.5"/>
+    <!-- WOLF on desert side -->
+    <!-- Body -->
+    <ellipse cx="120" cy="185" rx="30" ry="20" fill="#78716c"/>
+    <!-- Head -->
+    <circle cx="148" cy="168" r="18" fill="#78716c"/>
+    <!-- Snout -->
+    <ellipse cx="160" cy="172" rx="10" ry="7" fill="#a8a29e"/>
+    <circle cx="163" cy="170" r="3" fill="#1c1917"/>
+    <!-- Ears -->
+    <polygon points="136,154 130,138 144,148" fill="#78716c"/>
+    <polygon points="156,150 152,134 163,146" fill="#78716c"/>
+    <!-- Mean eyes -->
+    <ellipse cx="145" cy="163" rx="4" ry="3" fill="#fef08a"/>
+    <circle cx="145" cy="163" r="2" fill="black"/>
+    <line x1="140" y1="159" x2="150" y2="161" stroke="#1c1917" stroke-width="2"/>
+    <!-- Tail -->
+    <path d="M90,175 Q60,145 75,130" stroke="#78716c" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <!-- BEAR on desert side -->
+    <ellipse cx="30" cy="188" rx="22" ry="18" fill="#92400e"/>
+    <circle cx="50" cy="175" r="15" fill="#92400e"/>
+    <circle cx="44" cy="188" r="8" fill="#b45309"/>
+    <circle cx="56" cy="170" r="4" fill="#78350f"/>
+    <circle cx="44" cy="170" r="4" fill="#78350f"/>
+    <circle cx="58" cy="172" r="2" fill="black"/>
+    <circle cx="47" cy="172" r="2" fill="black"/>
+    <!-- WOODS side: trees -->
+    <rect x="270" y="120" width="14" height="85" fill="#5c3d11"/>
+    <polygon points="277,85 250,160 304,160" fill="#2d6a4f"/>
+    <polygon points="277,105 255,165 299,165" fill="#40916c"/>
+    <rect x="350" y="135" width="12" height="70" fill="#5c3d11"/>
+    <polygon points="356,100 332,165 380,165" fill="#1b4332"/>
+    <!-- GOLDILOCKS in woods -->
+    <ellipse cx="295" cy="188" rx="15" ry="18" fill="#fcd34d"/>
+    <circle cx="295" cy="168" r="13" fill="#fde68a"/>
+    <!-- Curly hair -->
+    <ellipse cx="287" cy="162" rx="9" ry="7" fill="#fbbf24"/>
+    <ellipse cx="303" cy="162" rx="9" ry="7" fill="#fbbf24"/>
+    <ellipse cx="295" cy="157" rx="8" ry="5" fill="#fbbf24"/>
+    <!-- Face -->
+    <circle cx="291" cy="167" r="2" fill="#1c1917"/>
+    <circle cx="299" cy="167" r="2" fill="#1c1917"/>
+    <path d="M290,173 Q295,177 300,173" stroke="#e11d48" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- SIMBA -->
+    <ellipse cx="345" cy="190" rx="18" ry="15" fill="#f59e0b"/>
+    <circle cx="355" cy="176" r="14" fill="#f59e0b"/>
+    <!-- Mane -->
+    <circle cx="355" cy="176" r="18" fill="#b45309" opacity="0.6"/>
+    <circle cx="355" cy="176" r="14" fill="#f59e0b"/>
+    <!-- Face -->
+    <ellipse cx="361" cy="180" rx="6" ry="4" fill="#fde68a"/>
+    <circle cx="359" cy="178" r="2" fill="#1c1917"/>
+    <circle cx="351" cy="173" r="2.5" fill="#1c1917"/>
+    <!-- Tail -->
+    <path d="M327,190 Q315,175 325,160" stroke="#f59e0b" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <circle cx="325" cy="160" r="5" fill="#b45309"/>
+    <!-- THREE BEARS (small) in woods -->
+    <circle cx="230" cy="200" r="8" fill="#92400e"/>
+    <circle cx="225" cy="192" r="6" fill="#92400e"/>
+    <circle cx="247" cy="195" r="6" fill="#b45309"/>
+    <circle cx="243" cy="188" r="5" fill="#b45309"/>
+    <circle cx="237" cy="202" r="5" fill="#d97706"/>
+    <circle cx="234" cy="195" r="4" fill="#d97706"/>
+    <!-- Labels -->
+    <text x="95" y="230" font-family="Fredoka One" font-size="11" fill="white" text-anchor="middle">Wolf &amp; Bear</text>
+    <text x="300" y="240" font-family="Fredoka One" font-size="11" fill="white" text-anchor="middle">Goldilocks, Simba</text>
+    <text x="300" y="254" font-family="Fredoka One" font-size="11" fill="white" text-anchor="middle">&amp; the 3 Bears</text>
+  </svg>
+
+  <p class="page-num" style="color:#b3e5fc;margin-top:16px;">Tap the dots below to turn the page!</p>
+</div>
+
+<!-- PAGE 1: The Woods Home -->
+<div class="page" id="page-1">
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">The Cosy Woods</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Sky -->
+    <rect width="420" height="300" fill="#a8edbd"/>
+    <!-- Sun -->
+    <circle cx="50" cy="50" r="35" fill="#fde68a"/>
+    <line x1="50" y1="5" x2="50" y2="0" stroke="#fbbf24" stroke-width="3"/>
+    <line x1="85" y1="30" x2="92" y2="24" stroke="#fbbf24" stroke-width="3"/>
+    <line x1="95" y1="50" x2="102" y2="50" stroke="#fbbf24" stroke-width="3"/>
+    <!-- Ground -->
+    <rect x="0" y="230" width="420" height="70" fill="#5a3e1b"/>
+    <rect x="0" y="220" width="420" height="18" fill="#4a7c59"/>
+    <!-- Cute house -->
+    <rect x="150" y="140" width="120" height="90" fill="#fef3c7" rx="4"/>
+    <polygon points="140,140 210,85 280,140" fill="#dc2626"/>
+    <rect x="185" y="185" width="30" height="45" fill="#92400e" rx="3"/>
+    <circle cx="218" cy="209" r="3" fill="#fde68a"/>
+    <rect x="160" y="160" width="28" height="25" fill="#bae6fd" rx="3"/>
+    <rect x="232" y="160" width="28" height="25" fill="#bae6fd" rx="3"/>
+    <rect x="173" y="160" width="3" height="25" fill="#7dd3fc"/>
+    <rect x="160" y="172" width="28" height="3" fill="#7dd3fc"/>
+    <rect x="245" y="160" width="3" height="25" fill="#7dd3fc"/>
+    <rect x="232" y="172" width="28" height="3" fill="#7dd3fc"/>
+    <!-- Chimney -->
+    <rect x="240" y="90" width="20" height="35" fill="#9ca3af"/>
+    <!-- Smoke -->
+    <ellipse cx="247" cy="80" rx="8" ry="6" fill="#e5e7eb" opacity="0.7"/>
+    <ellipse cx="253" cy="68" rx="7" ry="5" fill="#e5e7eb" opacity="0.5"/>
+    <!-- Big trees -->
+    <rect x="50" y="130" width="16" height="95" fill="#78350f"/>
+    <polygon points="58,70 22,165 94,165" fill="#15803d"/>
+    <polygon points="58,95 28,170 88,170" fill="#16a34a"/>
+    <rect x="330" y="125" width="16" height="100" fill="#78350f"/>
+    <polygon points="338,65 302,160 374,160" fill="#166534"/>
+    <polygon points="338,90 308,165 368,165" fill="#15803d"/>
+    <!-- Flowers -->
+    <circle cx="140" cy="222" r="5" fill="#f9a8d4"/>
+    <circle cx="140" cy="222" r="2" fill="#fde68a"/>
+    <circle cx="285" cy="222" r="5" fill="#c084fc"/>
+    <circle cx="285" cy="222" r="2" fill="#fde68a"/>
+    <!-- Three bears (family portrait style) outside house -->
+    <!-- Papa Bear -->
+    <ellipse cx="95" cy="208" rx="20" ry="17" fill="#92400e"/>
+    <circle cx="95" cy="190" r="16" fill="#92400e"/>
+    <ellipse cx="95" cy="200" rx="10" ry="7" fill="#b45309"/>
+    <circle cx="89" cy="186" r="5" fill="#78350f"/>
+    <circle cx="101" cy="186" r="5" fill="#78350f"/>
+    <circle cx="89" cy="186" r="2" fill="black"/>
+    <circle cx="101" cy="186" r="2" fill="black"/>
+    <path d="M89,196 Q95,200 101,196" stroke="#1c1917" stroke-width="1.5" fill="none"/>
+    <!-- Mama Bear (with bow) -->
+    <ellipse cx="330" cy="210" rx="18" ry="15" fill="#b45309"/>
+    <circle cx="330" cy="194" r="14" fill="#b45309"/>
+    <ellipse cx="330" cy="203" rx="8" ry="6" fill="#d97706"/>
+    <circle cx="325" cy="190" r="4" fill="#92400e"/>
+    <circle cx="335" cy="190" r="4" fill="#92400e"/>
+    <circle cx="325" cy="190" r="2" fill="black"/>
+    <circle cx="335" cy="190" r="2" fill="black"/>
+    <path d="M326,199 Q330,203 334,199" stroke="#1c1917" stroke-width="1.5" fill="none"/>
+    <!-- Pink bow on mama -->
+    <polygon points="322,182 330,186 322,190" fill="#f9a8d4"/>
+    <polygon points="338,182 330,186 338,190" fill="#f9a8d4"/>
+    <circle cx="330" cy="186" r="3" fill="#ec4899"/>
+    <!-- Baby Bear -->
+    <ellipse cx="210" cy="228" rx="12" ry="10" fill="#d97706"/>
+    <circle cx="210" cy="217" r="10" fill="#d97706"/>
+    <ellipse cx="210" cy="222" rx="6" ry="4" fill="#f59e0b"/>
+    <circle cx="206" cy="214" r="3" fill="#b45309"/>
+    <circle cx="214" cy="214" r="3" fill="#b45309"/>
+    <circle cx="206" cy="214" r="1.5" fill="black"/>
+    <circle cx="214" cy="214" r="1.5" fill="black"/>
+    <path d="M207,220 Q210,223 213,220" stroke="#1c1917" stroke-width="1.5" fill="none"/>
+    <!-- Goldilocks -->
+    <ellipse cx="265" cy="220" rx="14" ry="17" fill="#fde68a"/>
+    <circle cx="265" cy="204" r="14" fill="#fde68a"/>
+    <!-- Hair curls -->
+    <ellipse cx="255" cy="198" rx="10" ry="8" fill="#fbbf24"/>
+    <ellipse cx="275" cy="198" rx="10" ry="8" fill="#fbbf24"/>
+    <ellipse cx="265" cy="193" rx="9" ry="6" fill="#fbbf24"/>
+    <circle cx="260" cy="203" r="2.5" fill="#1c1917"/>
+    <circle cx="270" cy="203" r="2.5" fill="#1c1917"/>
+    <path d="M259,210 Q265,214 271,210" stroke="#e11d48" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Red ribbon -->
+    <polygon points="258,191 265,195 258,199" fill="#ef4444"/>
+    <polygon points="272,191 265,195 272,199" fill="#ef4444"/>
+    <circle cx="265" cy="195" r="2.5" fill="#dc2626"/>
+    <!-- Simba -->
+    <ellipse cx="150" cy="218" rx="18" ry="14" fill="#f59e0b"/>
+    <circle cx="163" cy="206" r="13" fill="#f59e0b"/>
+    <circle cx="163" cy="206" r="17" fill="#b45309" opacity="0.5"/>
+    <circle cx="163" cy="206" r="13" fill="#f59e0b"/>
+    <ellipse cx="169" cy="210" rx="5" ry="3" fill="#fde68a"/>
+    <circle cx="167" cy="208" r="2" fill="black"/>
+    <circle cx="159" cy="203" r="2.5" fill="black"/>
+    <path d="M132,218 Q120,203 130,188" stroke="#f59e0b" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <circle cx="130" cy="188" r="5" fill="#b45309"/>
+  </svg>
+
+  <div class="text-bubble">
+    <p class="story-text">Deep in the green, leafy woods lived <em>Goldilocks</em>, brave <em>Simba the Lion</em>, and the kind <em>Three Bears</em> — Papa Bear, Mama Bear, and little Baby Bear.</p>
+    <p class="story-text" style="margin-top:10px;">They all lived together in a cosy cottage and were the best of friends!</p>
+  </div>
+</div>
+
+<!-- PAGE 2: Desert Villains -->
+<div class="page" id="page-2">
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">The Hot Hot Desert</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Hot sky -->
+    <rect width="420" height="300" fill="#fed7aa"/>
+    <circle cx="380" cy="55" r="45" fill="#fbbf24"/>
+    <!-- Heat waves -->
+    <path d="M300,80 Q315,70 330,80 Q345,90 360,80" stroke="#fde68a" stroke-width="2" fill="none" opacity="0.6"/>
+    <path d="M280,95 Q295,85 310,95 Q325,105 340,95" stroke="#fde68a" stroke-width="2" fill="none" opacity="0.4"/>
+    <!-- Sand -->
+    <rect x="0" y="230" width="420" height="70" fill="#d97706"/>
+    <ellipse cx="100" cy="233" rx="90" ry="12" fill="#b45309" opacity="0.4"/>
+    <ellipse cx="320" cy="235" rx="80" ry="10" fill="#b45309" opacity="0.4"/>
+    <!-- Cacti -->
+    <rect x="50" y="120" width="18" height="112" fill="#15803d" rx="9"/>
+    <rect x="28" y="148" width="30" height="14" fill="#15803d" rx="7"/>
+    <rect x="56" y="135" width="28" height="12" fill="#15803d" rx="6"/>
+    <rect x="320" y="130" width="16" height="105" fill="#166534" rx="8"/>
+    <rect x="300" y="155" width="28" height="12" fill="#166534" rx="6"/>
+    <rect x="322" y="148" width="26" height="11" fill="#166534" rx="5.5"/>
+    <!-- Small rocks -->
+    <ellipse cx="180" cy="238" rx="20" ry="10" fill="#92400e" opacity="0.5"/>
+    <ellipse cx="260" cy="242" rx="15" ry="8" fill="#92400e" opacity="0.5"/>
+    <!-- BIG BAD WOLF -->
+    <!-- Body -->
+    <ellipse cx="160" cy="200" rx="45" ry="32" fill="#6b7280"/>
+    <!-- Legs -->
+    <rect x="125" y="218" width="18" height="25" fill="#6b7280" rx="9"/>
+    <rect x="148" y="220" width="18" height="22" fill="#6b7280" rx="9"/>
+    <rect x="170" y="218" width="18" height="25" fill="#6b7280" rx="9"/>
+    <rect x="192" y="220" width="18" height="22" fill="#6b7280" rx="9"/>
+    <!-- Head -->
+    <circle cx="195" cy="175" r="28" fill="#6b7280"/>
+    <!-- Snout -->
+    <ellipse cx="216" cy="183" rx="15" ry="10" fill="#9ca3af"/>
+    <circle cx="220" cy="180" r="5" fill="#374151"/>
+    <!-- Mean eyes -->
+    <ellipse cx="193" cy="167" rx="7" ry="5" fill="#fde68a"/>
+    <circle cx="193" cy="167" r="3.5" fill="black"/>
+    <ellipse cx="207" cy="165" rx="7" ry="5" fill="#fde68a"/>
+    <circle cx="207" cy="165" r="3.5" fill="black"/>
+    <!-- Mean eyebrows -->
+    <line x1="187" y1="160" x2="199" y2="163" stroke="#374151" stroke-width="3" stroke-linecap="round"/>
+    <line x1="201" y1="158" x2="213" y2="162" stroke="#374151" stroke-width="3" stroke-linecap="round"/>
+    <!-- Ears -->
+    <polygon points="177,152 168,132 186,145" fill="#6b7280"/>
+    <polygon points="202,148 195,128 210,142" fill="#6b7280"/>
+    <!-- Teeth -->
+    <path d="M208,188 Q216,195 224,188" stroke="#374151" stroke-width="2" fill="none"/>
+    <rect x="211" y="188" width="5" height="7" fill="white" rx="1"/>
+    <rect x="218" y="188" width="5" height="7" fill="white" rx="1"/>
+    <!-- Tail -->
+    <path d="M115,195 Q75,165 90,140" stroke="#6b7280" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <ellipse cx="90" cy="140" rx="10" ry="8" fill="#9ca3af"/>
+    <!-- GRUMPY BEAR -->
+    <!-- Body -->
+    <ellipse cx="310" cy="205" rx="38" ry="28" fill="#78350f"/>
+    <!-- Legs -->
+    <rect x="277" y="220" width="16" height="22" fill="#78350f" rx="8"/>
+    <rect x="298" y="222" width="16" height="20" fill="#78350f" rx="8"/>
+    <rect x="318" y="220" width="16" height="22" fill="#78350f" rx="8"/>
+    <rect x="338" y="222" width="16" height="20" fill="#78350f" rx="8"/>
+    <!-- Head -->
+    <circle cx="338" cy="181" r="28" fill="#78350f"/>
+    <!-- Snout -->
+    <ellipse cx="350" cy="190" rx="12" ry="9" fill="#b45309"/>
+    <circle cx="352" cy="188" r="4" fill="#451a03"/>
+    <!-- Ears -->
+    <circle cx="319" cy="158" r="9" fill="#78350f"/>
+    <circle cx="354" cy="155" r="9" fill="#78350f"/>
+    <!-- Mean eyes -->
+    <ellipse cx="329" cy="177" rx="6" ry="5" fill="#1c1917"/>
+    <ellipse cx="345" cy="175" rx="6" ry="5" fill="#1c1917"/>
+    <circle cx="329" cy="177" r="2" fill="#fde68a"/>
+    <circle cx="345" cy="175" r="2" fill="#fde68a"/>
+    <!-- Mean eyebrows -->
+    <line x1="323" y1="171" x2="335" y2="174" stroke="#451a03" stroke-width="3" stroke-linecap="round"/>
+    <line x1="339" y1="169" x2="351" y2="173" stroke="#451a03" stroke-width="3" stroke-linecap="round"/>
+    <!-- Claws -->
+    <line x1="348" y1="243" x2="345" y2="255" stroke="#92400e" stroke-width="3" stroke-linecap="round"/>
+    <line x1="353" y1="242" x2="351" y2="254" stroke="#92400e" stroke-width="3" stroke-linecap="round"/>
+    <line x1="358" y1="243" x2="357" y2="255" stroke="#92400e" stroke-width="3" stroke-linecap="round"/>
+    <!-- Angry sweat drops -->
+    <ellipse cx="240" cy="150" rx="5" ry="7" fill="#93c5fd" opacity="0.8"/>
+    <ellipse cx="380" cy="145" rx="4" ry="6" fill="#93c5fd" opacity="0.8"/>
+  </svg>
+
+  <div class="text-bubble">
+    <p class="story-text">Far away in the <em>hot, hot desert</em> lived the Big Bad <em>Wolf</em> and a grumpy <em>Bear</em>.</p>
+    <p class="story-text" style="margin-top:10px;">They were always hungry and always grumpy. One day they sniffed the air...</p>
+    <span class="sound-word">"Hmm... porridge!"</span>
+  </div>
+</div>
+
+<!-- PAGE 3: Trouble Coming -->
+<div class="page" id="page-3">
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">Oh No! Here They Come!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Twilight sky -->
+    <rect width="420" height="300" fill="#4c1d95"/>
+    <!-- Moving clouds of dust -->
+    <ellipse cx="200" cy="200" rx="160" ry="25" fill="#b45309" opacity="0.4"/>
+    <ellipse cx="150" cy="220" rx="100" ry="15" fill="#b45309" opacity="0.3"/>
+    <!-- Ground -->
+    <rect x="0" y="250" width="420" height="50" fill="#3d1a0a"/>
+    <!-- Trees at edge -->
+    <rect x="320" y="140" width="12" height="115" fill="#78350f"/>
+    <polygon points="326,90 298,175 354,175" fill="#15803d"/>
+    <polygon points="326,115 302,180 350,180" fill="#166534"/>
+    <rect x="370" y="155" width="11" height="100" fill="#78350f"/>
+    <polygon points="375,108 350,180 400,180" fill="#1a7a3e"/>
+    <!-- Cottage in distance -->
+    <rect x="330" y="195" width="60" height="55" fill="#fef3c7" rx="3"/>
+    <polygon points="320,195 360,165 400,195" fill="#dc2626"/>
+    <rect x="347" y="220" width="18" height="30" fill="#92400e" rx="2"/>
+    <rect x="333" y="203" width="16" height="14" fill="#bae6fd" rx="2"/>
+    <rect x="373" y="203" width="16" height="14" fill="#bae6fd" rx="2"/>
+    <!-- Warm light from windows -->
+    <ellipse cx="341" cy="210" rx="12" ry="8" fill="#fde68a" opacity="0.4"/>
+    <ellipse cx="381" cy="210" rx="12" ry="8" fill="#fde68a" opacity="0.4"/>
+    <!-- WOLF running (motion lines) -->
+    <line x1="20" y1="185" x2="60" y2="185" stroke="#a8a29e" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+    <line x1="15" y1="195" x2="65" y2="195" stroke="#a8a29e" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+    <line x1="25" y1="205" x2="58" y2="205" stroke="#a8a29e" stroke-width="3" opacity="0.3" stroke-linecap="round"/>
+    <!-- Wolf body (running) -->
+    <ellipse cx="120" cy="195" rx="42" ry="25" fill="#6b7280"/>
+    <circle cx="158" cy="178" r="24" fill="#6b7280"/>
+    <ellipse cx="174" cy="186" rx="13" ry="9" fill="#9ca3af"/>
+    <ellipse cx="153" cy="171" rx="6" ry="4" fill="#fde68a"/>
+    <circle cx="153" cy="171" r="3" fill="black"/>
+    <ellipse cx="165" cy="169" rx="6" ry="4" fill="#fde68a"/>
+    <circle cx="165" cy="169" r="3" fill="black"/>
+    <line x1="147" y1="164" x2="158" y2="167" stroke="#374151" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="159" y1="162" x2="170" y2="166" stroke="#374151" stroke-width="2.5" stroke-linecap="round"/>
+    <polygon points="142,154 134,136 150,150" fill="#6b7280"/>
+    <polygon points="162,150 156,132 169,147" fill="#6b7280"/>
+    <!-- Running legs -->
+    <line x1="95" y1="218" x2="80" y2="245" stroke="#6b7280" stroke-width="14" stroke-linecap="round"/>
+    <line x1="112" y1="218" x2="130" y2="242" stroke="#6b7280" stroke-width="14" stroke-linecap="round"/>
+    <line x1="135" y1="218" x2="120" y2="248" stroke="#6b7280" stroke-width="14" stroke-linecap="round"/>
+    <line x1="152" y1="216" x2="168" y2="242" stroke="#6b7280" stroke-width="14" stroke-linecap="round"/>
+    <!-- Tail up -->
+    <path d="M78,195 Q42,165 58,135" stroke="#6b7280" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <!-- BEAR running -->
+    <line x1="245" y1="188" x2="285" y2="188" stroke="#92400e" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+    <line x1="240" y1="200" x2="288" y2="200" stroke="#92400e" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+    <!-- Bear body running -->
+    <ellipse cx="235" cy="200" rx="38" ry="26" fill="#78350f"/>
+    <circle cx="267" cy="182" r="26" fill="#78350f"/>
+    <ellipse cx="279" cy="191" rx="12" ry="9" fill="#b45309"/>
+    <circle cx="256" cy="177" r="6" fill="#1c1917"/>
+    <circle cx="270" cy="175" r="6" fill="#1c1917"/>
+    <circle cx="256" cy="177" r="2.5" fill="#fde68a"/>
+    <circle cx="270" cy="175" r="2.5" fill="#fde68a"/>
+    <line x1="250" y1="170" x2="262" y2="174" stroke="#451a03" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="264" y1="168" x2="276" y2="173" stroke="#451a03" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="250" cy="170" r="8" fill="#78350f"/>
+    <circle cx="272" cy="168" r="8" fill="#78350f"/>
+    <!-- Bear running legs -->
+    <line x1="200" y1="222" x2="185" y2="248" stroke="#78350f" stroke-width="14" stroke-linecap="round"/>
+    <line x1="218" y1="224" x2="235" y2="248" stroke="#78350f" stroke-width="14" stroke-linecap="round"/>
+    <line x1="240" y1="224" x2="225" y2="250" stroke="#78350f" stroke-width="14" stroke-linecap="round"/>
+    <line x1="258" y1="222" x2="275" y2="248" stroke="#78350f" stroke-width="14" stroke-linecap="round"/>
+    <!-- Exclamation in sky -->
+    <text x="195" y="80" font-family="Fredoka One" font-size="48" fill="#fde68a" text-anchor="middle" opacity="0.9">!</text>
+    <text x="215" y="110" font-family="Fredoka One" font-size="32" fill="#fde68a" text-anchor="middle" opacity="0.7">!</text>
+  </svg>
+
+  <div class="text-bubble">
+    <p class="story-text">The Wolf and the desert Bear started <em>running through the night</em> towards the cosy cottage in the woods!</p>
+    <span class="sound-word">THUD THUD THUD!</span>
+    <p class="story-text" style="margin-top:10px;">Inside, Baby Bear peeked out the window. <em>"Someone's coming!"</em></p>
+  </div>
+</div>
+
+<!-- PAGE 4: Brave Friends -->
+<div class="page" id="page-4">
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">Simba &amp; Goldilocks Are Brave!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Dark forest night -->
+    <rect width="420" height="300" fill="#1a1a2e"/>
+    <!-- Stars -->
+    <circle cx="30" cy="25" r="2" fill="white"/>
+    <circle cx="100" cy="15" r="1.5" fill="white" opacity="0.8"/>
+    <circle cx="200" cy="30" r="2" fill="white"/>
+    <circle cx="330" cy="20" r="1.5" fill="white"/>
+    <circle cx="390" cy="40" r="2" fill="white" opacity="0.7"/>
+    <circle cx="165" cy="55" r="1" fill="white"/>
+    <!-- Moon -->
+    <circle cx="60" cy="60" r="28" fill="#fffde7"/>
+    <circle cx="50" cy="53" r="24" fill="#1a1a2e"/>
+    <!-- Tree silhouettes -->
+    <rect x="0" y="150" width="15" height="150" fill="#0d1117"/>
+    <polygon points="7,80 -20,175 34,175" fill="#0d1117"/>
+    <rect x="390" y="155" width="15" height="150" fill="#0d1117"/>
+    <polygon points="398,85 370,180 426,180" fill="#0d1117"/>
+    <rect x="30" y="165" width="12" height="140" fill="#111827"/>
+    <polygon points="36,100 14,190 58,190" fill="#111827"/>
+    <!-- Ground -->
+    <rect x="0" y="260" width="420" height="40" fill="#1e3a1e"/>
+    <rect x="0" y="250" width="420" height="15" fill="#2d5a2d"/>
+    <!-- Cottage door (closed) -->
+    <rect x="185" y="195" width="50" height="65" fill="#92400e" rx="4"/>
+    <rect x="185" y="195" width="50" height="65" fill="none" stroke="#78350f" stroke-width="3" rx="4"/>
+    <circle cx="232" cy="228" r="4" fill="#fde68a"/>
+    <!-- Cottage walls partial -->
+    <rect x="155" y="200" width="110" height="60" fill="#fef3c7" opacity="0.3"/>
+    <polygon points="145,200 210,158 275,200" fill="#dc2626" opacity="0.5"/>
+    <!-- LIGHT beam from door crack -->
+    <polygon points="210,220 185,228 210,260 235,228" fill="#fde68a" opacity="0.15"/>
+    <!-- SIMBA - heroic stance -->
+    <!-- Shadow -->
+    <ellipse cx="140" cy="265" rx="38" ry="8" fill="black" opacity="0.3"/>
+    <!-- Body -->
+    <ellipse cx="140" cy="230" rx="35" ry="25" fill="#f59e0b"/>
+    <!-- Tail up proud -->
+    <path d="M105,225 Q70,185 90,155" stroke="#f59e0b" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <circle cx="90" cy="155" r="8" fill="#b45309"/>
+    <!-- Front legs planted wide -->
+    <rect x="112" y="248" width="16" height="22" fill="#f59e0b" rx="8"/>
+    <rect x="152" y="248" width="16" height="22" fill="#f59e0b" rx="8"/>
+    <!-- Claws heroic -->
+    <line x1="113" y1="270" x2="110" y2="280" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="119" y1="270" x2="117" y2="281" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="125" y1="270" x2="124" y2="281" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Head up -->
+    <circle cx="168" cy="212" r="30" fill="#b45309" opacity="0.7"/>
+    <circle cx="168" cy="212" r="24" fill="#f59e0b"/>
+    <!-- Face confident -->
+    <ellipse cx="176" cy="218" rx="9" ry="6" fill="#fde68a"/>
+    <circle cx="173" cy="215" r="3" fill="black"/>
+    <circle cx="161" cy="208" r="3.5" fill="black"/>
+    <circle cx="173" cy="215" r="1.2" fill="white"/>
+    <circle cx="161" cy="208" r="1.2" fill="white"/>
+    <!-- Determined mouth -->
+    <path d="M162,222 Q168,226 174,222" stroke="#b45309" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Whiskers -->
+    <line x1="180" y1="217" x2="196" y2="214" stroke="#f59e0b" stroke-width="1.5" opacity="0.7"/>
+    <line x1="180" y1="220" x2="198" y2="220" stroke="#f59e0b" stroke-width="1.5" opacity="0.7"/>
+    <line x1="157" y1="217" x2="141" y2="214" stroke="#f59e0b" stroke-width="1.5" opacity="0.7"/>
+    <!-- GOLDILOCKS - heroic -->
+    <!-- Shadow -->
+    <ellipse cx="290" cy="265" rx="28" ry="7" fill="black" opacity="0.3"/>
+    <!-- Body/dress -->
+    <ellipse cx="290" cy="238" rx="18" ry="22" fill="#3b82f6"/>
+    <!-- Arms out wide brave -->
+    <line x1="272" y1="225" x2="248" y2="215" stroke="#fde68a" stroke-width="12" stroke-linecap="round"/>
+    <line x1="308" y1="225" x2="332" y2="215" stroke="#fde68a" stroke-width="12" stroke-linecap="round"/>
+    <!-- Head -->
+    <circle cx="290" cy="210" r="20" fill="#fde68a"/>
+    <!-- Big hair curls -->
+    <ellipse cx="277" cy="202" rx="13" ry="11" fill="#fbbf24"/>
+    <ellipse cx="303" cy="202" rx="13" ry="11" fill="#fbbf24"/>
+    <ellipse cx="290" cy="194" rx="12" ry="8" fill="#fbbf24"/>
+    <!-- Brave face -->
+    <circle cx="284" cy="209" r="3" fill="#1c1917"/>
+    <circle cx="296" cy="209" r="3" fill="#1c1917"/>
+    <circle cx="284" cy="209" r="1.2" fill="white"/>
+    <circle cx="296" cy="209" r="1.2" fill="white"/>
+    <!-- Smile brave -->
+    <path d="M282,216 Q290,222 298,216" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Red ribbon -->
+    <polygon points="283,193 290,198 283,203" fill="#ef4444"/>
+    <polygon points="297,193 290,198 297,203" fill="#ef4444"/>
+    <circle cx="290" cy="198" r="3" fill="#dc2626"/>
+    <!-- Dress skirt -->
+    <polygon points="272,248 290,260 308,248 308,235 272,235" fill="#2563eb"/>
+    <!-- Heroic glow -->
+    <circle cx="168" cy="212" r="40" fill="#fbbf24" opacity="0.08"/>
+    <circle cx="290" cy="215" r="30" fill="#3b82f6" opacity="0.08"/>
+    <!-- ROAR text -->
+    <text x="125" y="160" font-family="Fredoka One" font-size="26" fill="#fde68a" text-anchor="middle" opacity="0.9">ROAR!</text>
+    <!-- Speech bubble Goldilocks -->
+    <ellipse cx="330" cy="165" rx="55" ry="25" fill="white" opacity="0.9"/>
+    <polygon points="305,183 295,197 318,186" fill="white" opacity="0.9"/>
+    <text x="330" y="160" font-family="Fredoka One" font-size="11" fill="#1d4ed8" text-anchor="middle">You shall NOT</text>
+    <text x="330" y="175" font-family="Fredoka One" font-size="11" fill="#1d4ed8" text-anchor="middle">pass!</text>
+  </svg>
+
+  <div class="text-bubble">
+    <p class="story-text"><em>Simba</em> stood tall in front of the cottage door and let out the biggest, loudest ROAR!</p>
+    <span class="sound-word">ROOOOAAAAR!!</span>
+    <p class="story-text" style="margin-top:10px;"><em>Goldilocks</em> spread her arms wide and said, <em>"You are NOT coming in! This is our HOME!"</em></p>
+  </div>
+</div>
+
+<!-- PAGE 5: Villains Run Away -->
+<div class="page" id="page-5">
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">Oh No! They're Scared!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Morning sky -->
+    <rect width="420" height="300" fill="#fed7aa"/>
+    <circle cx="60" cy="60" r="40" fill="#fbbf24"/>
+    <!-- Sun rays -->
+    <line x1="60" y1="10" x2="60" y2="0" stroke="#fbbf24" stroke-width="4"/>
+    <line x1="102" y1="22" x2="112" y2="12" stroke="#fbbf24" stroke-width="4"/>
+    <line x1="110" y1="60" x2="122" y2="60" stroke="#fbbf24" stroke-width="4"/>
+    <line x1="18" y1="22" x2="8" y2="12" stroke="#fbbf24" stroke-width="4"/>
+    <line x1="10" y1="60" x2="-2" y2="60" stroke="#fbbf24" stroke-width="4"/>
+    <!-- Ground becoming desert -->
+    <rect x="0" y="255" width="420" height="45" fill="#d97706"/>
+    <rect x="0" y="245" width="420" height="14" fill="#92400e" opacity="0.5"/>
+    <!-- Motion lines (running fast!) -->
+    <line x1="320" y1="190" x2="420" y2="185" stroke="#e5e7eb" stroke-width="4" opacity="0.6" stroke-linecap="round"/>
+    <line x1="310" y1="205" x2="420" y2="200" stroke="#e5e7eb" stroke-width="4" opacity="0.5" stroke-linecap="round"/>
+    <line x1="315" y1="220" x2="420" y2="215" stroke="#e5e7eb" stroke-width="4" opacity="0.4" stroke-linecap="round"/>
+    <!-- SCARED WOLF running away fast -->
+    <!-- Body stretched in run -->
+    <ellipse cx="330" cy="195" rx="50" ry="22" fill="#6b7280"/>
+    <!-- Head looking back scared -->
+    <circle cx="280" cy="182" r="26" fill="#6b7280"/>
+    <ellipse cx="264" cy="190" rx="13" ry="9" fill="#9ca3af"/>
+    <!-- Scared eyes - wide! -->
+    <ellipse cx="275" cy="175" rx="7" ry="8" fill="white"/>
+    <circle cx="275" cy="177" r="4" fill="black"/>
+    <circle cx="285" cy="173" rx="7" ry="8" fill="white"/>
+    <ellipse cx="285" cy="173" rx="7" ry="8" fill="white"/>
+    <circle cx="284" cy="175" r="4" fill="black"/>
+    <!-- Sweat drops scared -->
+    <ellipse cx="258" cy="160" rx="5" ry="8" fill="#93c5fd"/>
+    <ellipse cx="267" cy="152" rx="4" ry="6" fill="#93c5fd"/>
+    <ellipse cx="298" cy="155" rx="4" ry="6" fill="#93c5fd"/>
+    <!-- Scared mouth open -->
+    <path d="M266,190 Q270,198 274,190" stroke="#374151" stroke-width="2" fill="#374151"/>
+    <!-- Ears flat scared -->
+    <polygon points="276,158 270,140 284,154" fill="#6b7280"/>
+    <polygon points="294,153 290,135 302,150" fill="#6b7280"/>
+    <!-- Legs running fast -->
+    <line x1="295" y1="215" x2="270" y2="248" stroke="#6b7280" stroke-width="14" stroke-linecap="round"/>
+    <line x1="318" y1="215" x2="345" y2="244" stroke="#6b7280" stroke-width="14" stroke-linecap="round"/>
+    <line x1="345" y1="214" x2="325" y2="248" stroke="#6b7280" stroke-width="14" stroke-linecap="round"/>
+    <line x1="366" y1="212" x2="390" y2="242" stroke="#6b7280" stroke-width="14" stroke-linecap="round"/>
+    <!-- Tail tucked! -->
+    <path d="M375,193 Q395,220 380,235" stroke="#6b7280" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <!-- SCARED BEAR running away -->
+    <ellipse cx="160" cy="205" rx="45" ry="24" fill="#78350f"/>
+    <circle cx="120" cy="190" r="28" fill="#78350f"/>
+    <ellipse cx="105" cy="199" rx="13" ry="10" fill="#b45309"/>
+    <!-- Scared eyes bear -->
+    <ellipse cx="114" cy="183" rx="7" ry="8" fill="white"/>
+    <circle cx="114" cy="185" r="4.5" fill="black"/>
+    <ellipse cx="127" cy="181" rx="7" ry="8" fill="white"/>
+    <circle cx="126" cy="183" r="4.5" fill="black"/>
+    <!-- Sweat drops -->
+    <ellipse cx="97" cy="168" rx="5" ry="8" fill="#93c5fd"/>
+    <ellipse cx="108" cy="158" rx="4" ry="6" fill="#93c5fd"/>
+    <!-- Bear ears flat -->
+    <circle cx="104" cy="166" r="10" fill="#78350f"/>
+    <circle cx="128" cy="164" r="10" fill="#78350f"/>
+    <!-- Bear scared mouth -->
+    <path d="M106,198 Q112,206 118,198" stroke="#451a03" stroke-width="2" fill="#451a03"/>
+    <!-- Bear legs running -->
+    <line x1="132" y1="226" x2="110" y2="255" stroke="#78350f" stroke-width="14" stroke-linecap="round"/>
+    <line x1="152" y1="227" x2="175" y2="254" stroke="#78350f" stroke-width="14" stroke-linecap="round"/>
+    <line x1="172" y1="225" x2="155" y2="255" stroke="#78350f" stroke-width="14" stroke-linecap="round"/>
+    <line x1="192" y1="223" x2="215" y2="252" stroke="#78350f" stroke-width="14" stroke-linecap="round"/>
+    <!-- Scared speech bubbles -->
+    <ellipse cx="230" cy="148" rx="52" ry="24" fill="white" opacity="0.9"/>
+    <polygon points="230,170 222,185 238,172" fill="white" opacity="0.9"/>
+    <text x="230" y="143" font-family="Fredoka One" font-size="12" fill="#dc2626" text-anchor="middle">WAAAH!</text>
+    <text x="230" y="160" font-family="Fredoka One" font-size="11" fill="#dc2626" text-anchor="middle">Too scary!!</text>
+    <!-- Simba and Goldilocks small in background -->
+    <ellipse cx="62" cy="215" rx="22" ry="18" fill="#f59e0b"/>
+    <circle cx="75" cy="202" r="18" fill="#b45309" opacity="0.6"/>
+    <circle cx="75" cy="202" r="15" fill="#f59e0b"/>
+    <circle cx="95" cy="215" r="12" fill="#fde68a"/>
+    <ellipse cx="91" cy="208" rx="8" ry="7" fill="#fbbf24"/>
+    <ellipse cx="99" cy="208" rx="8" ry="7" fill="#fbbf24"/>
+  </svg>
+
+  <div class="text-bubble">
+    <p class="story-text">The Big Bad Wolf's ears went flat. The grumpy Bear's eyes went <em>WIDE</em>!</p>
+    <p class="story-text" style="margin-top:8px;">They turned around and ran ALL the way back to the desert as <em>fast as their legs could carry them!</em></p>
+    <span class="sound-word">ZOOM! Gone!</span>
+  </div>
+</div>
+
+<!-- PAGE 6: Happy Ending -->
+<div class="page" id="page-6">
+  <div class="chapter-label" style="background:rgba(0,0,0,0.2);width:100%;">Hooray! Everyone is Safe!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Beautiful day sky -->
+    <rect width="420" height="300" fill="#bae6fd"/>
+    <!-- Rainbow! -->
+    <path d="M0,180 Q210,20 420,180" stroke="#ef4444" stroke-width="8" fill="none" opacity="0.7"/>
+    <path d="M0,190 Q210,35 420,190" stroke="#f97316" stroke-width="8" fill="none" opacity="0.7"/>
+    <path d="M0,200 Q210,50 420,200" stroke="#eab308" stroke-width="8" fill="none" opacity="0.7"/>
+    <path d="M0,210 Q210,65 420,210" stroke="#22c55e" stroke-width="8" fill="none" opacity="0.7"/>
+    <path d="M0,220 Q210,80 420,220" stroke="#3b82f6" stroke-width="8" fill="none" opacity="0.7"/>
+    <path d="M0,228 Q210,92 420,228" stroke="#8b5cf6" stroke-width="7" fill="none" opacity="0.7"/>
+    <!-- Ground -->
+    <rect x="0" y="260" width="420" height="40" fill="#86efac"/>
+    <rect x="0" y="250" width="420" height="14" fill="#4ade80"/>
+    <!-- Cottage -->
+    <rect x="160" y="165" width="100" height="90" fill="#fef3c7" rx="5"/>
+    <polygon points="148,165 210,118 272,165" fill="#dc2626"/>
+    <rect x="188" y="207" width="24" height="48" fill="#92400e" rx="3"/>
+    <circle cx="214" cy="231" r="3" fill="#fde68a"/>
+    <rect x="165" y="178" width="22" height="20" fill="#bae6fd" rx="3"/>
+    <rect x="213" y="178" width="22" height="20" fill="#bae6fd" rx="3"/>
+    <!-- Warm light in windows -->
+    <ellipse cx="176" cy="188" rx="10" ry="8" fill="#fde68a" opacity="0.5"/>
+    <ellipse cx="224" cy="188" rx="10" ry="8" fill="#fde68a" opacity="0.5"/>
+    <!-- Chimney happy smoke -->
+    <rect x="235" y="125" width="16" height="28" fill="#9ca3af"/>
+    <ellipse cx="242" cy="116" rx="10" ry="7" fill="#e5e7eb" opacity="0.7"/>
+    <ellipse cx="248" cy="104" rx="8" ry="6" fill="#e5e7eb" opacity="0.5"/>
+    <!-- Flowers everywhere -->
+    <circle cx="148" cy="256" r="6" fill="#f9a8d4"/>
+    <circle cx="148" cy="256" r="2.5" fill="#fde68a"/>
+    <circle cx="275" cy="255" r="6" fill="#c084fc"/>
+    <circle cx="275" cy="255" r="2.5" fill="#fde68a"/>
+    <circle cx="110" cy="260" r="5" fill="#86efac"/>
+    <circle cx="310" cy="258" r="5" fill="#fcd34d"/>
+    <circle cx="340" cy="256" r="6" fill="#f9a8d4"/>
+    <circle cx="340" cy="256" r="2" fill="#fde68a"/>
+    <circle cx="80" cy="258" r="5" fill="#c084fc"/>
+    <!-- HAPPY GROUP! -->
+    <!-- Papa Bear -->
+    <ellipse cx="60" cy="238" rx="22" ry="19" fill="#92400e"/>
+    <circle cx="60" cy="217" r="18" fill="#92400e"/>
+    <ellipse cx="60" cy="228" rx="11" ry="8" fill="#b45309"/>
+    <circle cx="54" cy="213" r="6" fill="#78350f"/>
+    <circle cx="66" cy="213" r="6" fill="#78350f"/>
+    <circle cx="54" cy="213" r="2.5" fill="black"/>
+    <circle cx="66" cy="213" r="2.5" fill="black"/>
+    <path d="M54,223 Q60,228 66,223" stroke="#1c1917" stroke-width="2" fill="none"/>
+    <!-- Mama Bear with bow -->
+    <ellipse cx="360" cy="238" rx="20" ry="17" fill="#b45309"/>
+    <circle cx="360" cy="220" r="16" fill="#b45309"/>
+    <ellipse cx="360" cy="229" rx="9" ry="7" fill="#d97706"/>
+    <circle cx="354" cy="216" r="5" fill="#92400e"/>
+    <circle cx="366" cy="216" r="5" fill="#92400e"/>
+    <circle cx="354" cy="216" r="2" fill="black"/>
+    <circle cx="366" cy="216" r="2" fill="black"/>
+    <path d="M355,225 Q360,229 365,225" stroke="#1c1917" stroke-width="2" fill="none"/>
+    <polygon points="352,210 360,214 352,218" fill="#f9a8d4"/>
+    <polygon points="368,210 360,214 368,218" fill="#f9a8d4"/>
+    <circle cx="360" cy="214" r="3" fill="#ec4899"/>
+    <!-- Baby Bear -->
+    <ellipse cx="155" cy="254" rx="14" ry="12" fill="#d97706"/>
+    <circle cx="155" cy="241" r="12" fill="#d97706"/>
+    <ellipse cx="155" cy="248" rx="7" ry="5" fill="#f59e0b"/>
+    <circle cx="150" cy="238" r="4" fill="#b45309"/>
+    <circle cx="160" cy="238" r="4" fill="#b45309"/>
+    <circle cx="150" cy="238" r="1.8" fill="black"/>
+    <circle cx="160" cy="238" r="1.8" fill="black"/>
+    <path d="M150,245 Q155,249 160,245" stroke="#1c1917" stroke-width="1.5" fill="none"/>
+    <!-- Goldilocks -->
+    <ellipse cx="265" cy="250" rx="16" ry="18" fill="#3b82f6"/>
+    <circle cx="265" cy="232" r="16" fill="#fde68a"/>
+    <ellipse cx="254" cy="225" rx="11" ry="10" fill="#fbbf24"/>
+    <ellipse cx="276" cy="225" rx="11" ry="10" fill="#fbbf24"/>
+    <ellipse cx="265" cy="220" rx="10" ry="7" fill="#fbbf24"/>
+    <circle cx="259" cy="231" r="2.5" fill="#1c1917"/>
+    <circle cx="271" cy="231" r="2.5" fill="#1c1917"/>
+    <path d="M258,238 Q265,244 272,238" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <polygon points="258,218 265,223 258,228" fill="#ef4444"/>
+    <polygon points="272,218 265,223 272,228" fill="#ef4444"/>
+    <circle cx="265" cy="223" r="3" fill="#dc2626"/>
+    <!-- SIMBA happy -->
+    <ellipse cx="210" cy="248" rx="28" ry="20" fill="#f59e0b"/>
+    <circle cx="224" cy="232" r="26" fill="#b45309" opacity="0.6"/>
+    <circle cx="224" cy="232" r="20" fill="#f59e0b"/>
+    <ellipse cx="231" cy="238" rx="8" ry="5" fill="#fde68a"/>
+    <circle cx="229" cy="235" r="2.5" fill="black"/>
+    <circle cx="219" cy="229" r="3" fill="black"/>
+    <circle cx="229" cy="235" r="1" fill="white"/>
+    <circle cx="219" cy="229" r="1" fill="white"/>
+    <path d="M220,241 Q225,246 230,241" stroke="#b45309" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M182,248 Q168,228 178,210" stroke="#f59e0b" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <circle cx="178" cy="210" r="7" fill="#b45309"/>
+    <!-- Celebration stars/sparkles -->
+    <text x="105" y="195" font-family="Arial" font-size="22" text-anchor="middle">&#11088;</text>
+    <text x="315" y="192" font-family="Arial" font-size="22" text-anchor="middle">&#11088;</text>
+    <text x="210" y="110" font-family="Arial" font-size="28" text-anchor="middle">&#127881;</text>
+    <text x="380" y="145" font-family="Arial" font-size="20" text-anchor="middle">&#10024;</text>
+    <text x="40" y="148" font-family="Arial" font-size="20" text-anchor="middle">&#10024;</text>
+  </svg>
+
+  <div class="text-bubble">
+    <p class="story-text">Everyone cheered! <em>Papa Bear, Mama Bear,</em> and little <em>Baby Bear</em> hugged Goldilocks and Simba tight.</p>
+    <p class="story-text" style="margin-top:10px;"><em>"You were SO brave!"</em> said Mama Bear. And they all had a big bowl of porridge together.</p>
+  </div>
+  <div class="the-end">The End!</div>
+  <div class="hearts">&#10084;&#65039; &#129409; &#128059; &#128155; &#128062;&#10145;&#127939; &#128516;</div>
+</div>
+
+<!-- Nav dots -->
+<div class="nav">
+  <button class="nav-dot active" onclick="goTo(0)"></button>
+  <button class="nav-dot" onclick="goTo(1)"></button>
+  <button class="nav-dot" onclick="goTo(2)"></button>
+  <button class="nav-dot" onclick="goTo(3)"></button>
+  <button class="nav-dot" onclick="goTo(4)"></button>
+  <button class="nav-dot" onclick="goTo(5)"></button>
+  <button class="nav-dot" onclick="goTo(6)"></button>
+</div>
+
+<script>
+  // Stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 30; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 60 + '%';
+    s.style.animationDelay = Math.random() * 2 + 's';
+    s.style.animationDuration = (1.5 + Math.random()) + 's';
+    starsEl.appendChild(s);
+  }
+
+  let current = 0;
+  const pages = document.querySelectorAll('.page');
+  const dots = document.querySelectorAll('.nav-dot');
+
+  function goTo(n) {
+    pages[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = n;
+    pages[current].classList.add('active');
+    dots[current].classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // Swipe support
+  let startX = 0;
+  document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0 && current < pages.length - 1) goTo(current + 1);
+      if (dx > 0 && current > 0) goTo(current - 1);
+    }
+  });
+  // Arrow keys
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' && current < pages.length - 1) goTo(current + 1);
+    if (e.key === 'ArrowLeft' && current > 0) goTo(current - 1);
+  });
+</script>
+</body>
+</html>
