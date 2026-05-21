@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Great Food Rescue!</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #fbbf24;
+    --deep: #1e1b4b;
+    --coral: #f97316;
+    --green: #16a34a;
+    --sand: #d97706;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Quicksand', sans-serif; background: #fff7ed; overflow-x: hidden; }
+
+  .page { display: none; flex-direction: column; align-items: center; min-height: 100vh; }
+  .page.active { display: flex; }
+
+  /* Cover */
+  #p0 { background: linear-gradient(160deg, #0f0c29, #302b63, #24243e); }
+
+  /* Page themes */
+  #p1 { background: linear-gradient(170deg, #052e16 0%, #14532d 40%, #86efac 100%); }
+  #p2 { background: linear-gradient(170deg, #1c0a00 0%, #7c2d12 50%, #fdba74 100%); }
+  #p3 { background: linear-gradient(170deg, #0c0a1e 0%, #312e81 50%, #818cf8 100%); }
+  #p4 { background: linear-gradient(170deg, #451a03 0%, #92400e 50%, #fcd34d 100%); }
+  #p5 { background: linear-gradient(170deg, #1e3a5f 0%, #1d4ed8 50%, #93c5fd 100%); }
+  #p6 { background: linear-gradient(170deg, #14532d 0%, #15803d 50%, #bbf7d0 100%); }
+  #p7 { background: linear-gradient(170deg, #0d47a1 0%, #1565c0 40%, #e3f2fd 100%); }
+
+  .chapter-label {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.5rem;
+    color: #fff;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    text-align: center;
+    padding: 20px 16px 6px;
+    width: 100%;
+  }
+
+  svg.illo { width: 100%; max-width: 440px; display: block; }
+
+  .bubble {
+    background: #fffbf5;
+    border-radius: 22px;
+    border: 3px solid #fde68a;
+    padding: 18px 22px;
+    margin: 14px 14px 0;
+    max-width: 440px;
+    width: calc(100% - 28px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  }
+  .bubble p { font-size: 1.05rem; line-height: 1.75; color: #1c1917; font-weight: 600; }
+  .bubble p + p { margin-top: 8px; }
+  .bubble em { color: #dc2626; font-style: normal; font-size: 1.1em; font-family: 'Baloo 2', cursive; }
+  .sfx {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.8rem;
+    color: #f59e0b;
+    display: block;
+    text-align: center;
+    margin: 6px 0;
+    text-shadow: 2px 2px 0 #b45309;
+    animation: wob 1s ease-in-out infinite;
+  }
+  @keyframes wob { 0%,100%{transform:rotate(-2deg)scale(1)} 50%{transform:rotate(2deg)scale(1.05)} }
+
+  .cover-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2.2rem, 7vw, 4.2rem);
+    color: #fbbf24;
+    text-align: center;
+    text-shadow: 3px 3px 0 #7c2d12, 7px 7px 0 rgba(0,0,0,0.3);
+    line-height: 1.15;
+    padding: 10px 20px 0;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .cover-sub { font-family:'Quicksand',sans-serif; color:#bae6fd; font-size:1rem; font-weight:700; letter-spacing:2px; text-align:center; margin-bottom:10px; }
+
+  .the-end {
+    font-family: 'Baloo 2', cursive;
+    font-size: 3.5rem;
+    color: #fbbf24;
+    text-shadow: 3px 3px 0 #1d4ed8;
+    text-align: center;
+    padding: 20px;
+    animation: float 2s ease-in-out infinite;
+  }
+  .hearts { font-size: 2rem; text-align: center; margin: 8px 0 60px; }
+
+  /* Nav */
+  .nav {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 9px; z-index: 100;
+    background: rgba(0,0,0,0.45); padding: 8px 14px; border-radius: 20px;
+  }
+  .dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: rgba(255,255,255,0.35); border: none; cursor: pointer; transition: background .2s;
+  }
+  .dot.on { background: #fbbf24; }
+
+  .spacer { height: 60px; }
+
+  .lang-btn {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(251,191,36,0.5);
+    color: #fbbf24;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s;
+    font-weight: 700;
+  }
+  .lang-btn:hover { background: rgba(251,191,36,0.18); }
+</style>
+</head>
+<body>
+
+<button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 Français</button>
+<!-- PAGE 0: COVER -->
+<div class="page active" id="p0">
+  <div style="margin-top:60px"></div>
+  <p class="cover-sub" data-fr="✨ Une grande aventure ✨">✨ A Grand Adventure ✨</p>
+  <h1 class="cover-title" data-fr="Le Grand&lt;br&gt;Sauvetage !">The Great<br>Food Rescue!</h1>
+
+  <svg class="illo" viewBox="0 0 420 310" xmlns="http://www.w3.org/2000/svg">
+    <!-- Stars -->
+    <rect width="420" height="310" fill="#0f0c29"/>
+    <circle cx="30" cy="30" r="2" fill="white" opacity=".9"/>
+    <circle cx="90" cy="18" r="1.5" fill="white" opacity=".7"/>
+    <circle cx="200" cy="25" r="2" fill="white"/>
+    <circle cx="310" cy="15" r="1.5" fill="white" opacity=".8"/>
+    <circle cx="390" cy="35" r="2" fill="white" opacity=".6"/>
+    <circle cx="155" cy="50" r="1" fill="white"/>
+    <circle cx="265" cy="45" r="1.5" fill="white"/>
+    <circle cx="340" cy="55" r="1" fill="white"/>
+    <circle cx="60" cy="65" r="1.5" fill="white" opacity=".5"/>
+    <circle cx="420" cy="60" r="1" fill="white"/>
+    <!-- Moon -->
+    <circle cx="370" cy="60" r="32" fill="#ffe082"/>
+    <circle cx="357" cy="52" r="28" fill="#0f0c29"/>
+    <!-- Title banner ribbon -->
+    <ellipse cx="210" cy="155" rx="190" ry="115" fill="#1e1b4b" opacity=".7"/>
+    <!-- HEROES (bottom) -->
+    <!-- Simba -->
+    <ellipse cx="80" cy="270" rx="28" ry="22" fill="#f59e0b"/>
+    <circle cx="92" cy="254" rx="22" r="22" fill="#b45309" opacity=".65"/>
+    <circle cx="92" cy="254" r="18" fill="#f59e0b"/>
+    <ellipse cx="99" cy="260" rx="8" ry="5" fill="#fde68a"/>
+    <circle cx="97" cy="257" r="2.5" fill="#1c1917"/>
+    <circle cx="88" cy="251" r="3" fill="#1c1917"/>
+    <!-- Goldilocks -->
+    <ellipse cx="210" cy="272" rx="16" ry="17" fill="#3b82f6"/>
+    <circle cx="210" cy="255" r="15" fill="#fde68a"/>
+    <ellipse cx="200" cy="248" rx="11" ry="10" fill="#fbbf24"/>
+    <ellipse cx="220" cy="248" rx="11" ry="10" fill="#fbbf24"/>
+    <ellipse cx="210" cy="243" rx="9" ry="6" fill="#fbbf24"/>
+    <circle cx="205" cy="254" r="2.5" fill="#1c1917"/>
+    <circle cx="215" cy="254" r="2.5" fill="#1c1917"/>
+    <path d="M204,261 Q210,266 216,261" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Abu the monkey -->
+    <ellipse cx="340" cy="265" rx="20" ry="18" fill="#92400e"/>
+    <circle cx="340" cy="248" r="16" fill="#92400e"/>
+    <ellipse cx="340" cy="256" rx="9" ry="7" fill="#fde68a"/>
+    <circle cx="334" cy="244" r="5" fill="#78350f"/>
+    <circle cx="346" cy="244" r="5" fill="#78350f"/>
+    <circle cx="334" cy="244" r="2" fill="#1c1917"/>
+    <circle cx="346" cy="244" r="2" fill="#1c1917"/>
+    <path d="M334,253 Q340,258 346,253" stroke="#1c1917" stroke-width="1.5" fill="none"/>
+    <!-- little red fez -->
+    <ellipse cx="340" cy="234" rx="10" ry="5" fill="#dc2626"/>
+    <rect x="336" y="229" width="8" height="7" fill="#dc2626"/>
+    <circle cx="340" cy="228" r="2" fill="#1c1917"/>
+    <!-- VILLAINS (top) -->
+    <!-- Scar (lion with dark mane) -->
+    <ellipse cx="130" cy="125" rx="30" ry="20" fill="#78350f"/>
+    <circle cx="148" cy="110" rx="22" r="22" fill="#451a03" opacity=".8"/>
+    <circle cx="148" cy="110" r="17" fill="#78350f"/>
+    <ellipse cx="155" cy="117" rx="8" ry="5" fill="#92400e"/>
+    <!-- scar scar marking -->
+    <line x1="152" y1="105" x2="158" y2="115" stroke="#1c1917" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="143" cy="106" r="3" fill="#1c1917"/>
+    <circle cx="153" cy="104" r="3" fill="#1c1917"/>
+    <!-- mean eyes green -->
+    <ellipse cx="143" cy="106" rx="3.5" ry="4" fill="#4ade80"/>
+    <ellipse cx="153" cy="104" rx="3.5" ry="4" fill="#4ade80"/>
+    <circle cx="143" cy="107" r="1.5" fill="#1c1917"/>
+    <circle cx="153" cy="105" r="1.5" fill="#1c1917"/>
+    <!-- Wolf -->
+    <ellipse cx="210" cy="118" rx="28" ry="18" fill="#6b7280"/>
+    <circle cx="228" cy="105" r="20" fill="#6b7280"/>
+    <ellipse cx="240" cy="112" rx="11" ry="8" fill="#9ca3af"/>
+    <ellipse cx="225" cy="99" rx="5" ry="6" fill="#fde68a"/>
+    <circle cx="225" cy="100" r="2.5" fill="#1c1917"/>
+    <ellipse cx="235" cy="97" rx="5" ry="6" fill="#fde68a"/>
+    <circle cx="235" cy="98" r="2.5" fill="#1c1917"/>
+    <line x1="220" y1="93" x2="231" y2="96" stroke="#374151" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="229" y1="91" x2="241" y2="95" stroke="#374151" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Bear villain -->
+    <ellipse cx="300" cy="122" rx="26" ry="18" fill="#78350f"/>
+    <circle cx="316" cy="109" r="20" fill="#78350f"/>
+    <ellipse cx="326" cy="117" rx="10" ry="8" fill="#b45309"/>
+    <circle cx="309" cy="105" r="5" fill="#451a03"/>
+    <circle cx="321" cy="103" r="5" fill="#451a03"/>
+    <circle cx="309" cy="105" r="2" fill="#fde68a"/>
+    <circle cx="321" cy="103" r="2" fill="#fde68a"/>
+    <!-- VS in middle -->
+    <text x="210" y="195" font-family="Baloo 2" font-size="42" fill="#fbbf24" text-anchor="middle" font-weight="800" opacity=".9">VS</text>
+  </svg>
+
+  <p style="color:#bae6fd;font-family:'Quicksand',sans-serif;font-weight:700;text-align:center;margin:10px 0;font-size:.95rem;" data-fr="Appuie sur les points ! 👇">Tap the dots to turn the page! 👇</p>
+  <div class="spacer"></div>
+</div>
+
+<!-- PAGE 1: Fairyland & The Woods -->
+<div class="page" id="p1">
+  <div class="chapter-label" data-fr="🌳 Chapitre 1 : Les bois joyeux du Pays des Fées 🌳">🌳 Chapter 1: The Happy Woods of Fairyland 🌳</div>
+  <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#bfdbfe"/>
+        <stop offset="100%" stop-color="#dcfce7"/>
+      </linearGradient>
+      <radialGradient id="sun1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#fff9c4"/>
+        <stop offset="100%" stop-color="#fbbf24"/>
+      </radialGradient>
+      <linearGradient id="grass1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#4ade80"/>
+        <stop offset="100%" stop-color="#15803d"/>
+      </linearGradient>
+      <linearGradient id="tree1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#22c55e"/>
+        <stop offset="100%" stop-color="#14532d"/>
+      </linearGradient>
+    </defs>
+    <!-- Sky gradient background -->
+    <rect width="420" height="300" fill="url(#sky1)"/>
+    <!-- Sun with radiating rays -->
+    <circle cx="55" cy="52" r="30" fill="url(#sun1)"/>
+    <line x1="55" y1="14" x2="55" y2="5" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    <line x1="83" y1="24" x2="90" y2="17" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    <line x1="93" y1="52" x2="102" y2="52" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    <line x1="83" y1="80" x2="90" y2="87" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    <line x1="27" y1="24" x2="20" y2="17" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    <line x1="17" y1="52" x2="8" y2="52" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    <line x1="27" y1="80" x2="20" y2="87" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    <line x1="55" y1="90" x2="55" y2="99" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    <!-- Layered fluffy clouds -->
+    <ellipse cx="210" cy="36" rx="52" ry="18" fill="white" opacity=".95"/>
+    <ellipse cx="178" cy="43" rx="33" ry="16" fill="white"/>
+    <ellipse cx="243" cy="43" rx="33" ry="16" fill="white"/>
+    <ellipse cx="210" cy="48" rx="50" ry="12" fill="white"/>
+    <ellipse cx="210" cy="52" rx="46" ry="7" fill="#e2e8f0" opacity=".3"/>
+    <ellipse cx="348" cy="28" rx="42" ry="16" fill="white" opacity=".9"/>
+    <ellipse cx="320" cy="33" rx="26" ry="13" fill="white" opacity=".9"/>
+    <ellipse cx="376" cy="33" rx="26" ry="13" fill="white" opacity=".9"/>
+    <!-- Ground with gradient -->
+    <rect x="0" y="240" width="420" height="60" fill="#15803d"/>
+    <rect x="0" y="228" width="420" height="16" fill="url(#grass1)"/>
+    <path d="M30,228 Q33,220 36,228" stroke="#16a34a" stroke-width="2" fill="none"/>
+    <path d="M58,228 Q61,222 64,228" stroke="#16a34a" stroke-width="2" fill="none"/>
+    <path d="M388,228 Q391,221 394,228" stroke="#16a34a" stroke-width="2" fill="none"/>
+    <!-- Left tree with shadow and layers -->
+    <rect x="20" y="115" width="14" height="122" rx="4" fill="#78350f"/>
+    <rect x="22" y="120" width="5" height="117" rx="2" fill="#451a03" opacity=".4"/>
+    <polygon points="27,57 -7,148 61,148" fill="url(#tree1)"/>
+    <polygon points="27,80 -2,152 56,152" fill="#16a34a"/>
+    <polygon points="27,103 3,156 51,156" fill="#22c55e" opacity=".6"/>
+    <!-- Right tree -->
+    <rect x="356" y="112" width="14" height="125" rx="4" fill="#78350f"/>
+    <rect x="358" y="117" width="5" height="120" rx="2" fill="#451a03" opacity=".4"/>
+    <polygon points="363,54 328,148 398,148" fill="url(#tree1)"/>
+    <polygon points="363,77 333,152 393,152" fill="#16a34a"/>
+    <polygon points="363,100 338,156 388,156" fill="#22c55e" opacity=".6"/>
+    <!-- ===== STALL 1 - BREAD ===== -->
+    <rect x="76" y="175" width="66" height="58" fill="#fef9c3" rx="2"/>
+    <line x1="76" y1="186" x2="142" y2="186" stroke="#d97706" stroke-width="1" opacity=".4"/>
+    <polygon points="66,175 109,152 152,175" fill="#ef4444"/>
+    <polygon points="66,175 109,157 152,175" fill="#b91c1c" opacity=".2"/>
+    <!-- Bunting flags -->
+    <path d="M72,158 L152,158" stroke="#fbbf24" stroke-width="1" fill="none" stroke-dasharray="8,4"/>
+    <polygon points="80,158 84,166 88,158" fill="#fde68a"/>
+    <polygon points="98,158 102,166 106,158" fill="#fde68a"/>
+    <polygon points="116,158 120,166 124,158" fill="#fde68a"/>
+    <polygon points="134,158 138,166 142,158" fill="#fde68a"/>
+    <!-- Bread with scored crust lines -->
+    <ellipse cx="92" cy="196" rx="14" ry="9" fill="#b45309"/>
+    <ellipse cx="92" cy="193" rx="14" ry="6" fill="#d97706"/>
+    <line x1="85" y1="192" x2="87" y2="196" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="90" y1="191" x2="92" y2="195" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="95" y1="191" x2="97" y2="195" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
+    <ellipse cx="117" cy="196" rx="12" ry="8" fill="#92400e"/>
+    <ellipse cx="117" cy="193" rx="12" ry="5" fill="#b45309"/>
+    <line x1="111" y1="192" x2="113" y2="196" stroke="#78350f" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="116" y1="191" x2="118" y2="195" stroke="#78350f" stroke-width="1.2" stroke-linecap="round"/>
+    <circle cx="133" cy="197" r="7" fill="#f59e0b"/>
+    <path d="M129,196 Q133,199 137,196" stroke="#d97706" stroke-width="1" fill="none"/>
+    <line x1="78" y1="207" x2="140" y2="207" stroke="#d97706" stroke-width="1" opacity=".5"/>
+    <ellipse cx="95" cy="216" rx="12" ry="7" fill="#c2410c"/>
+    <ellipse cx="95" cy="213" rx="12" ry="5" fill="#ea580c"/>
+    <ellipse cx="120" cy="217" rx="10" ry="6" fill="#c2410c"/>
+    <!-- ===== STALL 2 - FRUIT pyramid ===== -->
+    <rect x="173" y="177" width="74" height="56" fill="#fef9c3" rx="2"/>
+    <line x1="173" y1="188" x2="247" y2="188" stroke="#7c3aed" stroke-width="1" opacity=".4"/>
+    <polygon points="163,177 210,153 257,177" fill="#7c3aed"/>
+    <polygon points="163,177 210,158 257,177" fill="#5b21b6" opacity=".2"/>
+    <path d="M169,159 L251,159" stroke="#c4b5fd" stroke-width="1" fill="none" stroke-dasharray="8,4"/>
+    <polygon points="177,159 181,167 185,159" fill="#ede9fe"/>
+    <polygon points="201,159 205,167 209,159" fill="#ede9fe"/>
+    <polygon points="225,159 229,167 233,159" fill="#ede9fe"/>
+    <!-- Bottom row of fruit -->
+    <circle cx="186" cy="205" r="11" fill="#dc2626"/>
+    <path d="M183,196 Q186,192 189,196" stroke="#16a34a" stroke-width="2" fill="none"/>
+    <circle cx="183" cy="201" r="3" fill="white" opacity=".3"/>
+    <circle cx="209" cy="204" r="11" fill="#f97316"/>
+    <path d="M206,195 Q209,191 212,195" stroke="#16a34a" stroke-width="2" fill="none"/>
+    <circle cx="206" cy="200" r="3" fill="white" opacity=".3"/>
+    <circle cx="232" cy="205" r="10" fill="#eab308"/>
+    <path d="M229,196 Q232,192 235,196" stroke="#16a34a" stroke-width="2" fill="none"/>
+    <circle cx="229" cy="201" r="3" fill="white" opacity=".3"/>
+    <!-- Second row -->
+    <circle cx="197" cy="192" r="10" fill="#16a34a"/>
+    <circle cx="194" cy="188" r="3" fill="white" opacity=".3"/>
+    <circle cx="220" cy="191" r="10" fill="#ef4444"/>
+    <circle cx="217" cy="187" r="3" fill="white" opacity=".3"/>
+    <!-- Top of pyramid -->
+    <circle cx="209" cy="178" r="9" fill="#a855f7"/>
+    <circle cx="206" cy="174" r="3" fill="white" opacity=".3"/>
+    <!-- ===== STALL 3 - PIES and POTS ===== -->
+    <rect x="273" y="176" width="68" height="58" fill="#fef9c3" rx="2"/>
+    <line x1="273" y1="187" x2="341" y2="187" stroke="#ea580c" stroke-width="1" opacity=".4"/>
+    <polygon points="263,176 307,153 351,176" fill="#ea580c"/>
+    <polygon points="263,176 307,158 351,176" fill="#c2410c" opacity=".2"/>
+    <path d="M269,159 L345,159" stroke="#fed7aa" stroke-width="1" fill="none" stroke-dasharray="8,4"/>
+    <polygon points="277,159 281,167 285,159" fill="#fef3c7"/>
+    <polygon points="301,159 305,167 309,159" fill="#fef3c7"/>
+    <polygon points="325,159 329,167 333,159" fill="#fef3c7"/>
+    <!-- Pie with lattice crust -->
+    <ellipse cx="291" cy="198" rx="15" ry="10" fill="#78350f"/>
+    <ellipse cx="291" cy="194" rx="15" ry="7" fill="#92400e"/>
+    <line x1="281" y1="193" x2="301" y2="193" stroke="#b45309" stroke-width="1" opacity=".6"/>
+    <line x1="284" y1="190" x2="284" y2="197" stroke="#b45309" stroke-width="1" opacity=".6"/>
+    <line x1="291" y1="189" x2="291" y2="197" stroke="#b45309" stroke-width="1" opacity=".6"/>
+    <line x1="298" y1="190" x2="298" y2="197" stroke="#b45309" stroke-width="1" opacity=".6"/>
+    <!-- Steam from pie -->
+    <path d="M284,187 Q286,181 284,175" stroke="#9ca3af" stroke-width="1.5" fill="none" stroke-dasharray="3,2" opacity=".5"/>
+    <path d="M291,186 Q293,180 291,174" stroke="#9ca3af" stroke-width="1.5" fill="none" stroke-dasharray="3,2" opacity=".5"/>
+    <!-- Porridge pot with handles -->
+    <ellipse cx="322" cy="200" rx="14" ry="9" fill="#1c1917"/>
+    <ellipse cx="322" cy="196" rx="14" ry="6" fill="#292524"/>
+    <ellipse cx="322" cy="196" rx="11" ry="4" fill="#fbbf24" opacity=".8"/>
+    <path d="M308,200 Q305,194 308,188" stroke="#1c1917" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M336,200 Q339,194 336,188" stroke="#1c1917" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- Steam from pot -->
+    <path d="M315,188 Q317,182 315,176" stroke="#9ca3af" stroke-width="1.5" fill="none" stroke-dasharray="3,2" opacity=".5"/>
+    <path d="M322,187 Q324,181 322,175" stroke="#9ca3af" stroke-width="1.5" fill="none" stroke-dasharray="3,2" opacity=".5"/>
+    <path d="M329,188 Q331,182 329,176" stroke="#9ca3af" stroke-width="1.5" fill="none" stroke-dasharray="3,2" opacity=".5"/>
+    <!-- ===== FAIRY FOLK with wings ===== -->
+    <!-- Fairy 1 - pink dress, blonde -->
+    <ellipse cx="98" cy="236" rx="7" ry="8" fill="#f9a8d4"/>
+    <ellipse cx="90" cy="232" rx="9" ry="5" fill="#bfdbfe" opacity=".7" transform="rotate(-25,90,232)"/>
+    <ellipse cx="106" cy="232" rx="9" ry="5" fill="#bfdbfe" opacity=".7" transform="rotate(25,106,232)"/>
+    <circle cx="98" cy="226" r="7" fill="#fde68a"/>
+    <ellipse cx="94" cy="221" rx="5" ry="6" fill="#fbbf24"/>
+    <ellipse cx="102" cy="221" rx="5" ry="6" fill="#fbbf24"/>
+    <circle cx="95" cy="225" r="1.5" fill="#1c1917"/>
+    <circle cx="101" cy="225" r="1.5" fill="#1c1917"/>
+    <circle cx="95" cy="225" r=".6" fill="white"/>
+    <circle cx="101" cy="225" r=".6" fill="white"/>
+    <path d="M96,229 Q98,231 100,229" stroke="#e11d48" stroke-width="1.2" fill="none"/>
+    <!-- Fairy 2 - green dress, dark hair -->
+    <ellipse cx="152" cy="236" rx="7" ry="8" fill="#86efac"/>
+    <ellipse cx="144" cy="232" rx="9" ry="5" fill="#a7f3d0" opacity=".7" transform="rotate(-25,144,232)"/>
+    <ellipse cx="160" cy="232" rx="9" ry="5" fill="#a7f3d0" opacity=".7" transform="rotate(25,160,232)"/>
+    <circle cx="152" cy="226" r="7" fill="#fde68a"/>
+    <ellipse cx="152" cy="220" rx="6" ry="7" fill="#92400e"/>
+    <circle cx="149" cy="225" r="1.5" fill="#1c1917"/>
+    <circle cx="155" cy="225" r="1.5" fill="#1c1917"/>
+    <circle cx="149" cy="225" r=".6" fill="white"/>
+    <circle cx="155" cy="225" r=".6" fill="white"/>
+    <path d="M150,229 Q152,231 154,229" stroke="#e11d48" stroke-width="1.2" fill="none"/>
+    <!-- Fairy 3 - blue dress, golden hair -->
+    <ellipse cx="265" cy="236" rx="7" ry="8" fill="#93c5fd"/>
+    <ellipse cx="257" cy="232" rx="9" ry="5" fill="#bfdbfe" opacity=".7" transform="rotate(-25,257,232)"/>
+    <ellipse cx="273" cy="232" rx="9" ry="5" fill="#bfdbfe" opacity=".7" transform="rotate(25,273,232)"/>
+    <circle cx="265" cy="226" r="7" fill="#fde68a"/>
+    <ellipse cx="265" cy="220" rx="7" ry="7" fill="#fbbf24"/>
+    <circle cx="262" cy="225" r="1.5" fill="#1c1917"/>
+    <circle cx="268" cy="225" r="1.5" fill="#1c1917"/>
+    <circle cx="262" cy="225" r=".6" fill="white"/>
+    <circle cx="268" cy="225" r=".6" fill="white"/>
+    <path d="M263,229 Q265,231 267,229" stroke="#e11d48" stroke-width="1.2" fill="none"/>
+    <!-- ===== MARKET SIGN - no emoji ===== -->
+    <rect x="153" y="82" width="114" height="34" fill="#fde68a" rx="8"/>
+    <rect x="155" y="84" width="110" height="30" fill="#fef9c3" rx="6"/>
+    <line x1="163" y1="82" x2="163" y2="74" stroke="#b45309" stroke-width="1.5"/>
+    <line x1="257" y1="82" x2="257" y2="74" stroke="#b45309" stroke-width="1.5"/>
+    <circle cx="163" cy="73" r="3" fill="#b45309"/>
+    <circle cx="257" cy="73" r="3" fill="#b45309"/>
+    <text x="210" y="104" font-family="Baloo 2" font-size="13" fill="#78350f" text-anchor="middle" font-weight="bold">Fairyland Market</text>
+    <!-- Diamond decorations on sign -->
+    <rect x="159" y="90" width="5" height="5" fill="#f59e0b" transform="rotate(45,161.5,92.5)"/>
+    <rect x="256" y="90" width="5" height="5" fill="#f59e0b" transform="rotate(45,258.5,92.5)"/>
+    <!-- Ground flowers -->
+    <circle cx="48" cy="232" r="5" fill="#fde68a"/>
+    <circle cx="48" cy="226" r="4" fill="#fbbf24"/>
+    <circle cx="48" cy="238" r="4" fill="#fbbf24"/>
+    <circle cx="42" cy="232" r="4" fill="#fbbf24"/>
+    <circle cx="54" cy="232" r="4" fill="#fbbf24"/>
+    <circle cx="48" cy="232" r="2" fill="#f59e0b"/>
+    <circle cx="388" cy="232" r="5" fill="#fda4af"/>
+    <circle cx="388" cy="226" r="4" fill="#f472b6"/>
+    <circle cx="388" cy="238" r="4" fill="#f472b6"/>
+    <circle cx="382" cy="232" r="4" fill="#f472b6"/>
+    <circle cx="394" cy="232" r="4" fill="#f472b6"/>
+    <circle cx="388" cy="232" r="2" fill="#db2777"/>
+  </svg>
+  <div class="bubble">
+    <p data-fr="Dans les magiques <em>Bois du Pays des Fées</em>, tout le monde était heureux ! Les fées avaient un merveilleux marché plein de <em>pain, fruits et tartes,</em> et de grandes marmites de bouillie. 🍞🍎🥧">In the magical <em>Woods of Fairyland</em>, everyone was happy! The fairy folk had a wonderful market full of <em>bread, fruit, pies,</em> and big pots of porridge. 🍞🍎🥧</p>
+    <p data-fr="Boucle d'Or, Simba et Abu le petit singe espiègle adoraient vivre ici avec tous leurs amis.">Goldilocks, Simba, and Abu the cheeky monkey loved living here with all their friends.</p>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- PAGE 2: The Villains Plot -->
+<div class="page" id="p2">
+  <div class="chapter-label" data-fr="😈 Chapitre 2 : Trois méchants sournois 😈">😈 Chapter 2: Three Sneaky Villains 😈</div>
+  <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="torchGlow2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#fbbf24" stop-opacity=".55"/>
+        <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="scarFur2" cx="40%" cy="35%" r="65%">
+        <stop offset="0%" stop-color="#92400e"/>
+        <stop offset="100%" stop-color="#451a03"/>
+      </radialGradient>
+      <radialGradient id="scarMane2" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="#292524"/>
+        <stop offset="100%" stop-color="#0c0a08"/>
+      </radialGradient>
+      <radialGradient id="wolfFur2" cx="40%" cy="35%" r="65%">
+        <stop offset="0%" stop-color="#9ca3af"/>
+        <stop offset="100%" stop-color="#4b5563"/>
+      </radialGradient>
+      <radialGradient id="bearFur2" cx="40%" cy="35%" r="65%">
+        <stop offset="0%" stop-color="#b45309"/>
+        <stop offset="100%" stop-color="#5c2a07"/>
+      </radialGradient>
+    </defs>
+    <!-- Dark desert night -->
+    <rect width="420" height="300" fill="#1c0a00"/>
+    <rect width="420" height="130" fill="#0c0400" opacity=".5"/>
+    <!-- Stars -->
+    <circle cx="50" cy="22" r="1.5" fill="white" opacity=".9"/>
+    <circle cx="120" cy="14" r="1" fill="white" opacity=".8"/>
+    <circle cx="175" cy="22" r="1" fill="white" opacity=".6"/>
+    <circle cx="220" cy="30" r="1.5" fill="white" opacity=".7"/>
+    <circle cx="85" cy="42" r="1" fill="white" opacity=".5"/>
+    <circle cx="310" cy="20" r="1.5" fill="white" opacity=".8"/>
+    <circle cx="355" cy="11" r="1" fill="white" opacity=".7"/>
+    <!-- 4-point sparkle star -->
+    <path d="M145,32 L146.5,27 L148,32 L146.5,37 Z" fill="white" opacity=".65"/>
+    <path d="M143,32 L148,30.5 L143,32 L148,33.5 Z" fill="white" opacity=".65"/>
+    <!-- Moon crescent -->
+    <circle cx="380" cy="45" r="28" fill="#fef9c4"/>
+    <circle cx="369" cy="36" r="24" fill="#1c0a00"/>
+    <circle cx="380" cy="45" r="32" fill="none" stroke="#fde68a" stroke-width="2" opacity=".12"/>
+    <!-- Desert ground -->
+    <rect x="0" y="255" width="420" height="45" fill="#7c2d12"/>
+    <rect x="0" y="243" width="420" height="14" fill="#92400e"/>
+    <ellipse cx="80" cy="255" rx="100" ry="11" fill="#8b3010" opacity=".5"/>
+    <ellipse cx="360" cy="257" rx="80" ry="9" fill="#8b3010" opacity=".5"/>
+    <!-- Cave rock frame -->
+    <ellipse cx="210" cy="218" rx="102" ry="74" fill="#3c1810"/>
+    <ellipse cx="207" cy="215" rx="97" ry="69" fill="#2c1008"/>
+    <ellipse cx="210" cy="223" rx="83" ry="61" fill="#0c0400"/>
+    <ellipse cx="210" cy="229" rx="70" ry="52" fill="#060200"/>
+    <!-- Rock edge highlights -->
+    <path d="M113,178 Q108,208 126,255" stroke="#5a2510" stroke-width="3" fill="none" opacity=".6"/>
+    <path d="M307,178 Q312,208 294,255" stroke="#5a2510" stroke-width="3" fill="none" opacity=".6"/>
+    <!-- Stalactites -->
+    <polygon points="150,148 145,170 155,170" fill="#3c1810"/>
+    <polygon points="168,145 163,163 173,163" fill="#3c1810"/>
+    <polygon points="186,142 182,158 190,158" fill="#2c1008"/>
+    <polygon points="236,142 232,160 240,160" fill="#2c1008"/>
+    <polygon points="254,145 250,163 258,163" fill="#3c1810"/>
+    <polygon points="271,148 267,167 275,167" fill="#3c1810"/>
+    <!-- Torch LEFT with radial glow -->
+    <circle cx="140" cy="190" r="30" fill="url(#torchGlow2)"/>
+    <rect x="137" y="190" width="6" height="20" fill="#78350f" rx="2"/>
+    <ellipse cx="140" cy="190" rx="7" ry="12" fill="#f97316" opacity=".9"/>
+    <ellipse cx="140" cy="185" rx="5" ry="9" fill="#fbbf24"/>
+    <ellipse cx="139" cy="181" rx="3.5" ry="6" fill="#fff9c4"/>
+    <!-- Torch RIGHT with radial glow -->
+    <circle cx="280" cy="190" r="30" fill="url(#torchGlow2)"/>
+    <rect x="277" y="190" width="6" height="20" fill="#78350f" rx="2"/>
+    <ellipse cx="280" cy="190" rx="7" ry="12" fill="#f97316" opacity=".9"/>
+    <ellipse cx="280" cy="185" rx="5" ry="9" fill="#fbbf24"/>
+    <ellipse cx="280" cy="181" rx="3.5" ry="6" fill="#fff9c4"/>
+    <!-- ===== SCAR - centre, dominant ===== -->
+    <ellipse cx="212" cy="230" rx="40" ry="14" fill="#000" opacity=".35"/>
+    <!-- Dark mane with gradient -->
+    <circle cx="210" cy="190" r="38" fill="url(#scarMane2)"/>
+    <circle cx="210" cy="190" r="38" fill="none" stroke="#f97316" stroke-width="2" opacity=".1"/>
+    <!-- Body -->
+    <ellipse cx="210" cy="218" rx="34" ry="22" fill="url(#scarFur2)"/>
+    <!-- Head -->
+    <circle cx="210" cy="183" r="24" fill="url(#scarFur2)"/>
+    <!-- Muzzle -->
+    <ellipse cx="221" cy="192" rx="12" ry="8" fill="#92400e"/>
+    <ellipse cx="221" cy="188" rx="9" ry="5" fill="#b45309"/>
+    <!-- Nose -->
+    <ellipse cx="225" cy="188" rx="4" ry="3" fill="#1c0a00"/>
+    <!-- Iconic scar marking - diagonal slash -->
+    <line x1="215" y1="175" x2="221" y2="189" stroke="#0c0400" stroke-width="3" stroke-linecap="round"/>
+    <line x1="218" y1="173" x2="223" y2="186" stroke="#0c0400" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+    <!-- Evil green eyes - half-lidded -->
+    <ellipse cx="200" cy="181" rx="6" ry="4.5" fill="#4ade80"/>
+    <ellipse cx="200" cy="183" rx="6" ry="3" fill="#0c0400"/>
+    <circle cx="201" cy="180" r="1" fill="white" opacity=".7"/>
+    <ellipse cx="215" cy="179" rx="6" ry="4.5" fill="#4ade80"/>
+    <ellipse cx="215" cy="181" rx="6" ry="3" fill="#0c0400"/>
+    <circle cx="216" cy="178" r="1" fill="white" opacity=".7"/>
+    <!-- Angled evil brows -->
+    <path d="M195,175 Q200,172 204,175" stroke="#0c0400" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M210,173 Q215,170 220,173" stroke="#0c0400" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Evil grin with two fangs -->
+    <path d="M205,196 Q211,203 224,195" stroke="#0c0400" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <rect x="208" y="196" width="4" height="6" fill="white" rx="1"/>
+    <rect x="214" y="195" width="4" height="6" fill="white" rx="1"/>
+    <!-- Pointed ears -->
+    <polygon points="194,162 184,140 203,157" fill="url(#scarFur2)"/>
+    <polygon points="195,162 187,144 202,157" fill="#7c2d12" opacity=".3"/>
+    <polygon points="226,159 219,138 233,155" fill="url(#scarFur2)"/>
+    <polygon points="226,159 220,142 232,155" fill="#7c2d12" opacity=".3"/>
+    <!-- ===== WOLF (left) with gradient ===== -->
+    <ellipse cx="118" cy="223" rx="30" ry="19" fill="url(#wolfFur2)"/>
+    <circle cx="145" cy="208" r="20" fill="url(#wolfFur2)"/>
+    <!-- Long wolf snout -->
+    <ellipse cx="161" cy="214" rx="13" ry="8" fill="#9ca3af"/>
+    <ellipse cx="163" cy="210" rx="9" ry="5" fill="#6b7280"/>
+    <ellipse cx="168" cy="210" rx="4" ry="3" fill="#1c1917"/>
+    <!-- Wolf eyes amber -->
+    <ellipse cx="140" cy="202" rx="4.5" ry="5" fill="#fef3c7"/>
+    <circle cx="141" cy="203" r="3" fill="#92400e"/>
+    <circle cx="141" cy="203" r="1.5" fill="#1c1917"/>
+    <circle cx="142" cy="202" r=".8" fill="white"/>
+    <ellipse cx="151" cy="200" rx="4.5" ry="5" fill="#fef3c7"/>
+    <circle cx="152" cy="201" r="3" fill="#92400e"/>
+    <circle cx="152" cy="201" r="1.5" fill="#1c1917"/>
+    <circle cx="153" cy="200" r=".8" fill="white"/>
+    <!-- Mean brows -->
+    <path d="M136,197 Q141,194 145,197" stroke="#374151" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M147,195 Q152,192 156,196" stroke="#374151" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Wolf snarl with fangs -->
+    <path d="M149,212 Q157,218 165,212" stroke="#374151" stroke-width="2" fill="none"/>
+    <rect x="152" y="211" width="3" height="5" fill="white" rx="1"/>
+    <rect x="157" y="210" width="3" height="5" fill="white" rx="1"/>
+    <!-- Wolf ears -->
+    <polygon points="133,190 126,171 142,186" fill="url(#wolfFur2)"/>
+    <polygon points="134,189 128,174 140,186" fill="#9ca3af" opacity=".4"/>
+    <polygon points="152,186 148,167 161,182" fill="url(#wolfFur2)"/>
+    <polygon points="152,186 149,170 159,182" fill="#9ca3af" opacity=".4"/>
+    <!-- ===== BEAR (right) with gradient ===== -->
+    <ellipse cx="302" cy="221" rx="28" ry="18" fill="url(#bearFur2)"/>
+    <circle cx="276" cy="208" r="21" fill="url(#bearFur2)"/>
+    <!-- Muzzle -->
+    <ellipse cx="264" cy="216" rx="13" ry="9" fill="#d97706"/>
+    <ellipse cx="264" cy="212" rx="10" ry="6" fill="#b45309"/>
+    <ellipse cx="264" cy="211" rx="5" ry="3.5" fill="#1c1917"/>
+    <!-- Bear eyes small and mean -->
+    <circle cx="269" cy="201" r="6" fill="#451a03"/>
+    <circle cx="283" cy="199" r="6" fill="#451a03"/>
+    <circle cx="270" cy="202" r="3.5" fill="#fde68a"/>
+    <circle cx="284" cy="200" r="3.5" fill="#fde68a"/>
+    <circle cx="270" cy="202" r="2" fill="#1c1917"/>
+    <circle cx="284" cy="200" r="2" fill="#1c1917"/>
+    <circle cx="271" cy="201" r=".8" fill="white"/>
+    <circle cx="285" cy="199" r=".8" fill="white"/>
+    <!-- Mean brows -->
+    <path d="M265,196 Q270,193 274,197" stroke="#451a03" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M279,194 Q284,191 288,195" stroke="#451a03" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Grumpy frown -->
+    <path d="M258,219 Q264,215 270,219" stroke="#451a03" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Round ears with inner colour -->
+    <circle cx="257" cy="190" r="9" fill="url(#bearFur2)"/>
+    <circle cx="257" cy="190" r="5.5" fill="#92400e" opacity=".4"/>
+    <circle cx="292" cy="188" r="9" fill="url(#bearFur2)"/>
+    <circle cx="292" cy="188" r="5.5" fill="#92400e" opacity=".4"/>
+    <!-- Speech bubble - clean text, no emoji -->
+    <ellipse cx="210" cy="105" rx="92" ry="31" fill="#fde68a" opacity=".96"/>
+    <ellipse cx="210" cy="105" rx="92" ry="31" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+    <polygon points="198,134 210,156 222,134" fill="#fde68a" opacity=".96"/>
+    <!-- Lightning bolt instead of villain emoji -->
+    <polygon points="205,88 200,102 206,100 200,120 215,103 208,106 215,88" fill="#dc2626" opacity=".6"/>
+    <text x="222" y="99" font-family="Baloo 2" font-size="11" fill="#7c2d12" text-anchor="middle">We shall steal ALL</text>
+    <text x="222" y="114" font-family="Baloo 2" font-size="11" fill="#7c2d12" text-anchor="middle">the food! Mwahaha!</text>
+  </svg>
+  <div class="bubble">
+    <p data-fr="Dans une sombre grotte du désert vivaient trois méchants sournois : <em>Scar</em> le lion maléfique 🦁, le <em>Grand Méchant Loup</em> 🐺, et un <em>Ours</em> grognon 🐻.">In a dark cave in the desert lived three sneaky villains: <em>Scar</em> the wicked lion 🦁, the <em>Big Bad Wolf</em> 🐺, and a <em>grumpy Bear</em> 🐻.</p>
+    <p data-fr="Scar fit son sourire le plus méchant. <em>« Nous allons nous faufiler dans les bois et voler chaque miette de leur nourriture ! »</em>">Scar smiled his nastiest smile. <em>"We'll sneak into the woods and steal every crumb of their food!"</em></p>
+    <span class="sfx" data-fr="Mwahaha ! 😈">Mwahaha! 😈</span>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- PAGE 3: The Heist! Food Stolen -->
+<div class="page" id="p3">
+  <div class="chapter-label" data-fr="😱 Chapitre 3 : La nourriture a DISPARU ! 😱">😱 Chapter 3: The Food is GONE! 😱</div>
+  <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#1e1b4b"/>
+    <!-- Night -->
+    <circle cx="55" cy="50" r="25" fill="#fffde7" opacity=".9"/>
+    <circle cx="46" cy="43" r="21" fill="#1e1b4b"/>
+    <circle cx="180" cy="20" r="1.5" fill="white" opacity=".8"/>
+    <circle cx="300" cy="30" r="2" fill="white"/>
+    <circle cx="390" cy="20" r="1.5" fill="white" opacity=".7"/>
+    <!-- Ground -->
+    <rect x="0" y="255" width="420" height="45" fill="#14532d"/>
+    <rect x="0" y="243" width="420" height="16" fill="#16a34a" opacity=".5"/>
+    <!-- Empty overturned stalls! -->
+    <rect x="50" y="185" width="60" height="55" fill="#fef3c7" opacity=".4"/>
+    <polygon points="40,185 80,165 120,185" fill="#ef4444" opacity=".5"/>
+    <!-- Overturned/empty look -->
+    <line x1="50" y1="200" x2="110" y2="200" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,4" opacity=".5"/>
+    <rect x="175" y="185" width="70" height="53" fill="#fef3c7" opacity=".4"/>
+    <polygon points="165,185 210,165 255,185" fill="#8b5cf6" opacity=".5"/>
+    <rect x="275" y="185" width="65" height="55" fill="#fef3c7" opacity=".4"/>
+    <polygon points="265,185 307,165 350,185" fill="#f97316" opacity=".5"/>
+    <!-- X marks on stalls (empty) -->
+    <line x1="55" y1="200" x2="105" y2="238" stroke="#dc2626" stroke-width="3" opacity=".7"/>
+    <line x1="105" y1="200" x2="55" y2="238" stroke="#dc2626" stroke-width="3" opacity=".7"/>
+    <line x1="180" y1="200" x2="240" y2="232" stroke="#dc2626" stroke-width="3" opacity=".7"/>
+    <line x1="240" y1="200" x2="180" y2="232" stroke="#dc2626" stroke-width="3" opacity=".7"/>
+    <line x1="280" y1="200" x2="335" y2="232" stroke="#dc2626" stroke-width="3" opacity=".7"/>
+    <line x1="335" y1="200" x2="280" y2="232" stroke="#dc2626" stroke-width="3" opacity=".7"/>
+    <!-- VILLAINS escaping top right with sacks -->
+    <!-- Scar with big sack -->
+    <ellipse cx="330" cy="110" rx="25" ry="18" fill="#78350f"/>
+    <circle cx="348" cy="97" r="18" fill="#78350f"/>
+    <circle cx="348" cy="97" r="23" fill="#1c1917" opacity=".5"/>
+    <circle cx="348" cy="97" r="18" fill="#78350f"/>
+    <ellipse cx="355" cy="103" rx="7" ry="5" fill="#92400e"/>
+    <ellipse cx="343" cy="93" rx="4" ry="5" fill="#4ade80"/>
+    <circle cx="343" cy="94" r="2" fill="#1c1917"/>
+    <ellipse cx="353" cy="91" rx="4" ry="5" fill="#4ade80"/>
+    <circle cx="353" cy="92" r="2" fill="#1c1917"/>
+    <line x1="357" y1="83" x2="362" y2="96" stroke="#1c0a00" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Sack -->
+    <ellipse cx="310" cy="120" rx="22" ry="18" fill="#b45309"/>
+    <path d="M310,103 Q325,98 320,115" stroke="#92400e" stroke-width="3" fill="none"/>
+    <!-- Apple and bread poking out -->
+    <circle cx="298" cy="105" r="7" fill="#dc2626"/>
+    <ellipse cx="318" cy="104" rx="8" ry="6" fill="#d97706"/>
+    <!-- Wolf with sack -->
+    <ellipse cx="185" cy="115" rx="24" ry="17" fill="#6b7280"/>
+    <circle cx="204" cy="103" r="17" fill="#6b7280"/>
+    <ellipse cx="215" cy="109" rx="10" ry="7" fill="#9ca3af"/>
+    <ellipse cx="200" cy="97" rx="4" ry="5" fill="#fde68a"/>
+    <circle cx="200" cy="98" r="2" fill="#1c1917"/>
+    <ellipse cx="209" cy="95" rx="4" ry="5" fill="#fde68a"/>
+    <circle cx="209" cy="96" r="2" fill="#1c1917"/>
+    <ellipse cx="162" cy="122" rx="19" ry="16" fill="#b45309"/>
+    <path d="M162,106 Q175,101 173,116" stroke="#92400e" stroke-width="3" fill="none"/>
+    <circle cx="152" cy="109" r="6" fill="#f97316"/>
+    <ellipse cx="170" cy="108" rx="7" ry="5" fill="#d97706"/>
+    <!-- Bear with sack -->
+    <ellipse cx="75" cy="120" rx="25" ry="18" fill="#92400e"/>
+    <circle cx="92" cy="108" r="18" fill="#92400e"/>
+    <ellipse cx="101" cy="115" rx="9" ry="7" fill="#b45309"/>
+    <circle cx="86" cy="103" r="5" fill="#78350f"/>
+    <circle cx="97" cy="101" r="5" fill="#78350f"/>
+    <circle cx="86" cy="103" r="2" fill="#fde68a"/>
+    <circle cx="97" cy="101" r="2" fill="#fde68a"/>
+    <ellipse cx="50" cy="128" rx="19" ry="16" fill="#b45309"/>
+    <path d="M50,112 Q63,107 61,122" stroke="#92400e" stroke-width="3" fill="none"/>
+    <circle cx="40" cy="115" r="6" fill="#eab308"/>
+    <!-- Crying fairy folk -->
+    <circle cx="120" cy="248" r="8" fill="#fde68a"/>
+    <rect x="116" y="256" width="8" height="12" fill="#f9a8d4"/>
+    <!-- Tear -->
+    <ellipse cx="117" cy="252" rx="2" ry="3" fill="#93c5fd"/>
+    <circle cx="205" cy="250" r="8" fill="#fde68a"/>
+    <rect x="201" y="258" width="8" height="10" fill="#86efac"/>
+    <ellipse cx="202" cy="254" rx="2" ry="3" fill="#93c5fd"/>
+    <circle cx="300" cy="248" r="8" fill="#fde68a"/>
+    <rect x="296" y="256" width="8" height="12" fill="#c4b5fd"/>
+    <ellipse cx="297" cy="252" rx="2" ry="3" fill="#93c5fd"/>
+    <!-- Exclamation -->
+    <text x="210" y="68" font-family="Baloo 2" font-size="20" fill="#fde68a" text-anchor="middle" opacity=".9">ALL THE FOOD IS GONE! 😭</text>
+  </svg>
+  <div class="bubble">
+    <p data-fr="Au milieu de la nuit, <em>Scar, le Loup et l'Ours</em> se glissèrent dans le Pays des Fées… et volèrent <em>toute la nourriture !</em> Le pain, les fruits, les tartes — TOUT disparu ! 😭">In the middle of the night, <em>Scar, the Wolf, and the Bear</em> crept into Fairyland… and stole <em>every single bit of food!</em> The bread, the fruit, the pies — ALL gone! 😭</p>
+    <p data-fr="Les fées se réveillèrent avec des étals vides et versèrent de grosses larmes tristes.">The fairy folk woke up to empty stalls and cried big, sad tears.</p>
+    <span class="sfx" data-fr="Oh non ! 😱">Oh no! 😱</span>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- PAGE 4: Heroes Set Out -->
+<div class="page" id="p4">
+  <div class="chapter-label" data-fr="💪 Chapitre 4 : Les courageux héros partent ! 💪">💪 Chapter 4: The Brave Heroes Set Out! 💪</div>
+  <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#fed7aa"/>
+    <circle cx="370" cy="55" r="38" fill="#fbbf24"/>
+    <!-- Heat shimmer horizon -->
+    <rect x="0" y="240" width="420" height="60" fill="#b45309"/>
+    <rect x="0" y="228" width="420" height="16" fill="#d97706"/>
+    <!-- Desert path leading right -->
+    <path d="M0,250 Q210,220 420,245" stroke="#f59e0b" stroke-width="18" fill="none" opacity=".3"/>
+    <!-- Cactus -->
+    <rect x="340" y="130" width="16" height="115" fill="#15803d" rx="8"/>
+    <rect x="320" y="155" width="28" height="12" fill="#15803d" rx="6"/>
+    <rect x="342" y="148" width="26" height="11" fill="#15803d" rx="5.5"/>
+    <!-- SIMBA - leading, confident -->
+    <ellipse cx="108" cy="228" rx="34" ry="25" fill="#f59e0b"/>
+    <!-- Tail proud -->
+    <path d="M74,225 Q45,195 62,172" stroke="#f59e0b" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <circle cx="62" cy="172" r="8" fill="#b45309"/>
+    <!-- legs stride -->
+    <line x1="84" y1="250" x2="68" y2="278" stroke="#f59e0b" stroke-width="15" stroke-linecap="round"/>
+    <line x1="104" y1="251" x2="118" y2="276" stroke="#f59e0b" stroke-width="15" stroke-linecap="round"/>
+    <line x1="124" y1="250" x2="110" y2="278" stroke="#f59e0b" stroke-width="15" stroke-linecap="round"/>
+    <line x1="140" y1="248" x2="154" y2="274" stroke="#f59e0b" stroke-width="15" stroke-linecap="round"/>
+    <!-- head -->
+    <circle cx="144" cy="210" rx="28" r="28" fill="#b45309" opacity=".65"/>
+    <circle cx="144" cy="210" r="22" fill="#f59e0b"/>
+    <ellipse cx="153" cy="217" rx="9" ry="6" fill="#fde68a"/>
+    <circle cx="150" cy="214" r="3" fill="#1c1917"/>
+    <circle cx="138" cy="207" r="3.5" fill="#1c1917"/>
+    <circle cx="150" cy="214" r="1.2" fill="white"/>
+    <circle cx="138" cy="207" r="1.2" fill="white"/>
+    <!-- Determined expression -->
+    <path d="M139,221 Q145,226 151,221" stroke="#b45309" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Brave brow -->
+    <line x1="133" y1="202" x2="143" y2="205" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- GOLDILOCKS middle -->
+    <ellipse cx="215" cy="236" rx="17" ry="20" fill="#2563eb"/>
+    <polygon points="198,246 215,258 232,246 232,233 198,233" fill="#1d4ed8"/>
+    <line x1="198" y1="230" x2="172" y2="218" stroke="#fde68a" stroke-width="12" stroke-linecap="round"/>
+    <line x1="232" y1="230" x2="258" y2="218" stroke="#fde68a" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="215" cy="216" r="19" fill="#fde68a"/>
+    <ellipse cx="203" cy="209" rx="13" ry="11" fill="#fbbf24"/>
+    <ellipse cx="227" cy="209" rx="13" ry="11" fill="#fbbf24"/>
+    <ellipse cx="215" cy="203" rx="11" ry="8" fill="#fbbf24"/>
+    <circle cx="209" cy="215" r="3" fill="#1c1917"/>
+    <circle cx="221" cy="215" r="3" fill="#1c1917"/>
+    <circle cx="209" cy="215" r="1.2" fill="white"/>
+    <circle cx="221" cy="215" r="1.2" fill="white"/>
+    <path d="M208,222 Q215,228 222,222" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <line x1="205" y1="208" x2="215" y2="211" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+    <line x1="215" y1="206" x2="225" y2="210" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+    <!-- ribbon -->
+    <polygon points="208,201 215,206 208,211" fill="#ef4444"/>
+    <polygon points="222,201 215,206 222,211" fill="#ef4444"/>
+    <circle cx="215" cy="206" r="3" fill="#dc2626"/>
+    <!-- ABU the monkey! rightmost -->
+    <!-- Body -->
+    <ellipse cx="310" cy="234" rx="22" ry="18" fill="#92400e"/>
+    <!-- Long curly monkey tail -->
+    <path d="M288,234 Q268,210 280,192 Q292,175 285,162" stroke="#92400e" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <!-- legs -->
+    <line x1="296" y1="250" x2="283" y2="272" stroke="#92400e" stroke-width="12" stroke-linecap="round"/>
+    <line x1="320" y1="250" x2="333" y2="272" stroke="#92400e" stroke-width="12" stroke-linecap="round"/>
+    <!-- Head -->
+    <circle cx="310" cy="216" r="18" fill="#92400e"/>
+    <ellipse cx="310" cy="224" rx="10" ry="8" fill="#fde68a"/>
+    <!-- big ears -->
+    <circle cx="294" cy="210" r="8" fill="#92400e"/>
+    <circle cx="326" cy="210" r="8" fill="#92400e"/>
+    <!-- face -->
+    <circle cx="305" cy="212" r="3" fill="#1c1917"/>
+    <circle cx="315" cy="212" r="3" fill="#1c1917"/>
+    <circle cx="305" cy="212" r="1.2" fill="white"/>
+    <circle cx="315" cy="212" r="1.2" fill="white"/>
+    <circle cx="310" cy="218" r="3" fill="#92400e"/>
+    <path d="M305,222 Q310,227 315,222" stroke="#1c1917" stroke-width="1.5" fill="none"/>
+    <!-- Fez hat -->
+    <ellipse cx="310" cy="200" rx="12" ry="5" fill="#dc2626"/>
+    <rect x="304" y="194" width="12" height="8" fill="#dc2626"/>
+    <circle cx="310" cy="193" r="2.5" fill="#1c1917"/>
+    <!-- Abu excited arm raised -->
+    <line x1="330" y1="224" x2="350" y2="210" stroke="#92400e" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="356" cy="207" r="7" fill="#92400e"/>
+    <!-- Speech bubbles above heroes -->
+    <ellipse cx="144" cy="168" rx="52" ry="22" fill="white" opacity=".92"/>
+    <polygon points="140,188 150,202 160,188" fill="white" opacity=".92"/>
+    <text x="144" y="163" font-family="Baloo 2" font-size="11" fill="#b45309" text-anchor="middle">Let's get that</text>
+    <text x="144" y="178" font-family="Baloo 2" font-size="11" fill="#b45309" text-anchor="middle">food back! 🦁</text>
+    <ellipse cx="350" cy="170" rx="52" ry="22" fill="white" opacity=".92"/>
+    <polygon points="320,190 310,205 300,190" fill="white" opacity=".92"/>
+    <text x="350" y="165" font-family="Baloo 2" font-size="11" fill="#92400e" text-anchor="middle">Ooh ooh! Abu</text>
+    <text x="350" y="180" font-family="Baloo 2" font-size="11" fill="#92400e" text-anchor="middle">will help! 🐒</text>
+  </svg>
+  <div class="bubble">
+    <p data-fr="<em>Boucle d'Or</em> tapa du pied. <em>Simba</em> secoua sa crinière. <em>Abu</em> le singe jacassa et sautilla de joie !"><em>Goldilocks</em> stamped her foot. <em>Simba</em> shook his mane. <em>Abu</em> the monkey chattered and bounced up and down!</p>
+    <p data-fr="<em>« Nous savons où ils sont allés, »</em> dit Simba. <em>« Au désert ! Allons récupérer cette nourriture et la ramener ! »</em> 🏜️"><em>"We know where they've gone,"</em> said Simba. <em>"The desert! Let's go get that food back and bring it home!"</em> 🏜️</p>
+    <span class="sfx" data-fr="Au désert ! 🌵">To the desert! 🌵</span>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- PAGE 5: The Desert Mission -->
+<div class="page" id="p5">
+  <div class="chapter-label" data-fr="🌵 Chapitre 5 : Dans le désert ! 🌵">🌵 Chapter 5: Into the Desert! 🌵</div>
+  <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#fed7aa"/>
+    <circle cx="210" cy="48" r="42" fill="#fbbf24"/>
+    <!-- heat waves -->
+    <path d="M100,90 Q120,78 140,90 Q160,102 180,90" stroke="#fde68a" stroke-width="2.5" fill="none" opacity=".5"/>
+    <path d="M240,85 Q260,73 280,85 Q300,97 320,85" stroke="#fde68a" stroke-width="2.5" fill="none" opacity=".5"/>
+    <rect x="0" y="248" width="420" height="52" fill="#b45309"/>
+    <rect x="0" y="236" width="420" height="16" fill="#d97706"/>
+    <!-- Dunes -->
+    <ellipse cx="80" cy="248" rx="90" ry="18" fill="#92400e" opacity=".4"/>
+    <ellipse cx="340" cy="250" rx="80" ry="16" fill="#92400e" opacity=".4"/>
+    <!-- Cactus -->
+    <rect x="30" y="130" width="14" height="115" fill="#15803d" rx="7"/>
+    <rect x="12" y="155" width="26" height="10" fill="#15803d" rx="5"/>
+    <rect x="32" y="148" width="22" height="10" fill="#15803d" rx="5"/>
+    <!-- VILLAIN CAVE visible right -->
+    <ellipse cx="358" cy="195" rx="52" ry="42" fill="#7c2d12" opacity=".8"/>
+    <ellipse cx="358" cy="205" rx="42" ry="35" fill="#451a03"/>
+    <!-- Food sacks inside cave (glowing) -->
+    <ellipse cx="350" cy="210" rx="14" ry="11" fill="#b45309"/>
+    <circle cx="341" cy="203" r="6" fill="#dc2626"/>
+    <circle cx="360" cy="202" r="5" fill="#eab308"/>
+    <!-- ABU sneaking!! tiny, agile, up on cave top -->
+    <circle cx="358" cy="148" r="10" fill="#92400e"/>
+    <ellipse cx="358" cy="155" rx="7" ry="5" fill="#fde68a"/>
+    <circle cx="354" cy="145" r="3" fill="#78350f"/>
+    <circle cx="363" cy="145" r="3" fill="#78350f"/>
+    <circle cx="354" cy="145" r="1.3" fill="#1c1917"/>
+    <circle cx="363" cy="145" r="1.3" fill="#1c1917"/>
+    <!-- Fez -->
+    <ellipse cx="358" cy="139" rx="8" ry="3" fill="#dc2626"/>
+    <rect x="354" y="136" width="8" height="5" fill="#dc2626"/>
+    <!-- Abu rope/tail gripping cave -->
+    <path d="M348,155 Q330,170 340,185" stroke="#92400e" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <!-- SIMBA roaring at cave entrance -->
+    <ellipse cx="260" cy="230" rx="35" ry="26" fill="#f59e0b"/>
+    <circle cx="248" cy="213" rx="26" r="26" fill="#b45309" opacity=".65"/>
+    <circle cx="248" cy="213" r="20" fill="#f59e0b"/>
+    <ellipse cx="239" cy="220" rx="8" ry="6" fill="#fde68a"/>
+    <circle cx="241" cy="217" r="3" fill="#1c1917"/>
+    <circle cx="252" cy="209" r="3.5" fill="#1c1917"/>
+    <!-- Roar mouth open -->
+    <path d="M238,224 Q245,232 252,224" stroke="#b45309" stroke-width="2.5" fill="#b45309" opacity=".5"/>
+    <!-- Roar text -->
+    <text x="220" y="178" font-family="Baloo 2" font-size="22" fill="#f97316" text-anchor="middle" opacity=".9">ROOOAR! 🦁</text>
+    <!-- GOLDILOCKS blocking left side -->
+    <ellipse cx="150" cy="232" rx="16" ry="18" fill="#2563eb"/>
+    <circle cx="150" cy="213" r="17" fill="#fde68a"/>
+    <ellipse cx="140" cy="206" rx="11" ry="10" fill="#fbbf24"/>
+    <ellipse cx="160" cy="206" rx="11" ry="10" fill="#fbbf24"/>
+    <ellipse cx="150" cy="201" rx="10" ry="7" fill="#fbbf24"/>
+    <circle cx="144" cy="212" r="2.5" fill="#1c1917"/>
+    <circle cx="156" cy="212" r="2.5" fill="#1c1917"/>
+    <path d="M143,219 Q150,224 157,219" stroke="#e11d48" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Arms wide blocking -->
+    <line x1="134" y1="222" x2="108" y2="212" stroke="#fde68a" stroke-width="12" stroke-linecap="round"/>
+    <line x1="166" y1="222" x2="192" y2="212" stroke="#fde68a" stroke-width="12" stroke-linecap="round"/>
+    <!-- Villains peeking scared from cave -->
+    <!-- Scar peaking, looking scared -->
+    <circle cx="375" cy="195" r="14" fill="#78350f"/>
+    <circle cx="375" cy="195" r="18" fill="#1c1917" opacity=".5"/>
+    <circle cx="375" cy="195" r="14" fill="#78350f"/>
+    <ellipse cx="368" cy="200" rx="5" ry="4" fill="#4ade80"/>
+    <circle cx="368" cy="201" r="2" fill="#1c1917"/>
+    <!-- wide scared eye -->
+    <ellipse cx="368" cy="200" rx="5" ry="6" fill="white"/>
+    <circle cx="368" cy="201" r="2.5" fill="#1c1917"/>
+    <!-- sweat drop -->
+    <ellipse cx="360" cy="185" rx="4" ry="6" fill="#93c5fd"/>
+    <!-- Wolf ears peeking -->
+    <polygon points="338,178 332,162 344,175" fill="#6b7280"/>
+    <ellipse cx="337" cy="185" rx="12" ry="10" fill="#6b7280"/>
+    <!-- scared eyes -->
+    <ellipse cx="333" cy="183" rx="4" ry="5" fill="white"/>
+    <circle cx="333" cy="184" r="2" fill="#1c1917"/>
+    <!-- Speech bubble heroes -->
+    <ellipse cx="140" cy="168" rx="68" ry="23" fill="white" opacity=".92"/>
+    <polygon points="135,189 145,206 155,189" fill="white" opacity=".92"/>
+    <text x="140" y="163" font-family="Baloo 2" font-size="11" fill="#1d4ed8" text-anchor="middle">Give back the food</text>
+    <text x="140" y="178" font-family="Baloo 2" font-size="11" fill="#1d4ed8" text-anchor="middle">RIGHT NOW! 😤</text>
+  </svg>
+  <div class="bubble">
+    <p data-fr="<em>Abu</em> était petit et vif — il grimpa dans la grotte et repéra tous les sacs volés ! 🐒"><em>Abu</em> was small and quick — he scurried up the cave and spotted all the stolen sacks! 🐒</p>
+    <p data-fr="<em>Simba</em> poussa un RUGISSEMENT puissant qui fit trembler le désert. <em>Boucle d'Or</em> écarta les bras et cria : <em>« Rendez TOUT ! »</em>"><em>Simba</em> let out a mighty ROAR that shook the desert. <em>Goldilocks</em> spread her arms wide and shouted, <em>"Hand it ALL back!"</em></p>
+    <p data-fr="Les yeux de Scar s'écarquillèrent. La queue du Loup passa entre ses jambes. L'Ours gémit ! 😨">Scar's eyes went WIDE. The Wolf's tail went between his legs. The Bear whimpered! 😨</p>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- PAGE 6: Food Returned! -->
+<div class="page" id="p6">
+  <div class="chapter-label" data-fr="🎒 Chapitre 6 : Le grand retour ! 🎒">🎒 Chapter 6: The Big Carry Home! 🎒</div>
+  <svg class="illo" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#dcfce7"/>
+    <circle cx="60" cy="52" r="36" fill="#fde68a"/>
+    <!-- Rainbow -->
+    <path d="M0,170 Q210,30 420,170" stroke="#ef4444" stroke-width="7" fill="none" opacity=".6"/>
+    <path d="M0,180 Q210,44 420,180" stroke="#f97316" stroke-width="7" fill="none" opacity=".6"/>
+    <path d="M0,190 Q210,58 420,190" stroke="#eab308" stroke-width="7" fill="none" opacity=".6"/>
+    <path d="M0,200 Q210,72 420,200" stroke="#22c55e" stroke-width="7" fill="none" opacity=".6"/>
+    <path d="M0,209 Q210,84 420,209" stroke="#3b82f6" stroke-width="7" fill="none" opacity=".6"/>
+    <!-- Ground -->
+    <rect x="0" y="258" width="420" height="42" fill="#15803d"/>
+    <rect x="0" y="246" width="420" height="15" fill="#4ade80"/>
+    <!-- Big food pile!! -->
+    <!-- Pile of sacks -->
+    <ellipse cx="210" cy="240" rx="80" ry="22" fill="#b45309"/>
+    <ellipse cx="210" cy="225" rx="65" ry="18" fill="#92400e"/>
+    <ellipse cx="195" cy="212" rx="48" ry="15" fill="#b45309"/>
+    <!-- Food spilling out -->
+    <circle cx="155" cy="225" r="10" fill="#dc2626"/>
+    <circle cx="172" cy="218" r="9" fill="#f97316"/>
+    <circle cx="145" cy="237" r="8" fill="#eab308"/>
+    <circle cx="265" cy="223" r="10" fill="#dc2626"/>
+    <circle cx="248" cy="215" r="9" fill="#22c55e"/>
+    <ellipse cx="228" cy="210" rx="13" ry="9" fill="#d97706"/>
+    <ellipse cx="190" cy="207" rx="12" ry="8" fill="#d97706"/>
+    <!-- Bread loaves -->
+    <ellipse cx="175" cy="230" rx="14" ry="9" fill="#b45309"/>
+    <ellipse cx="235" cy="228" rx="13" ry="9" fill="#92400e"/>
+    <!-- SIMBA carrying big sack happily -->
+    <!-- big sack on back -->
+    <ellipse cx="100" cy="222" rx="26" ry="22" fill="#b45309"/>
+    <circle cx="88" cy="206" r="9" fill="#dc2626"/>
+    <circle cx="106" cy="202" r="9" fill="#eab308"/>
+    <path d="M100,200 Q118,195 115,210" stroke="#92400e" stroke-width="3" fill="none"/>
+    <!-- Simba body -->
+    <ellipse cx="105" cy="245" rx="30" ry="22" fill="#f59e0b"/>
+    <!-- tail happy curly -->
+    <path d="M75,242 Q52,218 66,200 Q75,185 68,170" stroke="#f59e0b" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <circle cx="68" cy="170" r="7" fill="#b45309"/>
+    <!-- head -->
+    <circle cx="132" cy="228" rx="24" r="24" fill="#b45309" opacity=".65"/>
+    <circle cx="132" cy="228" r="19" fill="#f59e0b"/>
+    <ellipse cx="140" cy="234" rx="8" ry="5" fill="#fde68a"/>
+    <circle cx="138" cy="231" r="2.5" fill="#1c1917"/>
+    <circle cx="127" cy="225" r="3" fill="#1c1917"/>
+    <!-- big happy smile -->
+    <path d="M127,238 Q133,245 139,238" stroke="#b45309" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- GOLDILOCKS carrying basket -->
+    <ellipse cx="210" cy="200" rx="20" ry="15" fill="#d97706"/>
+    <path d="M195,200 Q210,185 225,200" stroke="#b45309" stroke-width="4" fill="none"/>
+    <circle cx="196" cy="196" r="5" fill="#dc2626"/>
+    <circle cx="208" cy="193" r="5" fill="#f97316"/>
+    <circle cx="220" cy="195" r="5" fill="#eab308"/>
+    <!-- Goldilocks body below basket -->
+    <ellipse cx="215" cy="250" rx="14" ry="16" fill="#2563eb"/>
+    <circle cx="215" cy="232" r="15" fill="#fde68a"/>
+    <ellipse cx="205" cy="225" rx="11" ry="10" fill="#fbbf24"/>
+    <ellipse cx="225" cy="225" rx="11" ry="10" fill="#fbbf24"/>
+    <ellipse cx="215" cy="220" rx="9" ry="6" fill="#fbbf24"/>
+    <circle cx="209" cy="231" r="2.5" fill="#1c1917"/>
+    <circle cx="221" cy="231" r="2.5" fill="#1c1917"/>
+    <path d="M208,238 Q215,244 222,238" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Arms holding basket handles -->
+    <line x1="201" y1="240" x2="192" y2="222" stroke="#fde68a" stroke-width="11" stroke-linecap="round"/>
+    <line x1="229" y1="240" x2="238" y2="222" stroke="#fde68a" stroke-width="11" stroke-linecap="round"/>
+    <!-- ABU on top of pile chattering happily with tiny sack -->
+    <circle cx="318" cy="198" r="12" fill="#92400e"/>
+    <ellipse cx="318" cy="206" rx="7" ry="5" fill="#fde68a"/>
+    <circle cx="312" cy="194" r="4" fill="#78350f"/>
+    <circle cx="324" cy="194" r="4" fill="#78350f"/>
+    <circle cx="312" cy="194" r="1.5" fill="#1c1917"/>
+    <circle cx="324" cy="194" r="1.5" fill="#1c1917"/>
+    <path d="M313,203 Q318,207 323,203" stroke="#1c1917" stroke-width="1.5" fill="none"/>
+    <!-- Fez -->
+    <ellipse cx="318" cy="188" rx="9" ry="4" fill="#dc2626"/>
+    <rect x="313" y="184" width="10" height="6" fill="#dc2626"/>
+    <circle cx="318" cy="183" r="2" fill="#1c1917"/>
+    <!-- Abu holding tiny sack triumphant -->
+    <line x1="328" y1="199" x2="342" y2="190" stroke="#92400e" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="347" cy="186" rx="10" ry="8" fill="#b45309"/>
+    <!-- big happy joyful expression -->
+    <text x="318" y="170" font-family="Baloo 2" font-size="14" fill="#92400e" text-anchor="middle">OOH OOH! 🐒</text>
+    <!-- sparkles -->
+    <text x="370" y="130" font-family="Arial" font-size="22" text-anchor="middle">⭐</text>
+    <text x="50" y="140" font-family="Arial" font-size="22" text-anchor="middle">⭐</text>
+    <text x="210" y="115" font-family="Arial" font-size="28" text-anchor="middle">🎉</text>
+  </svg>
+  <div class="bubble">
+    <p data-fr="Scar, le Loup et l'Ours s'enfuirent en criant — si vite que leurs pattes soulevèrent des nuages de poussière ! 💨">Scar, the Wolf, and the Bear ran away screaming into the distance — so fast their paws left dust clouds! 💨</p>
+    <p data-fr="<em>Simba</em> porta le plus grand sac. <em>Boucle d'Or</em> remplit son panier à ras bord. <em>Abu</em> bondit joyeusement sur le dessus de la pile !"><em>Simba</em> carried the biggest sack. <em>Goldilocks</em> filled her basket to the brim. <em>Abu</em> bounced along on top of the pile, chattering with joy!</p>
+    <span class="sfx" data-fr="On a tout récupéré ! 🎉">We got it ALL! 🎉</span>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- PAGE 7: HAPPY ENDING -->
+<div class="page" id="p7">
+  <div class="chapter-label" data-fr="🎊 Fin : Le Pays des Fées est nourri ! 🎊">🎊 The End: Fairyland is Fed! 🎊</div>
+  <svg class="illo" viewBox="0 0 420 310" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="310" fill="#e0f2fe"/>
+    <!-- Sunshine -->
+    <circle cx="210" cy="55" r="45" fill="#fde68a"/>
+    <line x1="210" y1="0" x2="210" y2="-8" stroke="#fbbf24" stroke-width="5"/>
+    <line x1="260" y1="15" x2="268" y2="7" stroke="#fbbf24" stroke-width="5"/>
+    <line x1="268" y1="55" x2="278" y2="55" stroke="#fbbf24" stroke-width="5"/>
+    <line x1="160" y1="15" x2="152" y2="7" stroke="#fbbf24" stroke-width="5"/>
+    <line x1="152" y1="55" x2="142" y2="55" stroke="#fbbf24" stroke-width="5"/>
+    <!-- Rainbow -->
+    <path d="M0,185 Q210,55 420,185" stroke="#ef4444" stroke-width="8" fill="none" opacity=".65"/>
+    <path d="M0,196 Q210,68 420,196" stroke="#f97316" stroke-width="8" fill="none" opacity=".65"/>
+    <path d="M0,207 Q210,81 420,207" stroke="#eab308" stroke-width="8" fill="none" opacity=".65"/>
+    <path d="M0,218 Q210,94 420,218" stroke="#22c55e" stroke-width="8" fill="none" opacity=".65"/>
+    <path d="M0,228 Q210,106 420,228" stroke="#3b82f6" stroke-width="7" fill="none" opacity=".65"/>
+    <!-- Ground -->
+    <rect x="0" y="266" width="420" height="44" fill="#16a34a"/>
+    <rect x="0" y="254" width="420" height="15" fill="#4ade80"/>
+    <!-- Fairyland Market - FULL AGAIN! -->
+    <!-- Stall 1 refilled -->
+    <rect x="55" y="195" width="58" height="65" fill="#fef9c3"/>
+    <polygon points="45,195 84,173 123,195" fill="#ef4444"/>
+    <ellipse cx="70" cy="210" rx="11" ry="8" fill="#d97706"/>
+    <ellipse cx="88" cy="208" rx="10" ry="8" fill="#b45309"/>
+    <ellipse cx="105" cy="210" rx="9" ry="7" fill="#d97706"/>
+    <circle cx="78" cy="222" r="7" fill="#dc2626"/>
+    <circle cx="94" cy="221" r="7" fill="#f97316"/>
+    <!-- Stall 2 -->
+    <rect x="175" y="195" width="70" height="65" fill="#fef9c3"/>
+    <polygon points="165,195 210,173 255,195" fill="#8b5cf6"/>
+    <circle cx="188" cy="210" r="9" fill="#dc2626"/>
+    <circle cx="205" cy="207" r="9" fill="#f97316"/>
+    <circle cx="222" cy="210" r="9" fill="#eab308"/>
+    <circle cx="196" cy="223" r="8" fill="#22c55e"/>
+    <circle cx="213" cy="222" r="8" fill="#dc2626"/>
+    <!-- Stall 3 -->
+    <rect x="298" y="195" width="68" height="65" fill="#fef9c3"/>
+    <polygon points="288,195 332,173 368,195" fill="#f97316"/>
+    <ellipse cx="310" cy="211" rx="13" ry="9" fill="#92400e"/>
+    <ellipse cx="310" cy="207" rx="13" ry="5" fill="#d97706"/>
+    <ellipse cx="333" cy="211" rx="12" ry="9" fill="#92400e"/>
+    <ellipse cx="333" cy="207" rx="12" ry="5" fill="#fbbf24"/>
+    <ellipse cx="352" cy="210" rx="10" ry="8" fill="#92400e"/>
+    <ellipse cx="352" cy="207" rx="10" ry="5" fill="#b45309"/>
+    <!-- HAPPY FAIRY FOLK celebrating -->
+    <circle cx="42" cy="257" r="8" fill="#fde68a"/>
+    <rect x="38" y="265" width="8" height="12" fill="#f9a8d4"/>
+    <line x1="38" y1="269" x2="28" y2="262" stroke="#fde68a" stroke-width="5" stroke-linecap="round"/>
+    <line x1="46" y1="269" x2="56" y2="262" stroke="#fde68a" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="135" cy="256" r="8" fill="#fde68a"/>
+    <rect x="131" y="264" width="8" height="12" fill="#86efac"/>
+    <line x1="131" y1="268" x2="121" y2="261" stroke="#fde68a" stroke-width="5" stroke-linecap="round"/>
+    <line x1="139" y1="268" x2="149" y2="261" stroke="#fde68a" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="380" cy="257" r="8" fill="#fde68a"/>
+    <rect x="376" y="265" width="8" height="12" fill="#c4b5fd"/>
+    <!-- Simba sitting proudly -->
+    <ellipse cx="95" cy="238" rx="28" ry="18" fill="#f59e0b"/>
+    <circle cx="110" cy="223" r="22" fill="#b45309" opacity=".6"/>
+    <circle cx="110" cy="223" r="17" fill="#f59e0b"/>
+    <ellipse cx="118" cy="230" rx="8" ry="5" fill="#fde68a"/>
+    <circle cx="116" cy="227" r="2.5" fill="#1c1917"/>
+    <circle cx="105" cy="221" r="3" fill="#1c1917"/>
+    <!-- big happy smile Simba -->
+    <path d="M104,233 Q111,239 117,233" stroke="#b45309" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M68,238 Q52,218 62,200" stroke="#f59e0b" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <circle cx="62" cy="200" r="7" fill="#b45309"/>
+    <!-- Goldilocks hugging Baby Bear (Three Bears here too) -->
+    <!-- Baby bear -->
+    <ellipse cx="230" cy="248" rx="13" ry="11" fill="#d97706"/>
+    <circle cx="230" cy="235" r="11" fill="#d97706"/>
+    <ellipse cx="230" cy="242" rx="6" ry="4" fill="#f59e0b"/>
+    <circle cx="225" cy="232" r="3.5" fill="#b45309"/>
+    <circle cx="235" cy="232" r="3.5" fill="#b45309"/>
+    <!-- Goldilocks hugging -->
+    <circle cx="255" cy="232" r="15" fill="#fde68a"/>
+    <ellipse cx="246" cy="225" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="264" cy="225" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="255" cy="220" rx="9" ry="7" fill="#fbbf24"/>
+    <ellipse cx="255" cy="248" rx="14" ry="15" fill="#2563eb"/>
+    <circle cx="249" cy="231" r="2.5" fill="#1c1917"/>
+    <circle cx="261" cy="231" r="2.5" fill="#1c1917"/>
+    <path d="M248,238 Q255,244 262,238" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Hug arms -->
+    <path d="M242,240 Q220,248 218,240" stroke="#fde68a" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <!-- Abu on Simba's head (classic) -->
+    <circle cx="110" cy="203" r="9" fill="#92400e"/>
+    <ellipse cx="110" cy="209" rx="5" ry="4" fill="#fde68a"/>
+    <circle cx="106" cy="200" r="3" fill="#78350f"/>
+    <circle cx="114" cy="200" r="3" fill="#78350f"/>
+    <!-- Fez -->
+    <ellipse cx="110" cy="195" rx="7" ry="3" fill="#dc2626"/>
+    <rect x="106" y="193" width="8" height="5" fill="#dc2626"/>
+    <!-- Confetti -->
+    <rect x="155" y="140" width="7" height="7" fill="#ef4444" rx="2" transform="rotate(20,155,140)"/>
+    <rect x="280" y="130" width="7" height="7" fill="#3b82f6" rx="2" transform="rotate(-15,280,130)"/>
+    <rect x="80" y="148" width="6" height="6" fill="#eab308" rx="1" transform="rotate(30,80,148)"/>
+    <rect x="350" y="145" width="6" height="6" fill="#8b5cf6" rx="1" transform="rotate(-20,350,145)"/>
+    <rect x="210" y="135" width="7" height="7" fill="#22c55e" rx="2" transform="rotate(10,210,135)"/>
+    <!-- Sign: Thank You! -->
+    <rect x="158" y="152" width="104" height="32" fill="#fde68a" rx="10"/>
+    <text x="210" y="174" font-family="Baloo 2" font-size="16" fill="#7c2d12" text-anchor="middle">🎉 Thank You! 🎉</text>
+  </svg>
+
+  <div class="bubble">
+    <p data-fr="Les fées acclamèrent et dansèrent ! Chaque étal était de nouveau plein de pain, fruits, tartes et bouillie. 🥳🍞🍎🥧">The fairy folk cheered and danced! Every stall was full again with bread, fruit, pies, and porridge. 🥳🍞🍎🥧</p>
+    <p data-fr="<em>Simba, Boucle d'Or</em> et le petit espiègle <em>Abu</em> furent les héros du Pays des Fées POUR TOUJOURS. Quant à Scar, le Loup et l'Ours…"><em>Simba, Goldilocks,</em> and cheeky little <em>Abu</em> were the heroes of Fairyland FOREVER. And as for Scar, the Wolf, and the Bear…</p>
+    <p data-fr="…ils avaient <em>trop peur</em> pour jamais revenir ! 😄">…they were <em>too scared</em> to ever come back! 😄</p>
+  </div>
+  <div class="the-end" data-fr="Fin ! 🌈">The End! 🌈</div>
+  <div class="hearts">🦁💛🐒❤️👱‍♀️💙🧚‍♀️🎉</div>
+  <div class="spacer"></div>
+</div>
+
+<!-- Nav dots -->
+<div class="nav">
+  <button class="dot on" onclick="go(0)"></button>
+  <button class="dot" onclick="go(1)"></button>
+  <button class="dot" onclick="go(2)"></button>
+  <button class="dot" onclick="go(3)"></button>
+  <button class="dot" onclick="go(4)"></button>
+  <button class="dot" onclick="go(5)"></button>
+  <button class="dot" onclick="go(6)"></button>
+  <button class="dot" onclick="go(7)"></button>
+</div>
+
+<script>
+  // Language toggle
+  let lang = localStorage.getItem('almahextall_lang') || 'en';
+  function applyLang() {
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+    });
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 English' : '🇫🇷 Français';
+  }
+  function toggleLang() {
+    lang = lang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('almahextall_lang', lang);
+    applyLang();
+  }
+  applyLang();
+
+  let cur = 0;
+  const pages = document.querySelectorAll('.page');
+  const dots = document.querySelectorAll('.dot');
+  function go(n) {
+    pages[cur].classList.remove('active');
+    dots[cur].classList.remove('on');
+    cur = n;
+    pages[cur].classList.add('active');
+    dots[cur].classList.add('on');
+    window.scrollTo(0,0);
+  }
+  let sx = 0;
+  document.addEventListener('touchstart', e => sx = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0 && cur < pages.length-1) go(cur+1);
+      if (dx > 0 && cur > 0) go(cur-1);
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key==='ArrowRight' && cur < pages.length-1) go(cur+1);
+    if (e.key==='ArrowLeft' && cur > 0) go(cur-1);
+  });
+</script>
+</body>
+</html>

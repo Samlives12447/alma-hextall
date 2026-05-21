@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldilocks and Little Amla Save the Day!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #fef9f0;
+    overflow-x: hidden;
+  }
+
+  .bg-stars {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: #ffe082;
+    border-radius: 50%;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: 0.2; } to { opacity: 0.9; } }
+
+  .cover-moon {
+    position: absolute;
+    top: 40px; right: 60px;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at 35% 35%, #fff9c4, #ffe082);
+    border-radius: 50%;
+    box-shadow: 0 0 40px #ffe08288;
+    animation: moonGlow 3s ease-in-out infinite alternate;
+  }
+  @keyframes moonGlow { from { box-shadow: 0 0 30px #ffe08266; } to { box-shadow: 0 0 60px #ffe082cc; } }
+
+  .cover-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: #ffe082;
+    text-align: center;
+    text-shadow: 3px 3px 0 #e65100, 6px 6px 0 #bf360c44;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  .cover-subtitle {
+    font-size: 1.1rem;
+    color: #b3e5fc;
+    margin-bottom: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  .scene {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    min-height: 100vh;
+    padding: 0 0 60px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .page-welcome  { background: linear-gradient(180deg, #064e3b 0%, #166534 30%, #4ade80 60%, #bbf7d0 100%); }
+  .page-missing  { background: linear-gradient(180deg, #7c2d12 0%, #c2410c 30%, #fb923c 60%, #fed7aa 100%); }
+  .page-search   { background: linear-gradient(180deg, #1e1b4b 0%, #3730a3 30%, #6d28d9 60%, #c4b5fd 100%); }
+  .page-brave2   { background: linear-gradient(180deg, #064e3b 0%, #065f46 30%, #059669 60%, #a7f3d0 100%); }
+  .page-found    { background: linear-gradient(180deg, #713f12 0%, #92400e 30%, #d97706 60%, #fef3c7 100%); }
+  .page-celebrate{ background: linear-gradient(180deg, #0c4a6e 0%, #0369a1 30%, #38bdf8 60%, #e0f2fe 100%); }
+
+  .illustration {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .text-bubble {
+    background: white;
+    border-radius: 20px;
+    padding: 20px 24px;
+    margin: 20px 16px;
+    max-width: 420px;
+    width: calc(100% - 32px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  .text-bubble::before {
+    content: '';
+    position: absolute;
+    top: -14px; left: 30px;
+    border: 8px solid transparent;
+    border-bottom-color: white;
+  }
+
+  .page-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    color: white;
+    opacity: 0.7;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .story-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+    font-weight: 700;
+  }
+
+  .story-text em {
+    color: #e65100;
+    font-style: normal;
+    font-size: 1.2em;
+  }
+
+  .chapter-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: white;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    text-align: center;
+    padding: 24px 20px 8px;
+    width: 100%;
+  }
+
+  .sound-word {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    color: #e65100;
+    display: block;
+    text-align: center;
+    margin: 6px 0;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+    animation: wobble 1s ease-in-out infinite;
+  }
+  @keyframes wobble { 0%,100% {transform:rotate(-3deg);} 50% {transform:rotate(3deg);} }
+
+  .the-end {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3rem;
+    color: #ffe082;
+    text-shadow: 3px 3px 0 #1565c0, 6px 6px 0 #0d47a133;
+    text-align: center;
+    padding: 20px;
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+
+  .hearts {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 10px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+  .nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    background: rgba(0,0,0,0.4);
+    padding: 8px 14px;
+    border-radius: 20px;
+  }
+  .nav-dot {
+    width: 10px; height: 10px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+  }
+  .nav-dot.active { background: #ffe082; }
+
+  .page { display: none; }
+  .page.active { display: flex; }
+
+  .lang-btn {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,224,130,0.5);
+    color: #ffe082;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s;
+  }
+  .lang-btn:hover { background: rgba(255,224,130,0.18); }
+</style>
+</head>
+<body>
+
+<button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 Français</button>
+<div class="bg-stars" id="stars"></div>
+
+<!-- PAGE 0: COVER -->
+<div class="page active" id="page-0" style="background:linear-gradient(160deg,#1a1a2e,#0f3460);min-height:100vh;justify-content:center;align-items:center;">
+  <div class="cover-moon"></div>
+  <p class="cover-subtitle" style="margin-top:80px;" data-fr="✨ Livre 3 — Une histoire pour les petits courageux ✨">&#10024; Book 3 &mdash; A Story for Brave Little Ones &#10024;</p>
+  <h1 class="cover-title" data-fr="Boucle d'Or et&lt;br&gt;la petite Amla&lt;br&gt;sauvent la mise !">Goldilocks &amp;<br>Little Amla<br>Save the Day!</h1>
+
+  <svg class="scene" viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- Night sky -->
+    <rect width="420" height="280" fill="#0d1b40"/>
+    <circle cx="40" cy="25" r="2" fill="white" opacity="0.9"/>
+    <circle cx="110" cy="15" r="1.5" fill="white" opacity="0.7"/>
+    <circle cx="200" cy="22" r="2" fill="white"/>
+    <circle cx="310" cy="12" r="1.5" fill="white" opacity="0.8"/>
+    <circle cx="60" cy="55" r="1" fill="white" opacity="0.6"/>
+    <circle cx="160" cy="40" r="1.5" fill="white" opacity="0.5"/>
+    <circle cx="280" cy="50" r="1" fill="white"/>
+    <!-- Moon -->
+    <circle cx="370" cy="50" r="30" fill="#ffe082"/>
+    <circle cx="357" cy="42" r="26" fill="#0d1b40"/>
+    <!-- Ground -->
+    <rect x="0" y="210" width="420" height="70" fill="#1e3a1e"/>
+    <rect x="0" y="202" width="420" height="12" fill="#2d5a2d"/>
+    <!-- Trees -->
+    <rect x="20" y="120" width="14" height="90" fill="#5c3d11"/>
+    <polygon points="27,70 0,148 54,148" fill="#1b4332"/>
+    <polygon points="27,95 4,152 50,152" fill="#2d6a4f"/>
+    <rect x="382" y="125" width="14" height="85" fill="#5c3d11"/>
+    <polygon points="389,75 364,152 414,152" fill="#1b4332"/>
+    <!-- Cottage -->
+    <rect x="168" y="138" width="84" height="72" fill="#fef3c7" rx="3"/>
+    <polygon points="156,138 210,102 264,138" fill="#dc2626"/>
+    <rect x="192" y="168" width="20" height="42" fill="#92400e" rx="2"/>
+    <rect x="170" y="148" width="18" height="15" fill="#bae6fd" rx="2"/>
+    <rect x="232" y="148" width="18" height="15" fill="#bae6fd" rx="2"/>
+    <ellipse cx="179" cy="155" rx="8" ry="6" fill="#fde68a" opacity="0.5"/>
+    <ellipse cx="241" cy="155" rx="8" ry="6" fill="#fde68a" opacity="0.5"/>
+    <!-- SIMBA left -->
+    <ellipse cx="100" cy="215" rx="26" ry="19" fill="#f59e0b"/>
+    <circle cx="115" cy="200" r="23" fill="#b45309" opacity="0.6"/>
+    <circle cx="115" cy="200" r="18" fill="#f59e0b"/>
+    <ellipse cx="122" cy="205" rx="8" ry="5" fill="#fde68a"/>
+    <circle cx="120" cy="202" r="2.5" fill="black"/>
+    <circle cx="110" cy="197" r="3" fill="black"/>
+    <circle cx="120" cy="202" r="1" fill="white"/>
+    <circle cx="110" cy="197" r="1" fill="white"/>
+    <path d="M74,215 Q60,198 70,183" stroke="#f59e0b" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <circle cx="70" cy="183" r="6" fill="#b45309"/>
+    <!-- GOLDILOCKS center-left -->
+    <ellipse cx="210" cy="228" rx="14" ry="17" fill="#3b82f6"/>
+    <circle cx="210" cy="207" r="14" fill="#fde68a"/>
+    <ellipse cx="200" cy="200" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="220" cy="200" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="210" cy="195" rx="9" ry="6" fill="#fbbf24"/>
+    <circle cx="205" cy="206" r="2.5" fill="#1c1917"/>
+    <circle cx="215" cy="206" r="2.5" fill="#1c1917"/>
+    <path d="M204,213 Q210,218 216,213" stroke="#e11d48" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <polygon points="203,193 210,197 203,202" fill="#ef4444"/>
+    <polygon points="217,193 210,197 217,202" fill="#ef4444"/>
+    <circle cx="210" cy="197" r="2.5" fill="#dc2626"/>
+    <!-- AMLA center-right, tiny 3yr old -->
+    <ellipse cx="268" cy="233" rx="9" ry="11" fill="#fce7f3"/>
+    <circle cx="268" cy="217" r="11" fill="#fde68a"/>
+    <ellipse cx="258" cy="212" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="278" cy="212" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="268" cy="208" rx="7" ry="4" fill="#fbbf24"/>
+    <circle cx="264" cy="217" r="2" fill="#1c1917"/>
+    <circle cx="272" cy="217" r="2" fill="#1c1917"/>
+    <circle cx="261" cy="220" r="2.5" fill="#fca5a5" opacity="0.5"/>
+    <circle cx="275" cy="220" r="2.5" fill="#fca5a5" opacity="0.5"/>
+    <path d="M264,223 Q268,227 272,223" stroke="#e11d48" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Three Bears small near cottage -->
+    <ellipse cx="148" cy="222" rx="14" ry="12" fill="#92400e"/>
+    <circle cx="148" cy="208" r="11" fill="#92400e"/>
+    <circle cx="143" cy="201" r="4" fill="#78350f"/>
+    <circle cx="153" cy="201" r="4" fill="#78350f"/>
+    <ellipse cx="310" cy="218" rx="12" ry="10" fill="#b45309"/>
+    <circle cx="310" cy="206" r="10" fill="#b45309"/>
+    <circle cx="305" cy="200" r="3.5" fill="#92400e"/>
+    <circle cx="315" cy="200" r="3.5" fill="#92400e"/>
+    <polygon points="307,196 310,199 307,202" fill="#f9a8d4"/>
+    <polygon points="313,196 310,199 313,202" fill="#f9a8d4"/>
+    <ellipse cx="345" cy="224" rx="10" ry="9" fill="#d97706"/>
+    <circle cx="345" cy="213" r="9" fill="#d97706"/>
+    <circle cx="340" cy="207" r="3" fill="#b45309"/>
+    <circle cx="350" cy="207" r="3" fill="#b45309"/>
+    <text x="210" y="270" font-family="Fredoka One" font-size="12" fill="#ffe082" text-anchor="middle">Goldilocks &amp; Little Amla!</text>
+  </svg>
+  <p class="page-num" style="color:#b3e5fc;margin-top:16px;" data-fr="Appuie sur les points pour tourner la page !">Tap the dots below to turn the page!</p>
+</div>
+
+<!-- PAGE 1: A New Friend! -->
+<div class="page page-welcome" id="page-1">
+  <div class="chapter-label" data-fr="Un nouvel ami !">A New Friend!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#86efac"/>
+    <!-- Sun -->
+    <circle cx="55" cy="52" r="38" fill="#fde68a"/>
+    <line x1="55" y1="6" x2="55" y2="0" stroke="#fbbf24" stroke-width="3"/>
+    <line x1="93" y1="27" x2="100" y2="20" stroke="#fbbf24" stroke-width="3"/>
+    <line x1="100" y1="52" x2="108" y2="52" stroke="#fbbf24" stroke-width="3"/>
+    <line x1="17" y1="27" x2="10" y2="20" stroke="#fbbf24" stroke-width="3"/>
+    <!-- Ground -->
+    <rect x="0" y="252" width="420" height="48" fill="#4a7c3f"/>
+    <rect x="0" y="242" width="420" height="14" fill="#5aae4a"/>
+    <!-- Cottage right -->
+    <rect x="292" y="145" width="90" height="100" fill="#fef3c7" rx="4"/>
+    <polygon points="280,145 337,100 394,145" fill="#dc2626"/>
+    <rect x="316" y="196" width="22" height="49" fill="#92400e" rx="3"/>
+    <circle cx="340" cy="222" r="3" fill="#fde68a"/>
+    <rect x="298" y="158" width="22" height="20" fill="#bae6fd" rx="3"/>
+    <rect x="360" y="158" width="22" height="20" fill="#bae6fd" rx="3"/>
+    <ellipse cx="309" cy="168" rx="9" ry="7" fill="#fde68a" opacity="0.5"/>
+    <ellipse cx="371" cy="168" rx="9" ry="7" fill="#fde68a" opacity="0.5"/>
+    <rect x="356" y="106" width="16" height="30" fill="#9ca3af"/>
+    <ellipse cx="363" cy="97" rx="9" ry="6" fill="#e5e7eb" opacity="0.7"/>
+    <!-- Trees left -->
+    <rect x="30" y="130" width="16" height="115" fill="#78350f"/>
+    <polygon points="38,75 8,165 68,165" fill="#15803d"/>
+    <polygon points="38,100 12,168 64,168" fill="#166534"/>
+    <!-- Flowers -->
+    <circle cx="118" cy="247" r="6" fill="#f9a8d4"/><circle cx="118" cy="247" r="2.5" fill="#fde68a"/>
+    <circle cx="148" cy="250" r="5" fill="#c084fc"/><circle cx="148" cy="250" r="2" fill="#fde68a"/>
+    <circle cx="258" cy="246" r="6" fill="#fbbf24"/><circle cx="258" cy="246" r="2.5" fill="#ef4444"/>
+    <!-- PAPA BEAR left -->
+    <ellipse cx="82" cy="222" rx="22" ry="19" fill="#92400e"/>
+    <circle cx="82" cy="200" r="18" fill="#92400e"/>
+    <ellipse cx="82" cy="211" rx="11" ry="8" fill="#b45309"/>
+    <circle cx="76" cy="195" r="6" fill="#78350f"/><circle cx="88" cy="195" r="6" fill="#78350f"/>
+    <circle cx="76" cy="195" r="2.5" fill="black"/><circle cx="88" cy="195" r="2.5" fill="black"/>
+    <path d="M76,206 Q82,211 88,206" stroke="#1c1917" stroke-width="2" fill="none"/>
+    <!-- SIMBA center-left -->
+    <ellipse cx="152" cy="228" rx="26" ry="19" fill="#f59e0b"/>
+    <circle cx="165" cy="212" r="23" fill="#b45309" opacity="0.6"/>
+    <circle cx="165" cy="212" r="18" fill="#f59e0b"/>
+    <ellipse cx="172" cy="217" rx="8" ry="5" fill="#fde68a"/>
+    <circle cx="170" cy="214" r="2.5" fill="black"/><circle cx="160" cy="209" r="3" fill="black"/>
+    <circle cx="170" cy="214" r="1" fill="white"/><circle cx="160" cy="209" r="1" fill="white"/>
+    <path d="M161,220 Q167,225 172,220" stroke="#b45309" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M126,226 Q113,208 123,192" stroke="#f59e0b" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <circle cx="123" cy="192" r="7" fill="#b45309"/>
+    <!-- GOLDILOCKS center -->
+    <ellipse cx="222" cy="232" rx="14" ry="17" fill="#3b82f6"/>
+    <circle cx="222" cy="210" r="14" fill="#fde68a"/>
+    <ellipse cx="212" cy="203" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="232" cy="203" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="222" cy="197" rx="9" ry="6" fill="#fbbf24"/>
+    <circle cx="217" cy="209" r="2.5" fill="#1c1917"/><circle cx="227" cy="209" r="2.5" fill="#1c1917"/>
+    <path d="M215,217 Q222,222 229,217" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <polygon points="215,196 222,200 215,204" fill="#ef4444"/>
+    <polygon points="229,196 222,200 229,204" fill="#ef4444"/>
+    <circle cx="222" cy="200" r="2.5" fill="#dc2626"/>
+    <!-- Goldilocks arm outstretched to welcome Amla -->
+    <line x1="236" y1="220" x2="258" y2="228" stroke="#fde68a" stroke-width="10" stroke-linecap="round"/>
+    <!-- AMLA arriving right, tiny 3yr old with blond pigtails -->
+    <ellipse cx="292" cy="236" rx="9" ry="11" fill="#fce7f3"/>
+    <circle cx="292" cy="220" r="11" fill="#fde68a"/>
+    <ellipse cx="282" cy="215" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="302" cy="215" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="292" cy="210" rx="7" ry="4" fill="#fbbf24"/>
+    <circle cx="288" cy="219" r="2" fill="#1c1917"/><circle cx="296" cy="219" r="2" fill="#1c1917"/>
+    <circle cx="285" cy="222" r="3" fill="#fca5a5" opacity="0.5"/>
+    <circle cx="299" cy="222" r="3" fill="#fca5a5" opacity="0.5"/>
+    <path d="M288,226 Q292,230 296,226" stroke="#e11d48" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- MAMA BEAR far right at door -->
+    <ellipse cx="383" cy="228" rx="18" ry="15" fill="#b45309"/>
+    <circle cx="383" cy="211" r="14" fill="#b45309"/>
+    <ellipse cx="383" cy="220" rx="8" ry="6" fill="#d97706"/>
+    <circle cx="377" cy="207" r="4.5" fill="#92400e"/><circle cx="389" cy="207" r="4.5" fill="#92400e"/>
+    <circle cx="377" cy="207" r="2" fill="black"/><circle cx="389" cy="207" r="2" fill="black"/>
+    <polygon points="379,201 383,205 379,209" fill="#f9a8d4"/>
+    <polygon points="387,201 383,205 387,209" fill="#f9a8d4"/>
+    <circle cx="383" cy="205" r="3" fill="#ec4899"/>
+    <!-- BABY BEAR small in front of Mama -->
+    <ellipse cx="348" cy="238" rx="12" ry="10" fill="#d97706"/>
+    <circle cx="348" cy="226" r="10" fill="#d97706"/>
+    <ellipse cx="348" cy="232" rx="6" ry="4" fill="#f59e0b"/>
+    <circle cx="343" cy="222" r="3.5" fill="#b45309"/><circle cx="353" cy="222" r="3.5" fill="#b45309"/>
+    <circle cx="343" cy="223" r="1.5" fill="black"/><circle cx="353" cy="223" r="1.5" fill="black"/>
+    <path d="M343,230 Q348,233 353,230" stroke="#1c1917" stroke-width="1.5" fill="none"/>
+    <!-- Welcome speech bubble -->
+    <ellipse cx="222" cy="164" rx="66" ry="25" fill="white" opacity="0.9"/>
+    <polygon points="222,187 214,202 230,189" fill="white" opacity="0.9"/>
+    <text x="222" y="158" font-family="Fredoka One" font-size="12" fill="#166534" text-anchor="middle">Welcome,</text>
+    <text x="222" y="174" font-family="Fredoka One" font-size="12" fill="#166534" text-anchor="middle">little Amla!</text>
+  </svg>
+  <div class="text-bubble">
+    <p class="story-text" data-fr="Au cœur des bois douilllets, Boucle d'Or eut une magnifique surprise ! La petite <em>Amla</em> était venue en visite — elle n'avait que trois ans, avec de beaux cheveux blonds tout comme Boucle d'Or !">Deep in the cosy woods, Goldilocks had a wonderful surprise! Little <em>Amla</em> had come to visit — she was just three years old, with beautiful blond hair just like Goldilocks!</p>
+    <p class="story-text" style="margin-top:10px;" data-fr="<em>Simba</em> remua la queue. <em>Bébé Ours</em> sauta de joie. <em>« YOUPI ! Un nouvel ami ! »</em> crièrent-ils tous."><em>Simba</em> wagged his tail. <em>Baby Bear</em> jumped up and down. <em>"YAY! A new friend!"</em> everyone cheered.</p>
+  </div>
+  <p class="page-num">Page 1</p>
+</div>
+
+<!-- PAGE 2: Oh No! Baby Bear is Missing! -->
+<div class="page page-missing" id="page-2">
+  <div class="chapter-label" data-fr="Oh non ! Bébé Ours a disparu !">Oh No! Baby Bear is Missing!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#fed7aa"/>
+    <circle cx="370" cy="60" r="42" fill="#fbbf24" opacity="0.7"/>
+    <rect x="0" y="255" width="420" height="45" fill="#78350f" opacity="0.4"/>
+    <rect x="0" y="245" width="420" height="14" fill="#4a7c3f"/>
+    <!-- Cottage -->
+    <rect x="155" y="138" width="110" height="108" fill="#fef3c7" rx="4"/>
+    <polygon points="143,138 210,92 277,138" fill="#dc2626"/>
+    <rect x="186" y="195" width="24" height="51" fill="#92400e" rx="3"/>
+    <circle cx="212" cy="222" r="3" fill="#fde68a"/>
+    <rect x="162" y="152" width="24" height="22" fill="#bae6fd" rx="3"/>
+    <rect x="234" y="152" width="24" height="22" fill="#bae6fd" rx="3"/>
+    <ellipse cx="174" cy="163" rx="10" ry="8" fill="#fde68a" opacity="0.5"/>
+    <ellipse cx="246" cy="163" rx="10" ry="8" fill="#fde68a" opacity="0.5"/>
+    <!-- PAPA BEAR left, worried -->
+    <ellipse cx="65" cy="224" rx="22" ry="19" fill="#92400e"/>
+    <circle cx="65" cy="202" r="18" fill="#92400e"/>
+    <ellipse cx="65" cy="213" rx="11" ry="8" fill="#b45309"/>
+    <circle cx="59" cy="196" r="6" fill="#78350f"/><circle cx="71" cy="196" r="6" fill="#78350f"/>
+    <ellipse cx="59" cy="198" rx="4" ry="3.5" fill="#1c1917"/>
+    <ellipse cx="71" cy="198" rx="4" ry="3.5" fill="#1c1917"/>
+    <line x1="54" y1="191" x2="63" y2="194" stroke="#451a03" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="68" y1="193" x2="76" y2="190" stroke="#451a03" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M59,209 Q65,205 71,209" stroke="#1c1917" stroke-width="2" fill="none"/>
+    <!-- MAMA BEAR right, worried -->
+    <ellipse cx="355" cy="222" rx="20" ry="17" fill="#b45309"/>
+    <circle cx="355" cy="203" r="16" fill="#b45309"/>
+    <ellipse cx="355" cy="213" rx="9" ry="7" fill="#d97706"/>
+    <circle cx="349" cy="198" r="5" fill="#92400e"/><circle cx="361" cy="198" r="5" fill="#92400e"/>
+    <ellipse cx="349" cy="200" rx="3.5" ry="4" fill="#1c1917"/>
+    <ellipse cx="361" cy="200" rx="3.5" ry="4" fill="#1c1917"/>
+    <line x1="344" y1="193" x2="354" y2="196" stroke="#451a03" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="358" y1="195" x2="366" y2="193" stroke="#451a03" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M349,209 Q355,205 361,209" stroke="#1c1917" stroke-width="2" fill="none"/>
+    <polygon points="351,192 355,196 351,200" fill="#f9a8d4"/>
+    <polygon points="359,192 355,196 359,200" fill="#f9a8d4"/>
+    <circle cx="355" cy="196" r="3" fill="#ec4899"/>
+    <!-- GOLDILOCKS worried -->
+    <ellipse cx="152" cy="232" rx="14" ry="17" fill="#3b82f6"/>
+    <circle cx="152" cy="210" r="14" fill="#fde68a"/>
+    <ellipse cx="142" cy="203" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="162" cy="203" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="152" cy="197" rx="9" ry="6" fill="#fbbf24"/>
+    <circle cx="147" cy="208" r="2.5" fill="#1c1917"/><circle cx="157" cy="208" r="2.5" fill="#1c1917"/>
+    <line x1="143" y1="202" x2="151" y2="205" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+    <line x1="153" y1="204" x2="161" y2="202" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+    <path d="M147,215 Q152,212 157,215" stroke="#e11d48" stroke-width="2" fill="none"/>
+    <polygon points="145,195 152,199 145,203" fill="#ef4444"/>
+    <polygon points="159,195 152,199 159,203" fill="#ef4444"/>
+    <circle cx="152" cy="199" r="2.5" fill="#dc2626"/>
+    <!-- AMLA worried, tiny -->
+    <ellipse cx="237" cy="237" rx="9" ry="11" fill="#fce7f3"/>
+    <circle cx="237" cy="221" r="11" fill="#fde68a"/>
+    <ellipse cx="227" cy="216" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="247" cy="216" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="237" cy="211" rx="7" ry="4" fill="#fbbf24"/>
+    <circle cx="233" cy="220" r="2" fill="#1c1917"/><circle cx="241" cy="220" r="2" fill="#1c1917"/>
+    <line x1="230" y1="213" x2="236" y2="215" stroke="#92400e" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="238" y1="215" x2="244" y2="213" stroke="#92400e" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="234" cy="223" r="2.5" fill="#fca5a5" opacity="0.5"/>
+    <circle cx="240" cy="223" r="2.5" fill="#fca5a5" opacity="0.5"/>
+    <path d="M234,227 Q237,224 240,227" stroke="#e11d48" stroke-width="1.5" fill="none"/>
+    <!-- SIMBA sniffing -->
+    <ellipse cx="298" cy="228" rx="26" ry="19" fill="#f59e0b"/>
+    <circle cx="312" cy="212" r="23" fill="#b45309" opacity="0.6"/>
+    <circle cx="312" cy="212" r="18" fill="#f59e0b"/>
+    <ellipse cx="320" cy="218" rx="9" ry="6" fill="#fde68a"/>
+    <circle cx="317" cy="214" r="2.5" fill="black"/><circle cx="307" cy="208" r="3" fill="black"/>
+    <path d="M272,226 Q259,208 269,193" stroke="#f59e0b" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <circle cx="269" cy="193" r="7" fill="#b45309"/>
+    <!-- Empty space with question mark where Baby Bear was -->
+    <circle cx="210" cy="240" r="20" fill="rgba(255,255,255,0.15)" stroke="white" stroke-width="2" stroke-dasharray="5,4"/>
+    <text x="210" y="247" font-family="Fredoka One" font-size="24" fill="white" text-anchor="middle" opacity="0.8">?</text>
+    <!-- Sweat drops -->
+    <ellipse cx="100" cy="173" rx="5" ry="7" fill="#93c5fd" opacity="0.7"/>
+    <ellipse cx="316" cy="170" rx="5" ry="7" fill="#93c5fd" opacity="0.7"/>
+  </svg>
+  <div class="text-bubble">
+    <p class="story-text" data-fr="Après le déjeuner, tout le monde sortit jouer. Puis Maman Ours s'arrêta et compta les têtes. Papa Ours. Maman Ours. Boucle d'Or. Amla. Simba.">After lunch, everyone went outside to play. Then Mama Bear stopped and counted heads. Papa Bear. Mama Bear. Goldilocks. Amla. Simba.</p>
+    <p class="story-text" style="margin-top:10px;" data-fr="<em>« Attendez ! »</em> haleta Maman Ours. <em>« Où est Bébé Ours ?! »</em>"><em>"Wait!"</em> gasped Mama Bear. <em>"Where is Baby Bear?!"</em></p>
+    <span class="sound-word" data-fr="Oh non ! Oh non ! Oh non !">Oh no! Oh no! Oh no!</span>
+  </div>
+  <p class="page-num">Page 2</p>
+</div>
+
+<!-- PAGE 3: Searching the Woods! -->
+<div class="page page-search" id="page-3">
+  <div class="chapter-label" data-fr="À la recherche dans les bois !">Searching the Woods!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#2e1065"/>
+    <circle cx="50" cy="20" r="1.5" fill="white" opacity="0.7"/>
+    <circle cx="140" cy="12" r="1" fill="white" opacity="0.6"/>
+    <circle cx="280" cy="18" r="1.5" fill="white"/>
+    <circle cx="380" cy="25" r="1" fill="white" opacity="0.8"/>
+    <circle cx="210" cy="35" r="1" fill="white" opacity="0.5"/>
+    <!-- Ground -->
+    <rect x="0" y="258" width="420" height="42" fill="#1e1b0a"/>
+    <rect x="0" y="248" width="420" height="13" fill="#2d3a0a"/>
+    <!-- Dark tree silhouettes -->
+    <rect x="0" y="110" width="15" height="145" fill="#111827"/>
+    <polygon points="8,55 -18,140 34,140" fill="#111827"/>
+    <rect x="25" y="130" width="13" height="125" fill="#1f2937"/>
+    <polygon points="32,75 10,158 54,158" fill="#1f2937"/>
+    <rect x="392" y="115" width="14" height="140" fill="#111827"/>
+    <polygon points="399,60 374,145 424,145" fill="#111827"/>
+    <rect x="367" y="135" width="13" height="120" fill="#1f2937"/>
+    <polygon points="374,80 352,160 396,160" fill="#1f2937"/>
+    <rect x="182" y="105" width="12" height="150" fill="#0f172a"/>
+    <polygon points="188,50 164,135 212,135" fill="#0f172a"/>
+    <!-- Paw prints glowing on ground -->
+    <ellipse cx="195" cy="260" rx="7" ry="5" fill="#fbbf24" opacity="0.6"/>
+    <ellipse cx="215" cy="254" rx="7" ry="5" fill="#fbbf24" opacity="0.6"/>
+    <ellipse cx="232" cy="260" rx="7" ry="5" fill="#fbbf24" opacity="0.5"/>
+    <ellipse cx="250" cy="254" rx="7" ry="5" fill="#fbbf24" opacity="0.4"/>
+    <circle cx="192" cy="256" r="2" fill="#fbbf24" opacity="0.6"/>
+    <circle cx="196" cy="255" r="2" fill="#fbbf24" opacity="0.6"/>
+    <circle cx="199" cy="256" r="2" fill="#fbbf24" opacity="0.6"/>
+    <!-- PAPA BEAR searching left -->
+    <ellipse cx="75" cy="224" rx="22" ry="19" fill="#92400e"/>
+    <circle cx="75" cy="202" r="18" fill="#92400e"/>
+    <ellipse cx="75" cy="213" rx="11" ry="8" fill="#b45309"/>
+    <circle cx="69" cy="196" r="6" fill="#78350f"/><circle cx="81" cy="196" r="6" fill="#78350f"/>
+    <circle cx="69" cy="197" r="2.5" fill="black"/><circle cx="81" cy="197" r="2.5" fill="black"/>
+    <text x="55" y="168" font-family="Fredoka One" font-size="13" fill="#fde68a" text-anchor="middle" opacity="0.9">Baby Bear!</text>
+    <!-- SIMBA searching right -->
+    <ellipse cx="345" cy="228" rx="26" ry="19" fill="#f59e0b"/>
+    <circle cx="358" cy="212" r="23" fill="#b45309" opacity="0.6"/>
+    <circle cx="358" cy="212" r="18" fill="#f59e0b"/>
+    <ellipse cx="365" cy="217" rx="8" ry="5" fill="#fde68a"/>
+    <circle cx="363" cy="214" r="2.5" fill="black"/><circle cx="353" cy="208" r="3" fill="black"/>
+    <path d="M318,226 Q305,208 315,193" stroke="#f59e0b" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <circle cx="315" cy="193" r="7" fill="#b45309"/>
+    <ellipse cx="382" cy="172" rx="35" ry="18" fill="white" opacity="0.9"/>
+    <polygon points="367,188 358,200 377,190" fill="white" opacity="0.9"/>
+    <text x="382" y="168" font-family="Fredoka One" font-size="11" fill="#92400e" text-anchor="middle">Baby</text>
+    <text x="382" y="182" font-family="Fredoka One" font-size="11" fill="#92400e" text-anchor="middle">Bear!</text>
+    <!-- GOLDILOCKS center calling -->
+    <ellipse cx="200" cy="235" rx="14" ry="17" fill="#3b82f6"/>
+    <circle cx="200" cy="213" r="14" fill="#fde68a"/>
+    <ellipse cx="190" cy="206" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="210" cy="206" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="200" cy="200" rx="9" ry="6" fill="#fbbf24"/>
+    <circle cx="195" cy="212" r="2.5" fill="#1c1917"/><circle cx="205" cy="212" r="2.5" fill="#1c1917"/>
+    <ellipse cx="200" cy="220" rx="5" ry="4" fill="#dc2626"/>
+    <polygon points="193,197 200,201 193,205" fill="#ef4444"/>
+    <polygon points="207,197 200,201 207,205" fill="#ef4444"/>
+    <circle cx="200" cy="201" r="2.5" fill="#dc2626"/>
+    <line x1="186" y1="222" x2="165" y2="215" stroke="#fde68a" stroke-width="11" stroke-linecap="round"/>
+    <line x1="214" y1="222" x2="235" y2="215" stroke="#fde68a" stroke-width="11" stroke-linecap="round"/>
+    <!-- AMLA pointing at paw prints! The key moment! -->
+    <ellipse cx="268" cy="237" rx="9" ry="11" fill="#fce7f3"/>
+    <circle cx="268" cy="221" r="11" fill="#fde68a"/>
+    <ellipse cx="258" cy="216" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="278" cy="216" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="268" cy="211" rx="7" ry="4" fill="#fbbf24"/>
+    <circle cx="264" cy="220" r="2" fill="#1c1917"/><circle cx="272" cy="220" r="2" fill="#1c1917"/>
+    <circle cx="265" cy="223" r="2.5" fill="#fca5a5" opacity="0.5"/>
+    <circle cx="271" cy="223" r="2.5" fill="#fca5a5" opacity="0.5"/>
+    <!-- Amla pointing arm DOWN at paw prints -->
+    <line x1="268" y1="248" x2="220" y2="260" stroke="#fce7f3" stroke-width="8" stroke-linecap="round"/>
+    <!-- Amla speech bubble -->
+    <ellipse cx="294" cy="186" rx="50" ry="22" fill="white" opacity="0.92"/>
+    <polygon points="277,206 268,220 285,208" fill="white" opacity="0.92"/>
+    <text x="294" y="181" font-family="Fredoka One" font-size="11" fill="#dc2626" text-anchor="middle">Look!</text>
+    <text x="294" y="196" font-family="Fredoka One" font-size="10" fill="#dc2626" text-anchor="middle">Paw prints!</text>
+  </svg>
+  <div class="text-bubble">
+    <p class="story-text" data-fr="Ils cherchèrent derrière chaque arbre. Ils regardèrent sous chaque buisson. Ils appelèrent et appelèrent !">They searched behind every tree. They looked under every bush. They called and called!</p>
+    <span class="sound-word" data-fr="« BÉBÉ OURS ! BÉBÉ OURS ! »">"BABY BEAR! BABY BEAR!"</span>
+    <p class="story-text" style="margin-top:10px;" data-fr="Puis la toute petite <em>Amla</em> s'immobilisa. Elle regarda vers le bas avec ses petits yeux vifs, et pointa son petit doigt vers le sol.">Then tiny <em>Amla</em> stopped very still. She looked down with her sharp little eyes, and pointed her small finger at the ground.</p>
+    <p class="story-text" style="margin-top:8px;" data-fr="<em>« Regarde ! Des empreintes de pattes ! »</em>"><em>"Look! Paw prints!"</em></p>
+  </div>
+  <p class="page-num">Page 3</p>
+</div>
+
+<!-- PAGE 4: Amla is Brave! -->
+<div class="page page-brave2" id="page-4">
+  <div class="chapter-label" data-fr="Amla est SI courageuse !">Amla is SO Brave!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#064e3b"/>
+    <rect x="0" y="258" width="420" height="42" fill="#1e1b0a"/>
+    <rect x="0" y="248" width="420" height="13" fill="#166534"/>
+    <!-- Background trees -->
+    <rect x="10" y="100" width="14" height="155" fill="#052e16"/>
+    <polygon points="17,50 -5,130 39,130" fill="#052e16"/>
+    <rect x="387" y="110" width="13" height="145" fill="#052e16"/>
+    <polygon points="394,55 370,138 418,138" fill="#052e16"/>
+    <!-- BRAMBLE BUSH centre, dense -->
+    <ellipse cx="210" cy="210" rx="108" ry="68" fill="#15803d"/>
+    <ellipse cx="185" cy="195" rx="68" ry="52" fill="#166534"/>
+    <ellipse cx="238" cy="205" rx="72" ry="57" fill="#15803d"/>
+    <ellipse cx="210" cy="222" rx="92" ry="47" fill="#14532d"/>
+    <!-- Thorny branches -->
+    <line x1="130" y1="190" x2="114" y2="174" stroke="#052e16" stroke-width="3" stroke-linecap="round"/>
+    <line x1="150" y1="177" x2="139" y2="161" stroke="#052e16" stroke-width="3" stroke-linecap="round"/>
+    <line x1="282" y1="180" x2="297" y2="165" stroke="#052e16" stroke-width="3" stroke-linecap="round"/>
+    <line x1="298" y1="178" x2="312" y2="167" stroke="#052e16" stroke-width="3" stroke-linecap="round"/>
+    <!-- Red berries -->
+    <circle cx="154" cy="197" r="5" fill="#dc2626"/>
+    <circle cx="170" cy="184" r="4" fill="#dc2626"/>
+    <circle cx="193" cy="191" r="5" fill="#b91c1c"/>
+    <circle cx="231" cy="187" r="4" fill="#dc2626"/>
+    <circle cx="256" cy="197" r="5" fill="#dc2626"/>
+    <circle cx="246" cy="211" r="4" fill="#b91c1c"/>
+    <circle cx="176" cy="209" r="4" fill="#dc2626"/>
+    <!-- Small gap in brambles at ground level (left side) -->
+    <rect x="106" y="228" width="34" height="22" fill="#052e16" rx="4"/>
+    <!-- Paw print trail going in -->
+    <ellipse cx="112" cy="253" rx="6" ry="4" fill="#fbbf24" opacity="0.5"/>
+    <ellipse cx="128" cy="249" rx="6" ry="4" fill="#fbbf24" opacity="0.5"/>
+    <ellipse cx="144" cy="253" rx="6" ry="4" fill="#fbbf24" opacity="0.4"/>
+    <!-- GOLDILOCKS left, blocked, too big -->
+    <ellipse cx="52" cy="235" rx="14" ry="17" fill="#3b82f6"/>
+    <circle cx="52" cy="213" r="14" fill="#fde68a"/>
+    <ellipse cx="42" cy="206" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="62" cy="206" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="52" cy="200" rx="9" ry="6" fill="#fbbf24"/>
+    <circle cx="47" cy="212" r="2.5" fill="#1c1917"/><circle cx="57" cy="212" r="2.5" fill="#1c1917"/>
+    <path d="M47,219 Q52,215 57,219" stroke="#e11d48" stroke-width="2" fill="none"/>
+    <polygon points="45,198 52,202 45,206" fill="#ef4444"/>
+    <polygon points="59,198 52,202 59,206" fill="#ef4444"/>
+    <circle cx="52" cy="202" r="2.5" fill="#dc2626"/>
+    <line x1="66" y1="222" x2="90" y2="232" stroke="#fde68a" stroke-width="11" stroke-linecap="round"/>
+    <!-- Goldilocks speech bubble -->
+    <ellipse cx="38" cy="174" rx="48" ry="22" fill="white" opacity="0.9"/>
+    <polygon points="45,194 50,210 62,196" fill="white" opacity="0.9"/>
+    <text x="38" y="169" font-family="Fredoka One" font-size="10" fill="#1d4ed8" text-anchor="middle">I'm too</text>
+    <text x="38" y="183" font-family="Fredoka One" font-size="10" fill="#1d4ed8" text-anchor="middle">big!</text>
+    <!-- AMLA crawling bravely through the gap! -->
+    <ellipse cx="128" cy="240" rx="16" ry="8" fill="#fce7f3"/>
+    <circle cx="143" cy="234" r="10" fill="#fde68a"/>
+    <ellipse cx="136" cy="228" rx="5" ry="4" fill="#fbbf24"/>
+    <ellipse cx="151" cy="229" rx="5" ry="4" fill="#fbbf24"/>
+    <circle cx="140" cy="234" r="1.8" fill="#1c1917"/><circle cx="147" cy="234" r="1.8" fill="#1c1917"/>
+    <circle cx="139" cy="237" r="2" fill="#fca5a5" opacity="0.5"/>
+    <circle cx="148" cy="237" r="2" fill="#fca5a5" opacity="0.5"/>
+    <!-- Brave big smile -->
+    <path d="M139,240 Q144,244 149,240" stroke="#e11d48" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Amla speech bubble -->
+    <ellipse cx="162" cy="195" rx="54" ry="23" fill="white" opacity="0.92"/>
+    <polygon points="148,216 145,229 160,218" fill="white" opacity="0.92"/>
+    <text x="162" y="190" font-family="Fredoka One" font-size="11" fill="#dc2626" text-anchor="middle">I can</text>
+    <text x="162" y="206" font-family="Fredoka One" font-size="11" fill="#dc2626" text-anchor="middle">do it!</text>
+  </svg>
+  <div class="text-bubble">
+    <p class="story-text" data-fr="Les empreintes menèrent à un GRAND buisson de ronces emmêlées ! Boucle d'Or poussa et repoussa les branches. <em>« Je suis trop grande ! »</em> dit-elle tristement.">The paw prints led to a BIG tangled bramble bush! Goldilocks pushed and pushed at the branches. <em>"I'm too big!"</em> she said sadly.</p>
+    <p class="story-text" style="margin-top:10px;" data-fr="Mais la toute petite <em>Amla</em> repéra un petit espace en bas. Elle prit une grande inspiration courageuse et sourit de son plus grand sourire.">But tiny <em>Amla</em> spotted a small gap at the bottom. She took a big brave breath and smiled her biggest smile.</p>
+    <span class="sound-word" data-fr="« Je peux le faire ! »">"I can do it!"</span>
+  </div>
+  <p class="page-num">Page 4</p>
+</div>
+
+<!-- PAGE 5: Found! -->
+<div class="page page-found" id="page-5">
+  <div class="chapter-label" data-fr="Trouvé !">Found!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#92400e"/>
+    <!-- Warm golden glow -->
+    <ellipse cx="210" cy="185" rx="165" ry="125" fill="#d97706" opacity="0.35"/>
+    <rect x="0" y="258" width="420" height="42" fill="#166534"/>
+    <rect x="0" y="248" width="420" height="13" fill="#4ade80" opacity="0.5"/>
+    <!-- Hollow log -->
+    <ellipse cx="210" cy="222" rx="142" ry="52" fill="#78350f"/>
+    <ellipse cx="210" cy="220" rx="138" ry="48" fill="#92400e"/>
+    <!-- Log texture -->
+    <ellipse cx="75" cy="220" rx="20" ry="48" fill="none" stroke="#b45309" stroke-width="3" opacity="0.4"/>
+    <ellipse cx="345" cy="220" rx="20" ry="48" fill="none" stroke="#b45309" stroke-width="3" opacity="0.4"/>
+    <!-- Log dark opening -->
+    <ellipse cx="210" cy="217" rx="102" ry="36" fill="#451a03"/>
+    <ellipse cx="210" cy="216" rx="92" ry="30" fill="#d97706" opacity="0.2"/>
+    <!-- Moss -->
+    <ellipse cx="118" cy="180" rx="22" ry="10" fill="#15803d" opacity="0.7"/>
+    <ellipse cx="312" cy="178" rx="18" ry="9" fill="#166534" opacity="0.7"/>
+    <!-- Mushrooms -->
+    <rect x="153" y="251" width="6" height="8" fill="#f97316" rx="1"/>
+    <ellipse cx="156" cy="252" rx="9" ry="5" fill="#f97316"/>
+    <circle cx="156" cy="250" r="3" fill="#fed7aa"/>
+    <rect x="255" y="253" width="5" height="7" fill="#dc2626" rx="1"/>
+    <ellipse cx="257" cy="254" rx="8" ry="4" fill="#dc2626"/>
+    <!-- BABY BEAR sleeping, curled up inside log -->
+    <ellipse cx="232" cy="226" rx="36" ry="22" fill="#d97706"/>
+    <circle cx="207" cy="213" r="18" fill="#d97706"/>
+    <ellipse cx="207" cy="222" rx="10" ry="7" fill="#f59e0b"/>
+    <circle cx="200" cy="208" r="6" fill="#b45309"/><circle cx="214" cy="207" r="6" fill="#b45309"/>
+    <!-- Sleeping closed eyes -->
+    <path d="M196,213 Q200,210 204,213" stroke="#451a03" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M210,212 Q214,209 218,212" stroke="#451a03" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M200,219 Q207,223 214,219" stroke="#451a03" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Zzz -->
+    <text x="248" y="180" font-family="Fredoka One" font-size="22" fill="#fde68a" opacity="0.9">Z</text>
+    <text x="266" y="163" font-family="Fredoka One" font-size="17" fill="#fde68a" opacity="0.7">z</text>
+    <text x="278" y="148" font-family="Fredoka One" font-size="13" fill="#fde68a" opacity="0.5">z</text>
+    <!-- Baby Bear tail curled -->
+    <path d="M262,230 Q274,217 267,206" stroke="#d97706" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <!-- AMLA - gently touching Baby Bear's paw -->
+    <ellipse cx="163" cy="236" rx="9" ry="11" fill="#fce7f3"/>
+    <circle cx="163" cy="220" r="11" fill="#fde68a"/>
+    <ellipse cx="153" cy="215" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="173" cy="215" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="163" cy="210" rx="7" ry="4" fill="#fbbf24"/>
+    <circle cx="159" cy="219" r="2" fill="#1c1917"/><circle cx="167" cy="219" r="2" fill="#1c1917"/>
+    <circle cx="156" cy="222" r="2.5" fill="#fca5a5" opacity="0.5"/>
+    <circle cx="170" cy="222" r="2.5" fill="#fca5a5" opacity="0.5"/>
+    <path d="M159,226 Q163,230 167,226" stroke="#e11d48" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Tiny hand on Baby Bear's paw -->
+    <line x1="172" y1="234" x2="191" y2="231" stroke="#fde68a" stroke-width="7" stroke-linecap="round"/>
+    <!-- Whisper speech bubble -->
+    <ellipse cx="118" cy="180" rx="60" ry="26" fill="white" opacity="0.92"/>
+    <polygon points="143,204 153,220 158,206" fill="white" opacity="0.92"/>
+    <text x="118" y="173" font-family="Fredoka One" font-size="10" fill="#92400e" text-anchor="middle">Wake up,</text>
+    <text x="118" y="187" font-family="Fredoka One" font-size="10" fill="#92400e" text-anchor="middle">Baby Bear!</text>
+    <text x="118" y="200" font-family="Fredoka One" font-size="9" fill="#92400e" text-anchor="middle">We found you!</text>
+  </svg>
+  <div class="text-bubble">
+    <p class="story-text" data-fr="Amla se glissa à travers les ronces et là — niché à l'intérieur d'un beau tronc creux — était <em>Bébé Ours</em> ! Profondément endormi, ronflant doucement !">Amla crept through the brambles and there — tucked inside a cosy hollow log — was <em>Baby Bear</em>! Fast asleep, snoring softly!</p>
+    <span class="sound-word" data-fr="Rrrron... Rrrron...">Snoooore... Snoooore...</span>
+    <p class="story-text" style="margin-top:10px;" data-fr="Amla posa doucement sa toute petite main sur sa douce patte. <em>« Réveille-toi, Bébé Ours, »</em> murmura-t-elle doucement. <em>« Tout le monde te cherche ! »</em>">Amla gently placed her tiny hand on his soft paw. <em>"Wake up, Baby Bear,"</em> she whispered sweetly. <em>"Everyone is looking for you!"</em></p>
+  </div>
+  <p class="page-num">Page 5</p>
+</div>
+
+<!-- PAGE 6: Heroes Big and Small! -->
+<div class="page page-celebrate" id="page-6">
+  <div class="chapter-label" data-fr="Des héros grands et petits !">Heroes Big and Small!</div>
+  <svg class="illustration" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="420" height="300" fill="#bae6fd"/>
+    <!-- Rainbow -->
+    <path d="M0,188 Q210,22 420,188" stroke="#ef4444" stroke-width="9" fill="none" opacity="0.65"/>
+    <path d="M0,199 Q210,36 420,199" stroke="#f97316" stroke-width="9" fill="none" opacity="0.65"/>
+    <path d="M0,210 Q210,50 420,210" stroke="#eab308" stroke-width="9" fill="none" opacity="0.65"/>
+    <path d="M0,220 Q210,64 420,220" stroke="#22c55e" stroke-width="9" fill="none" opacity="0.65"/>
+    <path d="M0,229 Q210,78 420,229" stroke="#3b82f6" stroke-width="8" fill="none" opacity="0.65"/>
+    <path d="M0,237 Q210,92 420,237" stroke="#8b5cf6" stroke-width="7" fill="none" opacity="0.65"/>
+    <!-- Ground -->
+    <rect x="0" y="265" width="420" height="35" fill="#86efac"/>
+    <rect x="0" y="256" width="420" height="13" fill="#4ade80"/>
+    <!-- Flowers -->
+    <circle cx="58" cy="260" r="6" fill="#f9a8d4"/><circle cx="58" cy="260" r="2.5" fill="#fde68a"/>
+    <circle cx="98" cy="263" r="5" fill="#c084fc"/><circle cx="98" cy="263" r="2" fill="#fde68a"/>
+    <circle cx="153" cy="259" r="6" fill="#fbbf24"/><circle cx="153" cy="259" r="2.5" fill="#ef4444"/>
+    <circle cx="268" cy="260" r="6" fill="#f9a8d4"/><circle cx="268" cy="260" r="2.5" fill="#fde68a"/>
+    <circle cx="330" cy="262" r="5" fill="#86efac"/>
+    <circle cx="372" cy="259" r="6" fill="#c084fc"/><circle cx="372" cy="259" r="2" fill="#fde68a"/>
+    <!-- PAPA BEAR left, very happy -->
+    <ellipse cx="48" cy="234" rx="22" ry="19" fill="#92400e"/>
+    <circle cx="48" cy="212" r="18" fill="#92400e"/>
+    <ellipse cx="48" cy="222" rx="11" ry="8" fill="#b45309"/>
+    <circle cx="42" cy="207" r="6" fill="#78350f"/><circle cx="54" cy="207" r="6" fill="#78350f"/>
+    <circle cx="42" cy="207" r="2.5" fill="black"/><circle cx="54" cy="207" r="2.5" fill="black"/>
+    <path d="M42,217 Q48,222 54,217" stroke="#1c1917" stroke-width="2.5" fill="none"/>
+    <!-- SIMBA left-centre, happy -->
+    <ellipse cx="128" cy="238" rx="28" ry="20" fill="#f59e0b"/>
+    <circle cx="141" cy="220" r="26" fill="#b45309" opacity="0.6"/>
+    <circle cx="141" cy="220" r="20" fill="#f59e0b"/>
+    <ellipse cx="149" cy="226" rx="9" ry="6" fill="#fde68a"/>
+    <circle cx="146" cy="222" r="2.5" fill="black"/><circle cx="136" cy="217" r="3" fill="black"/>
+    <circle cx="146" cy="222" r="1" fill="white"/><circle cx="136" cy="217" r="1" fill="white"/>
+    <path d="M137,229 Q143,236 149,229" stroke="#b45309" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M94,238 Q80,218 90,200" stroke="#f59e0b" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <circle cx="90" cy="200" r="7" fill="#b45309"/>
+    <text x="113" y="178" font-family="Fredoka One" font-size="18" fill="#fde68a" text-anchor="middle" opacity="0.9">ROAR!</text>
+    <!-- GOLDILOCKS centre, proud -->
+    <ellipse cx="222" cy="242" rx="14" ry="17" fill="#3b82f6"/>
+    <circle cx="222" cy="220" r="14" fill="#fde68a"/>
+    <ellipse cx="212" cy="213" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="232" cy="213" rx="10" ry="9" fill="#fbbf24"/>
+    <ellipse cx="222" cy="207" rx="9" ry="6" fill="#fbbf24"/>
+    <circle cx="217" cy="219" r="2.5" fill="#1c1917"/><circle cx="227" cy="219" r="2.5" fill="#1c1917"/>
+    <circle cx="217" cy="219" r="1" fill="white"/><circle cx="227" cy="219" r="1" fill="white"/>
+    <path d="M215,228 Q222,234 229,228" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <polygon points="215,205 222,209 215,213" fill="#ef4444"/>
+    <polygon points="229,205 222,209 229,213" fill="#ef4444"/>
+    <circle cx="222" cy="209" r="2.5" fill="#dc2626"/>
+    <!-- BABY BEAR centre-right, safe and happy! -->
+    <ellipse cx="295" cy="248" rx="14" ry="12" fill="#d97706"/>
+    <circle cx="295" cy="234" r="12" fill="#d97706"/>
+    <ellipse cx="295" cy="241" rx="7" ry="5" fill="#f59e0b"/>
+    <circle cx="289" cy="229" r="4" fill="#b45309"/><circle cx="301" cy="229" r="4" fill="#b45309"/>
+    <circle cx="289" cy="230" r="1.8" fill="black"/><circle cx="301" cy="230" r="1.8" fill="black"/>
+    <path d="M289,238 Q295,243 301,238" stroke="#1c1917" stroke-width="2" fill="none"/>
+    <!-- MAMA BEAR right, holding AMLA high in the air! -->
+    <ellipse cx="370" cy="232" rx="20" ry="17" fill="#b45309"/>
+    <circle cx="370" cy="212" r="16" fill="#b45309"/>
+    <ellipse cx="370" cy="222" rx="9" ry="7" fill="#d97706"/>
+    <circle cx="364" cy="207" r="5" fill="#92400e"/><circle cx="376" cy="207" r="5" fill="#92400e"/>
+    <circle cx="364" cy="208" r="2" fill="black"/><circle cx="376" cy="208" r="2" fill="black"/>
+    <path d="M364,217 Q370,222 376,217" stroke="#1c1917" stroke-width="2" fill="none"/>
+    <polygon points="366,202 370,206 366,210" fill="#f9a8d4"/>
+    <polygon points="374,202 370,206 374,210" fill="#f9a8d4"/>
+    <circle cx="370" cy="206" r="3" fill="#ec4899"/>
+    <!-- Arms raised holding Amla high -->
+    <line x1="358" y1="222" x2="354" y2="172" stroke="#b45309" stroke-width="14" stroke-linecap="round"/>
+    <line x1="382" y1="222" x2="386" y2="172" stroke="#b45309" stroke-width="14" stroke-linecap="round"/>
+    <!-- AMLA held HIGH - the hero! -->
+    <ellipse cx="370" cy="158" rx="9" ry="11" fill="#fce7f3"/>
+    <circle cx="370" cy="142" r="11" fill="#fde68a"/>
+    <ellipse cx="360" cy="137" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="380" cy="137" rx="6" ry="5" fill="#fbbf24"/>
+    <ellipse cx="370" cy="133" rx="7" ry="4" fill="#fbbf24"/>
+    <circle cx="366" cy="141" r="2.5" fill="#1c1917"/><circle cx="374" cy="141" r="2.5" fill="#1c1917"/>
+    <circle cx="366" cy="141" r="1" fill="white"/><circle cx="374" cy="141" r="1" fill="white"/>
+    <circle cx="363" cy="145" r="3" fill="#fca5a5" opacity="0.6"/>
+    <circle cx="377" cy="145" r="3" fill="#fca5a5" opacity="0.6"/>
+    <path d="M365,150 Q370,156 375,150" stroke="#e11d48" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Amla little arms out in celebration -->
+    <line x1="361" y1="157" x2="349" y2="148" stroke="#fce7f3" stroke-width="7" stroke-linecap="round"/>
+    <line x1="379" y1="157" x2="391" y2="148" stroke="#fce7f3" stroke-width="7" stroke-linecap="round"/>
+    <!-- Sparkles -->
+    <text x="186" y="168" font-family="Arial" font-size="20" text-anchor="middle">&#11088;</text>
+    <text x="256" y="175" font-family="Arial" font-size="22" text-anchor="middle">&#11088;</text>
+    <text x="210" y="108" font-family="Arial" font-size="26" text-anchor="middle">&#127881;</text>
+    <text x="308" y="166" font-family="Arial" font-size="18" text-anchor="middle">&#10024;</text>
+    <text x="78" y="163" font-family="Arial" font-size="18" text-anchor="middle">&#10024;</text>
+  </svg>
+  <div class="text-bubble">
+    <p class="story-text" data-fr="Bébé Ours et la petite Amla revinrent ensemble à travers les ronces. <em>TOUT LE MONDE</em> cria de joie !">Baby Bear and little Amla came back through the brambles together. <em>EVERYONE</em> cheered!</p>
+    <span class="sound-word" data-fr="HOURRA pour AMLA !">HOORAY for AMLA!</span>
+    <p class="story-text" style="margin-top:10px;" data-fr="Maman Ours souleva la petite Amla et la tint HAUT dans les airs ! <em>« Tu es notre HÉROS ! »</em>">Mama Bear scooped tiny Amla up and held her HIGH in the air! <em>"You are our HERO!"</em></p>
+    <p class="story-text" style="margin-top:8px;" data-fr="Boucle d'Or sourit de son plus grand sourire. <em>« Même les plus petits peuvent être les plus grands héros ! »</em>">Goldilocks smiled her biggest smile. <em>"Even the littlest helpers can be the biggest heroes!"</em></p>
+  </div>
+  <div class="the-end" data-fr="Fin !">The End!</div>
+  <div class="hearts">&#10084;&#65039; &#128059; &#128062; &#129409; &#127775; &#128516;</div>
+  <p class="page-num">Page 6</p>
+</div>
+
+<!-- Nav dots -->
+<div class="nav">
+  <button class="nav-dot active" onclick="goTo(0)"></button>
+  <button class="nav-dot" onclick="goTo(1)"></button>
+  <button class="nav-dot" onclick="goTo(2)"></button>
+  <button class="nav-dot" onclick="goTo(3)"></button>
+  <button class="nav-dot" onclick="goTo(4)"></button>
+  <button class="nav-dot" onclick="goTo(5)"></button>
+  <button class="nav-dot" onclick="goTo(6)"></button>
+</div>
+
+<script>
+  // Language toggle
+  let lang = localStorage.getItem('almahextall_lang') || 'en';
+  function applyLang() {
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+    });
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = lang === 'fr' ? '🇬🇧 English' : '🇫🇷 Français';
+  }
+  function toggleLang() {
+    lang = lang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('almahextall_lang', lang);
+    applyLang();
+  }
+  applyLang();
+
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 30; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 60 + '%';
+    s.style.animationDelay = Math.random() * 2 + 's';
+    s.style.animationDuration = (1.5 + Math.random()) + 's';
+    starsEl.appendChild(s);
+  }
+
+  let current = 0;
+  const pages = document.querySelectorAll('.page');
+  const dots = document.querySelectorAll('.nav-dot');
+
+  function goTo(n) {
+    pages[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = n;
+    pages[current].classList.add('active');
+    dots[current].classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  let startX = 0;
+  document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0 && current < pages.length - 1) goTo(current + 1);
+      if (dx > 0 && current > 0) goTo(current - 1);
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' && current < pages.length - 1) goTo(current + 1);
+    if (e.key === 'ArrowLeft' && current > 0) goTo(current - 1);
+  });
+</script>
+</body>
+</html>
