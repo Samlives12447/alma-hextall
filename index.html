@@ -193,6 +193,51 @@
     transform: scale(1.04);
   }
 
+  /* Drawings panel */
+  .drawings-header {
+    text-align: center;
+    padding: 48px 24px 32px;
+  }
+  .drawings-header h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.2rem;
+    color: #ffe082;
+    margin-bottom: 10px;
+  }
+  .drawings-header p {
+    color: #93c5fd;
+    font-size: 1.05rem;
+    font-weight: 700;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .drawings-empty {
+    text-align: center;
+    padding: 60px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .drawings-empty-icon {
+    font-size: 5rem;
+    animation: float 2.5s ease-in-out infinite;
+  }
+  .drawings-empty p {
+    color: #93c5fd;
+    font-size: 1rem;
+    font-weight: 700;
+    max-width: 380px;
+    line-height: 1.6;
+  }
+  .drawings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 0 60px;
+  }
+
   /* Coming Soon panel */
   .coming-soon {
     text-align: center;
@@ -273,6 +318,7 @@
   <!-- Tab Navigation -->
   <nav class="tabs-nav">
     <button class="tab-btn active" onclick="showTab('goldilocks', this)" data-fr="La S&eacute;rie Boucle d&apos;Or">The Goldilocks Series</button>
+    <button class="tab-btn" onclick="showTab('drawings', this)" data-fr="Les Dessins d&apos;Alma">Alma's Drawings</button>
     <button class="tab-btn" onclick="showTab('coming1', this)" data-fr="Plus &agrave; venir">More Coming Soon</button>
   </nav>
 
@@ -385,6 +431,18 @@
           Open the Book Series &rarr;
         </a>
       </div>
+    </div>
+  </div>
+
+  <!-- Tab: Alma's Drawings -->
+  <div class="tab-panel" id="tab-drawings">
+    <div class="drawings-header">
+      <h2 data-fr="Les Dessins d&apos;Alma">Alma's Drawings</h2>
+      <p data-fr="Un espace sp&eacute;cial pour les cr&eacute;ations artistiques d&apos;Alma. Revenez bient&ocirc;t&nbsp;!">A special space for Alma's own artwork and creations. Check back soon!</p>
+    </div>
+    <div class="drawings-empty">
+      <div class="drawings-empty-icon">&#127912;</div>
+      <p data-fr="Les dessins d&apos;Alma arrivent bient&ocirc;t&nbsp;&mdash;&nbsp;attendez-vous &agrave; des couleurs, des personnages et des mondes magiques&nbsp;!">Alma's drawings are coming soon &mdash; expect colours, characters, and magical worlds!</p>
     </div>
   </div>
 
